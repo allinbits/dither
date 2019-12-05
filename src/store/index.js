@@ -1,18 +1,25 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import * as actions from "./actions";
 import * as getters from "./getters";
-import modules from "./modules";
-// import createLogger from '../../../src/plugins/logger'
+
+import { vuexfireMutations, firestoreAction } from "vuexfire";
+import { db } from "./db";
 
 Vue.use(Vuex);
 
-// const debug = process.env.NODE_ENV !== 'production'
-
 export default new Vuex.Store({
-  actions,
   getters,
-  modules,
-  // plugins: debug ? [createLogger()] : [],
-  strict: false
+  state: {
+    memos: []
+  },
+  mutations: vuexfireMutations,
+  actions: {
+    bindMemos: firestoreAction(({ bindFirestoreRef }) => {
+      // return the promise returned by `bindFirestoreRef`
+      return bindFirestoreRef("memos", db.collection("memos"));
+    }),
+    unbindMemos: firestoreAction(({ unbindFirestoreRef }) => {
+      unbindFirestoreRef("memos");
+    })
+  }
 });

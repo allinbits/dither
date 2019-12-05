@@ -1,0 +1,39 @@
+* {
+  box-sizing: border-box;
+}
+html {
+  font: 16px/1.5 var(--sans);
+  min-height: 100vh;
+  background: #fff;
+}
+
+#site {
+  display: flex;
+  min-height: 100vh;
+  flex-flow: column nowrap;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.25;
+  font-weight: bold;
+  letter-spacing: -0.02em;
+  margin: 0;
+  font-family: var(--sans);
+  margin-bottom: 1.5rem;
+}
+
+p {
+  margin: 1.5em 0;
+}
+p:last-child {
+  margin-bottom: 0;
+}

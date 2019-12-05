@@ -6,17 +6,15 @@
 
 <script>
 export default {
-  name: "App"
+  name: "App",
+  mounted() {
+    this.$store.dispatch("bindMemos");
+  }
 };
 </script>
 
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus">
+@import './styles/normalize.css'
+@import './styles/variables.css'
+@import './styles/screen.css'
 </style>
