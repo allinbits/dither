@@ -19,7 +19,11 @@ export default new Vuex.Store({
   actions: {
     bindMemos: firestoreAction(({ bindFirestoreRef }) => {
       // return the promise returned by `bindFirestoreRef`
-      return bindFirestoreRef("memos", db.collection("memos"));
+      return bindFirestoreRef(
+        "memos",
+        db.collection("memos").orderBy("height", "desc"),
+        limit(20)
+      );
     }),
     unbindMemos: firestoreAction(({ unbindFirestoreRef }) => {
       unbindFirestoreRef("memos");

@@ -4,7 +4,7 @@
   .memo-container(v-for="i in latestMemos")
     .memo-avatar-container
       // .memo-avatar {{ avatar(i.timestamp) }}
-      .memo-avatar 
+      .memo-avatar
     .memo-text
       .meta {{ i.height }}
       .memo {{ i.memo }}
@@ -16,9 +16,6 @@ import { mapGetters } from "vuex";
 export default {
   name: "page-index",
   computed: {
-    latestMemos() {
-      return this.memos.slice(0, 10);
-    },
     ...mapGetters(["memos"])
   },
   methods: {

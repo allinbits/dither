@@ -1,6 +1,6 @@
-# discovery-client
+# depth-client
 
-> A client for Cosmos Hub chat.
+> A web client for Depth.
 
 ## Build Setup
 
