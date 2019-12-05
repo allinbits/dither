@@ -3,7 +3,8 @@
   .app-header Discovery
   .memo-container(v-for="i in latestMemos")
     .memo-avatar-container
-      .memo-avatar {{ avatar(i.timestamp) }}
+      // .memo-avatar {{ avatar(i.timestamp) }}
+      .memo-avatar 
     .memo-text
       .meta {{ i.height }}
       .memo {{ i.memo }}
