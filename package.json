@@ -1,7 +1,7 @@
 {
-  "name": "discovery-client",
+  "name": "depth-client",
   "version": "1.0.0",
-  "description": "A client for Cosmos Hub chat.",
+  "description": "A web client for Depth.",
   "author": "Peng Zhong <172531+nylira@users.noreply.github.com>",
   "private": true,
   "scripts": {

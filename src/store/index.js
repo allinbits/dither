@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import * as getters from "./getters";
 
 import { vuexfireMutations, firestoreAction } from "vuexfire";
 import { db } from "./db";
@@ -8,7 +7,11 @@ import { db } from "./db";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  getters,
+  getters: {
+    memos: state => {
+      return state.memos;
+    }
+  },
   state: {
     memos: []
   },
