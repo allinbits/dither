@@ -4,13 +4,14 @@ router-link.memo(:to="{ name: 'memo', params: { memo: memo.txhash } }")
     .avatar(v-html="avatar")
   .container-text
     .meta
-      .sender {{ shortAddr(memo.sender) }}
+      .sender {{ addrShort(memo.sender) }}
       .time {{ timeAgo(memo.timestamp) }} ago
     .body {{ memo.memo }}
 </template>
 
 <script>
 import identicon from "identicon.js";
+import createHash from "create-hash";
 import { formatDistance, subDays } from "date-fns";
 import AppFooter from "./AppFooter";
 import PageHeader from "./PageHeader";
@@ -31,8 +32,10 @@ export default {
       };
       let data;
       // create a base64 encoded SVG
-      if (this.memo.txhash) {
-        data = new identicon(this.memo.txhash, options).toString();
+      if (this.memo.sender) {
+        let hash = createHash("sha224");
+        let hexstring = hash.update(this.memo.sender).digest("hex");
+        data = new identicon(hexstring, options).toString();
       } else {
         data = new identicon("0000000000000000", options).toString();
       }
@@ -40,11 +43,12 @@ export default {
     }
   },
   methods: {
-    shortAddr(cosmosAddr) {
-      let addrLength = 8;
-      let addr = cosmosAddr.slice(7, cosmosAddr.length);
-      addr = addr.slice(addr.length - addrLength, addr.length);
-      return addr;
+    addrSuffix(addr) {
+      return addr.slice(7, addr.length);
+    },
+    addrShort(addr) {
+      let value = this.addrSuffix(addr);
+      return value.slice(value.length - 8, value.length);
     },
     timeAgo(date) {
       return formatDistance(new Date(date), new Date());
