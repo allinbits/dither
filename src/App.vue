@@ -17,4 +17,9 @@ export default {
 @import './styles/normalize.css'
 @import './styles/variables.css'
 @import './styles/screen.css'
+
+body
+  padding-top 3rem
+p
+  margin 0
 </style>
