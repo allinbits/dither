@@ -1,8 +1,7 @@
 <template lang="pug">
 router-link.memo(:to="{ name: 'memo', params: { memo: memo.txhash } }")
   .container-avatar
-    // .avatar {{ avatar(i.timestamp) }}
-    .avatar
+    .avatar(v-html="avatar")
   .container-text
     .meta
       .sender {{ shortAddr(memo.sender) }}
@@ -21,6 +20,25 @@ export default {
     AppFooter,
     PageHeader
   },
+  computed: {
+    avatar() {
+      let options = {
+        foreground: [0, 0, 0, 255], // rgba black
+        background: [240, 240, 240, 255], // rgba white
+        margin: 0.2,
+        size: 64,
+        format: "svg" // use SVG instead of PNG
+      };
+      let data;
+      // create a base64 encoded SVG
+      if (this.memo.txhash) {
+        data = new identicon(this.memo.txhash, options).toString();
+      } else {
+        data = new identicon("0000000000000000", options).toString();
+      }
+      return '<img src="data:image/svg+xml;base64,' + data + '">';
+    }
+  },
   methods: {
     shortAddr(cosmosAddr) {
       let addrLength = 8;
@@ -30,18 +48,6 @@ export default {
     },
     timeAgo(date) {
       return formatDistance(new Date(date), new Date());
-    },
-    avatar(hash) {
-      var options = {
-        foreground: [0, 0, 0, 255], // rgba black
-        background: [255, 255, 255, 255], // rgba white
-        margin: 0.2, // 20% margin
-        size: 128, // 420px square
-        format: "svg" // use SVG instead of PNG
-      };
-      // create a base64 encoded SVG
-      var data = new identicon(hash, options).toString();
-      return data;
     }
   },
   props: ["memo"]
@@ -60,8 +66,9 @@ export default {
 .avatar
   width 4rem
   height 4rem
-  background #ccc
-  border-radius 0.25rem
+  display flex
+  align-items center
+  justify-content center
 
 .meta
   font-size 0.75rem
