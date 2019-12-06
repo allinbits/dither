@@ -6,7 +6,9 @@
       // .memo-avatar {{ avatar(i.timestamp) }}
       .memo-avatar
     .memo-text
-      .meta {{ i.height }}
+      .meta
+        // .height {{ i.height }}
+        .time {{ timeAgo(i.timestamp) }} ago
       .memo {{ i.memo }}
   a.load-more Load more
   app-footer
@@ -15,6 +17,7 @@
 <script>
 import identicon from "identicon.js";
 import { mapGetters } from "vuex";
+import { formatDistance, subDays } from "date-fns";
 import AppFooter from "./AppFooter";
 import PageHeader from "./PageHeader";
 export default {
@@ -27,6 +30,9 @@ export default {
     ...mapGetters(["memos"])
   },
   methods: {
+    timeAgo(date) {
+      return formatDistance(new Date(date), new Date());
+    },
     avatar(hash) {
       var options = {
         foreground: [0, 0, 0, 255], // rgba black
