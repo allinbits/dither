@@ -1,7 +1,7 @@
 <template lang="pug">
 .app-footer
   btn-icon(type="link" icon="home" :to="{ name: 'home' }")
-  btn-icon(type="link" icon="search" :to="{ name: 'search' }")
+  btn-icon(type="link" icon="search" :to="{ name: 'memos' }")
   btn-icon(type="link" icon="bell" :to="{ name: 'notifications' }")
   btn-icon(type="link" icon="mail" :to="{ name: 'messages' }")
 </template>

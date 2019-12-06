@@ -30,18 +30,35 @@ export default new Router({
         )
     },
     {
-      path: "/memos/new",
-      name: "memos-new",
+      path: "/memos",
       component: () =>
-        import(
-          /* webpackChunkName: "memos-new" */ "../components/PageMemosNew.vue"
-        )
-    },
-    {
-      path: "/search",
-      name: "search",
-      component: () =>
-        import(/* webpackChunkName: "search" */ "../components/PageSearch.vue")
+        import(/* webpackChunkName: "memos" */ "@/components/PageMemos.vue"),
+      children: [
+        {
+          path: "/",
+          name: "memos",
+          component: () =>
+            import(
+              /* webpackChunkName: "memos-index" */ "@/components/PageMemosIndex.vue"
+            )
+        },
+        {
+          path: "/new",
+          name: "memos-new",
+          component: () =>
+            import(
+              /* webpackChunkName: "memos-new" */ "@/components/PageMemosNew.vue"
+            )
+        },
+        {
+          path: ":memo",
+          name: "memo",
+          component: () =>
+            import(
+              /* webpackChunkName: "memo" */ "@/components/PageMemosMemo.vue"
+            )
+        }
+      ]
     },
     {
       path: "/settings",

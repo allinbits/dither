@@ -1,8 +1,7 @@
 <template lang="pug">
 .page
-  page-header(page-title="Home")
-  card-memo(v-for="memo in memos" :memo="memo" :key="memo.txhash")
-  a.load-more Load more
+  page-header(page-title="Memo Info")
+  card-memo(:memo="memo")
   app-footer
 </template>
 
@@ -19,13 +18,12 @@ export default {
     PageHeader
   },
   computed: {
+    memo() {
+      return this.memos.find(memo => memo.txhash == this.$route.params.memo);
+    },
     ...mapGetters(["memos"])
   }
 };
 </script>
 
-<style scoped lang="stylus">
-.load-more
-  line-height 3rem
-  color var(--link)
-</style>
+<style scoped lang="stylus"></style>
