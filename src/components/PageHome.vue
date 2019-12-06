@@ -1,7 +1,7 @@
 <template lang="pug">
 .page
   page-header(page-title="Home")
-  card-memo(v-for="memo in memos" :memo="memo" :key="memo.txhash")
+  card-memo(v-for="memo in allMemos" :memo="memo" :key="memo.txhash")
   .load-more(@click="loadMore") Load more
   app-footer
 </template>
@@ -19,12 +19,12 @@ export default {
     PageHeader
   },
   computed: {
-    ...mapGetters(["memos"])
+    ...mapGetters(["allMemos"])
   },
   methods: {
     loadMore() {
       console.log("loading more memos...");
-      this.$store.dispatch("loadMoreMemos");
+      this.$store.dispatch("memos/fetchAndAdd", { limit: 6 });
     }
   }
 };
@@ -37,4 +37,5 @@ export default {
   line-height 3rem
   color var(--link)
   text-align center
+  cursor pointer
 </style>

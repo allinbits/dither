@@ -8,7 +8,7 @@
 export default {
   name: "App",
   mounted() {
-    this.$store.dispatch("bindMemos");
+    this.$store.dispatch("memos/fetchAndAdd", { limit: 6 });
   }
 };
 </script>
