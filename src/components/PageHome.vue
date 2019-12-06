@@ -2,7 +2,7 @@
 .page
   page-header(page-title="Home")
   card-memo(v-for="memo in memos" :memo="memo" :key="memo.txhash")
-  a.load-more Load more
+  .load-more(@click="loadMore") Load more
   app-footer
 </template>
 
@@ -20,12 +20,21 @@ export default {
   },
   computed: {
     ...mapGetters(["memos"])
+  },
+  methods: {
+    loadMore() {
+      console.log("loading more memos...");
+      this.$store.dispatch("loadMoreMemos");
+    }
   }
 };
 </script>
 
 <style scoped lang="stylus">
 .load-more
+  border-top 1px solid var(--bc)
+  display block
   line-height 3rem
   color var(--link)
+  text-align center
 </style>

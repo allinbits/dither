@@ -19,7 +19,7 @@ export default {
 @import './styles/screen.css'
 
 body
-  padding-top 3rem
+  padding 3rem 0
 p
   margin 0
 </style>
