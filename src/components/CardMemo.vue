@@ -43,11 +43,8 @@ export default {
     }
   },
   methods: {
-    addrSuffix(addr) {
-      return addr.slice(7, addr.length);
-    },
     addrShort(addr) {
-      let value = this.addrSuffix(addr);
+      let value = addr.slice(7, addr.length);
       return value.slice(value.length - 8, value.length);
     },
     timeAgo(date) {

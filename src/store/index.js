@@ -24,7 +24,7 @@ export default new Vuex.Store({
         db
           .collection("memos")
           .orderBy("height", "desc")
-          .limit(6)
+          .limit(10)
       );
     }),
     unbindMemos: firestoreAction(({ unbindFirestoreRef }) => {
