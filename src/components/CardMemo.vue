@@ -84,6 +84,7 @@ export default {
 
 .container-text
   padding 0.5rem 0.5rem 0.5rem 0
+
 .body
   /* These are technically the same, but use both */
   overflow-wrap: break-word;
