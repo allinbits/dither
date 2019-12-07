@@ -1,5 +1,5 @@
 <template lang="pug">
-router-link.memo(:to="{ name: 'memo', params: { memo: memo.txhash } }")
+router-link.memo(:to="{ name: 'memo', params: { memo: memo.id } }")
   .container-avatar
     .avatar(v-html="avatar")
   .container-text

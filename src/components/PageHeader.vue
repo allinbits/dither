@@ -1,8 +1,10 @@
 <template lang="pug">
 .page-header
-  btn-icon(type="link" :to="{ name: 'settings' }" icon="settings")
+  slot(name="btn-left")
+    btn-icon(type="link" :to="{ name: 'settings' }" icon="settings")
   .title {{ pageTitle }}
-  btn-icon(type="link" :to="{ name: 'memos-new' }" icon="edit")
+  slot(name="btn-right")
+    btn-icon(type="link" :to="{ name: 'memos-new' }" icon="edit")
 </template>
 
 <script>

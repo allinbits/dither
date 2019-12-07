@@ -2,7 +2,7 @@
 .page
   page-header(page-title="Home")
   template(v-if="Object.keys(allMemos).length > 0")
-    card-memo(v-for="memo in allMemos" :memo="memo" :key="memo.txhash")
+    card-memo(v-for="memo in allMemos" :memo="memo" :key="memo.id")
     .load-more(@click="loadMore") Load more
   card-loading(v-else)
   app-footer
