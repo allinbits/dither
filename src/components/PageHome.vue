@@ -24,7 +24,11 @@ export default {
   methods: {
     loadMore() {
       console.log("loading more memos...");
-      this.$store.dispatch("memos/fetchAndAdd", { limit: 6 });
+
+      this.$store.dispatch("memos/fetchAndAdd", {
+        limit: 6,
+        orderBy: ["timestamp", "desc"]
+      });
     }
   }
 };

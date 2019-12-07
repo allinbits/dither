@@ -8,7 +8,10 @@
 export default {
   name: "App",
   mounted() {
-    this.$store.dispatch("memos/fetchAndAdd", { limit: 6 });
+    this.$store.dispatch("memos/fetchAndAdd", {
+      limit: 6,
+      orderBy: ["timestamp", "desc"]
+    });
   }
 };
 </script>
