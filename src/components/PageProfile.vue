@@ -34,15 +34,17 @@ export default {
     CardWip,
     PageHeader
   },
+  created() {
+    if (!this.userSignedIn) {
+      this.$router.push({ name: "home" });
+    }
+  },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "userSignedIn"])
   },
   methods: {
     signOut() {
-      Firebase.auth().signOut();
-      this.$router.push({
-        name: "signin"
-      });
+      this.$store.commit("signOutUser");
     }
   }
 };

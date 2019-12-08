@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import VuexEasyFirestore from "vuex-easy-firestore";
 Vue.use(Vuex);
+import router from "../router/index.js";
 
 // import firebase
 import { Firebase, initFirebase } from "./firebase.js";
@@ -24,9 +25,13 @@ const storeData = {
     },
     user: state => {
       return state.user;
+    },
+    userSignedIn: state => {
+      return state.userSignedIn;
     }
   },
   state: {
+    userSignedIn: false,
     user: {
       displayName: "Loading",
       providerData: [
@@ -39,8 +44,17 @@ const storeData = {
     }
   },
   mutations: {
-    setUser(state, user) {
+    signInUser(state, user) {
       state.user = user;
+      state.userSignedIn = true;
+    },
+    signOutUser(state, user) {
+      Firebase.auth().signOut();
+      state.user = {};
+      state.userSignedIn = false;
+      router.push({
+        name: "signin"
+      });
     }
   }
   // ... your other store data

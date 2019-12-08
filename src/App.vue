@@ -17,7 +17,7 @@ export default {
 
     Firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.$store.commit("setUser", user);
+        this.$store.commit("signInUser", user);
       }
     });
   }

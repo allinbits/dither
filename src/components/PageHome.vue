@@ -1,7 +1,10 @@
 <template lang="pug">
 .page
   page-header(page-title="Home")
-    btn-icon(slot="btn-left" type="link" :to="{ name: 'profile' }" icon="user")
+    template(v-if="userSignedIn")
+      btn-icon(slot="btn-left" type="link" :to="{ name: 'profile' }" icon="user")
+    template(v-else)
+      btn-icon(slot="btn-left" type="link" :to="{ name: 'signin' }" icon="log-in")
     btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
   template(v-if="Object.keys(memos).length > 0")
     card-memo(v-for="memo in memos" :memo="memo" :key="memo.id")
@@ -27,7 +30,7 @@ export default {
     PageHeader
   },
   computed: {
-    ...mapGetters(["memos"])
+    ...mapGetters(["memos", "userSignedIn"])
   },
   methods: {
     loadMore() {
