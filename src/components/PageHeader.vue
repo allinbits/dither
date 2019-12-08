@@ -1,10 +1,8 @@
 <template lang="pug">
 .page-header
-  slot(name="btn-left")
-    btn-icon(type="link" :to="{ name: 'settings' }" icon="settings")
+  slot(name="btn-left"): .btn-placeholder
   .title {{ pageTitle }}
-  slot(name="btn-right")
-    btn-icon(type="link" :to="{ name: 'memos-new' }" icon="edit")
+  slot(name="btn-right"): .btn-placeholder
 </template>
 
 <script>
@@ -35,4 +33,8 @@ export default {
   flex 1
   font-weight bold
   text-align center
+
+.btn-placeholder
+  width 3rem
+  height 3rem
 </style>

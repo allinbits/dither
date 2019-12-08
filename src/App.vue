@@ -5,12 +5,20 @@
 </template>
 
 <script>
+import { Firebase } from "./store/firebase.js";
+
 export default {
   name: "App",
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {
       limit: 6,
       orderBy: ["timestamp", "desc"]
+    });
+
+    Firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.$store.commit("setUser", user);
+      }
     });
   }
 };

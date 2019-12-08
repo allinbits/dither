@@ -22,14 +22,6 @@ export default new Router({
         )
     },
     {
-      path: "/notifications",
-      name: "notifications",
-      component: () =>
-        import(
-          /* webpackChunkName: "notifications" */ "../components/PageNotifications.vue"
-        )
-    },
-    {
       path: "/memos",
       component: () =>
         import(/* webpackChunkName: "memos" */ "@/components/PageMemos.vue"),
@@ -43,7 +35,7 @@ export default new Router({
             )
         },
         {
-          path: "/new",
+          path: "new",
           name: "memos-new",
           component: () =>
             import(
@@ -60,13 +52,36 @@ export default new Router({
         }
       ]
     },
+
+    {
+      path: "/notifications",
+      name: "notifications",
+      component: () =>
+        import(
+          /* webpackChunkName: "notifications" */ "../components/PageNotifications.vue"
+        )
+    },
+    {
+      path: "/settings",
+      name: "profile",
+      component: () =>
+        import(
+          /* webpackChunkName: "profile" */ "../components/PageProfile.vue"
+        )
+    },
     {
       path: "/settings",
       name: "settings",
       component: () =>
         import(
-          /* webpackChunkName: "messages" */ "../components/PageSettings.vue"
+          /* webpackChunkName: "settings" */ "../components/PageSettings.vue"
         )
+    },
+    {
+      path: "/signin",
+      name: "signin",
+      component: () =>
+        import(/* webpackChunkName: "signin" */ "../components/PageSignIn.vue")
     }
   ]
 });

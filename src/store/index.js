@@ -19,8 +19,28 @@ const easyFirestore = VuexEasyFirestore([memos], {
 const storeData = {
   plugins: [easyFirestore],
   getters: {
-    allMemos: state => {
+    memos: state => {
       return state.memos.data;
+    },
+    user: state => {
+      return state.user;
+    }
+  },
+  state: {
+    user: {
+      displayName: "Loading",
+      providerData: [
+        {
+          photoURL: "Loading",
+          displayName: "Loading",
+          providerId: "Loading"
+        }
+      ]
+    }
+  },
+  mutations: {
+    setUser(state, user) {
+      state.user = user;
     }
   }
   // ... your other store data
