@@ -18,6 +18,7 @@ export default {
     Firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.$store.commit("signInUser", user);
+        this.$store.dispatch("settings/openDBChannel").catch(console.error);
       }
     });
   }

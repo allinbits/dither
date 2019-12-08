@@ -37,13 +37,8 @@ export default {
     PageHeader,
     SectionWallet
   },
-  created() {
-    if (!this.userSignedIn) {
-      this.$router.push({ name: "home" });
-    }
-  },
   computed: {
-    ...mapGetters(["user", "userSignedIn"])
+    ...mapGetters(["user"])
   },
   methods: {
     signOut() {

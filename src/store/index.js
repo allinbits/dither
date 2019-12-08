@@ -8,9 +8,10 @@ import router from "../router/index.js";
 import { Firebase, initFirebase } from "./firebase.js";
 // import firebase modules
 import memos from "./modules/memos.js";
+import settings from "./modules/settings.js";
 
 // do the magic
-const easyFirestore = VuexEasyFirestore([memos], {
+const easyFirestore = VuexEasyFirestore([memos, settings], {
   logging: true,
   FirebaseDependency: Firebase
 });
@@ -29,8 +30,8 @@ const storeData = {
     userSignedIn: state => {
       return state.userSignedIn;
     },
-    users: state => {
-      return state.users;
+    settings: state => {
+      return state.settings;
     }
   },
   state: {
@@ -44,8 +45,7 @@ const storeData = {
           providerId: "Loading"
         }
       ]
-    },
-    users: []
+    }
   },
   mutations: {
     signInUser(state, user) {
@@ -61,7 +61,6 @@ const storeData = {
       });
     }
   }
-  // ... your other store data
 };
 
 // init Vuex
