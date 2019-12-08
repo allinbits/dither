@@ -12,6 +12,7 @@
         .text
           .provider-id {{ provider.providerId }}
           .display-name {{ provider.displayName }}
+    section-wallet
     btn-large(@click.native="signOut") Sign out
   app-footer
 </template>
@@ -21,10 +22,11 @@ import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
 import AppFooter from "./AppFooter";
-import PageHeader from "./PageHeader";
 import BtnIcon from "./BtnIcon";
 import BtnLarge from "./BtnLarge";
 import CardWip from "./CardWip";
+import PageHeader from "./PageHeader";
+import SectionWallet from "./SectionWallet";
 export default {
   name: "page-profile",
   components: {
@@ -32,7 +34,8 @@ export default {
     BtnIcon,
     BtnLarge,
     CardWip,
-    PageHeader
+    PageHeader,
+    SectionWallet
   },
   created() {
     if (!this.userSignedIn) {

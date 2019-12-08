@@ -28,6 +28,9 @@ const storeData = {
     },
     userSignedIn: state => {
       return state.userSignedIn;
+    },
+    users: state => {
+      return state.users;
     }
   },
   state: {
@@ -41,7 +44,8 @@ const storeData = {
           providerId: "Loading"
         }
       ]
-    }
+    },
+    users: []
   },
   mutations: {
     signInUser(state, user) {
