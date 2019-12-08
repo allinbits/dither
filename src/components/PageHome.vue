@@ -3,9 +3,10 @@
   page-header(page-title="Home")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'profile' }" icon="user")
+    template(v-if="userSignedIn")
+      btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
     template(v-else)
-      btn-icon(slot="btn-left" type="link" :to="{ name: 'signin' }" icon="log-in")
-    btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
+      btn-icon(slot="btn-right" type="link" :to="{ name: 'signin' }" icon="log-in")
   template(v-if="Object.keys(memos).length > 0")
     card-memo(v-for="memo in memos" :memo="memo" :key="memo.id")
     .load-more(@click="loadMore") Load more

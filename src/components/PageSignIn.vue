@@ -20,7 +20,15 @@ export default {
     PageHeader
   },
   mounted() {
-    let ui = new firebaseui.auth.AuthUI(Firebase.auth());
+    let ui = firebaseui.auth.AuthUI.getInstance();
+
+    // solves `An AuthUI instance already exists for the key`
+    // by not starting another ui instance if one exists
+    // https://softauthor.com/firebaseui-vue-login-with-facebook-google-and-email-pasword/
+    if (!ui) {
+      ui = new firebaseui.auth.AuthUI(Firebase.auth());
+    }
+
     let uiConfig = {
       signInSuccessUrl: "/",
       signInOptions: [
