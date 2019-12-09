@@ -1,5 +1,5 @@
 <template lang="pug">
-.page
+.page-home
   page-header(page-title="Home")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'profile' }" icon="user")

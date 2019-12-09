@@ -1,8 +1,13 @@
 <template lang="pug">
 .section-wallet
-  | {{ settings.data.wallet.address }}
-  btn-large(@click.native="createWallet") Create wallet
-  btn-large(@click.native="sendTx") Send tx
+  template(v-if="settings && settings.data && settings.data.wallet")
+    section-default
+      | {{ settings.data.wallet.address }}
+      btn-large(@click.native="sendTx") Send tx
+      btn-large(@click.native="createWallet") Delete wallet
+  template(v-else)
+    section-default
+      btn-large(@click.native="createWallet") Create wallet
 </template>
 
 <script>
@@ -12,10 +17,12 @@ import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
 import BtnLarge from "./BtnLarge";
+import SectionDefault from "./SectionDefault";
 export default {
   name: "section-wallet",
   components: {
-    BtnLarge
+    BtnLarge,
+    SectionDefault
   },
   computed: {
     ...mapGetters(["user", "settings"])
@@ -32,6 +39,9 @@ export default {
           publicKey: Firebase.firestore.Blob.fromUint8Array(wallet.publicKey)
         }
       });
+    },
+    deleteWallet() {
+      this.$store.dispatch("settings/delete");
     },
     sendTx() {
       console.log("sending transaction");

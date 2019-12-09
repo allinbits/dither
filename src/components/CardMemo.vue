@@ -1,5 +1,5 @@
 <template lang="pug">
-router-link.memo(:to="{ name: 'memo', params: { memo: memo.id } }")
+router-link.card-memo(:to="{ name: 'memo', params: { memo: memo.id } }")
   .container-avatar
     .avatar(v-html="avatar")
   .container-text
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-.memo
+.card-memo
   border-top 1px solid var(--bc)
   display flex
   color var(--txt)

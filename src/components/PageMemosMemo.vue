@@ -1,5 +1,5 @@
 <template lang="pug">
-.page
+.page-memos-memo
   page-header(page-title="Memo Info")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
   card-memo(v-if="memo" :memo="memo")

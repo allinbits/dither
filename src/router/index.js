@@ -78,10 +78,10 @@ export default new Router({
         )
     },
     {
-      path: "/signin",
-      name: "signin",
+      path: "/login",
+      name: "login",
       component: () =>
-        import(/* webpackChunkName: "signin" */ "../components/PageSignIn.vue")
+        import(/* webpackChunkName: "login" */ "../components/PageLogin.vue")
     }
   ]
 });

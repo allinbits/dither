@@ -1,5 +1,5 @@
 <template lang="pug">
-.page
+.page-settings
   page-header(page-title="Settings")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
     btn-icon(slot="btn-right" icon="save" @click.native="saveSettings")

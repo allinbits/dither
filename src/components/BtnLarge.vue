@@ -1,6 +1,5 @@
 <template lang="pug">
-.btn-large
-  .inner: slot Button Label
+.btn-large: slot Button Label
 </template>
 
 <script>
@@ -10,11 +9,17 @@ export default {
 </script>
 
 <style scoped lang="stylus">
+.btn-large + .btn-large
+  margin-top 0.5rem
 
-.inner
-  border 1px solid var(--bc)
+.btn-large
+  border 1px solid var(--link)
   line-height 3rem
   text-align center
   border-radius 0.5rem
   color var(--link)
+  cursor pointer
+  max-width 286px
+  &:hover
+    background var(--bc)
 </style>

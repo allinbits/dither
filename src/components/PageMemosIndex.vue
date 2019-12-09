@@ -1,5 +1,5 @@
 <template lang="pug">
-.page
+.page-memos-index
   page-header(page-title="Search")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'profile' }" icon="user")
   card-wip

@@ -1,5 +1,5 @@
 <template lang="pug">
-.page
+.page-memos-new
   page-header(page-title="New Memo")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
     btn-icon(slot="btn-right" icon="send" @click.native="sendMemo")

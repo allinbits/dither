@@ -1,5 +1,5 @@
 <template lang="pug">
-.page
+.page-messages
   page-header(page-title="Messages")
   card-wip
   app-footer

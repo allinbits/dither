@@ -1,5 +1,5 @@
 <template lang="pug">
-.page
+.page-notifications
   page-header(page-title="Notifications")
   card-wip
   app-footer
