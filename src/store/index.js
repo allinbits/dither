@@ -66,7 +66,7 @@ const storeData = {
       state.user = {};
       state.userSignedIn = false;
       router.push({
-        name: "signin"
+        name: "login"
       });
     }
   }
