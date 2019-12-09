@@ -20,8 +20,11 @@ const easyFirestore = VuexEasyFirestore([memos, settings], {
 const storeData = {
   plugins: [easyFirestore],
   getters: {
+    blockchain: state => {
+      return state.blockchain;
+    },
     chainId: state => {
-      return state.chainId;
+      return state.blockchain.chainId;
     },
     memos: state => {
       return state.memos.data;
@@ -37,7 +40,10 @@ const storeData = {
     }
   },
   state: {
-    chainId: "cosmoshub-2",
+    blockchain: {
+      chainId: "cosmoshub-2",
+      lcd: "https://lcd.nylira.net"
+    },
     userSignedIn: false,
     user: {
       displayName: "Loading",

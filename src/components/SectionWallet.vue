@@ -25,7 +25,7 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["user", "settings", "chainId"])
+    ...mapGetters(["user", "settings", "blockchain"])
   },
   methods: {
     createWallet() {
@@ -50,7 +50,7 @@ export default {
         this.$store.dispatch("settings/delete", "wallet");
       }
     },
-    sendTx() {
+    async sendTx() {
       let walletData = this.settings.data.wallet;
       let sender = walletData.address;
       let receiver = "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq";
@@ -83,7 +83,7 @@ export default {
       };
       let signMeta = {
         account_number: "1",
-        chain_id: this.chainId,
+        chain_id: this.blockchain.chainId,
         sequence: "0"
       };
       let wallet = {
@@ -97,6 +97,16 @@ export default {
       console.log("wallet", wallet);
 
       const stdTx = signTx(tx, signMeta, wallet);
+
+      let response = await fetch(this.blockchain.lcd + "/txs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8"
+        },
+        body: JSON.stringify(stdTx)
+      });
+      let result = await response.json();
+      alert(result.message);
     }
   },
   mounted() {}
