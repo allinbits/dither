@@ -4,7 +4,7 @@
     section-default
       | {{ settings.data.wallet.address }}
       btn-large(@click.native="sendTx") Send tx
-      btn-large(@click.native="createWallet") Delete wallet
+      btn-large(@click.native="deleteWallet") Delete wallet
   template(v-else)
     section-default
       btn-large(@click.native="createWallet") Create wallet
@@ -12,7 +12,7 @@
 
 <script>
 import * as bip39 from "bip39";
-import { createWalletFromMnemonic } from "@tendermint/sig";
+import { createWalletFromMnemonic, signTx } from "@tendermint/sig";
 import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
@@ -25,26 +25,78 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["user", "settings"])
+    ...mapGetters(["user", "settings", "chainId"])
   },
   methods: {
     createWallet() {
       const mnemonic = bip39.generateMnemonic();
       const wallet = createWalletFromMnemonic(mnemonic); // BIP39 mnemonic string
+      console.log(wallet);
       this.$store.dispatch("settings/set", {
         mnemonic: mnemonic,
         wallet: {
           address: wallet.address,
-          privateKey: Firebase.firestore.Blob.fromUint8Array(wallet.privateKey),
-          publicKey: Firebase.firestore.Blob.fromUint8Array(wallet.publicKey)
+          privateKey: Array.from(wallet.privateKey),
+          publicKey: Array.from(wallet.publicKey)
         }
       });
     },
     deleteWallet() {
-      this.$store.dispatch("settings/delete");
+      let yes = confirm(
+        "WARNING: Are you sure you want to delete this wallet? If you did not backup your 12-word mnemonic, it means that you will permanently lose any stored tokens."
+      );
+      if (yes) {
+        this.$store.dispatch("settings/delete", "mnemonic");
+        this.$store.dispatch("settings/delete", "wallet");
+      }
     },
     sendTx() {
-      console.log("sending transaction");
+      let walletData = this.settings.data.wallet;
+      let sender = walletData.address;
+      let receiver = "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq";
+
+      let tx = {
+        fee: {
+          amount: [{ amount: "0", denom: "" }],
+          gas: "10000"
+        },
+        memo: "This is a message from DepthChat.",
+        msgs: [
+          {
+            type: "cosmos-sdk/Send",
+            value: {
+              inputs: [
+                {
+                  address: sender,
+                  coins: [{ amount: "1", denom: "uatom" }]
+                }
+              ],
+              outputs: [
+                {
+                  address: receiver,
+                  coins: [{ amount: "1", denom: "uatom" }]
+                }
+              ]
+            }
+          }
+        ]
+      };
+      let signMeta = {
+        account_number: "1",
+        chain_id: this.chainId,
+        sequence: "0"
+      };
+      let wallet = {
+        address: sender,
+        privateKey: Uint8Array.from(walletData.privateKey),
+        publicKey: Uint8Array.from(walletData.publicKey)
+      };
+
+      console.log("tx", tx);
+      console.log("signMeta", signMeta);
+      console.log("wallet", wallet);
+
+      const stdTx = signTx(tx, signMeta, wallet);
     }
   },
   mounted() {}

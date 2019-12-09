@@ -6,21 +6,23 @@ import router from "../router/index.js";
 
 // import firebase
 import { Firebase, initFirebase } from "./firebase.js";
-// import firebase modules
+
+// import vuex-firestore modules
 import memos from "./modules/memos.js";
 import settings from "./modules/settings.js";
 
-// do the magic
+// connect vuex-firestore modules to firestore
 const easyFirestore = VuexEasyFirestore([memos, settings], {
   logging: true,
   FirebaseDependency: Firebase
 });
 
-// include as PLUGIN in your vuex store
-// please note that "myModule" should ONLY be passed via the plugin
 const storeData = {
   plugins: [easyFirestore],
   getters: {
+    chainId: state => {
+      return state.chainId;
+    },
     memos: state => {
       return state.memos.data;
     },
@@ -35,6 +37,7 @@ const storeData = {
     }
   },
   state: {
+    chainId: "cosmoshub-2",
     userSignedIn: false,
     user: {
       displayName: "Loading",
