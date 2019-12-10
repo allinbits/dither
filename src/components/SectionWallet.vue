@@ -12,7 +12,11 @@
 
 <script>
 import * as bip39 from "bip39";
-import { createWalletFromMnemonic, signTx } from "@tendermint/sig";
+import {
+  createWalletFromMnemonic,
+  signTx,
+  createBroadcastTx
+} from "@tendermint/sig";
 import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
@@ -58,55 +62,58 @@ export default {
       let tx = {
         fee: {
           amount: [{ amount: "0", denom: "" }],
-          gas: "10000"
+          gas: "30000"
         },
         memo: "This is a message from DepthChat.",
-        msgs: [
+        msg: [
           {
-            type: "cosmos-sdk/Send",
+            type: "cosmos-sdk/MsgSend",
             value: {
-              inputs: [
+              from_address: sender,
+              to_address: receiver,
+              amount: [
                 {
-                  address: sender,
-                  coins: [{ amount: "1", denom: "uatom" }]
-                }
-              ],
-              outputs: [
-                {
-                  address: receiver,
-                  coins: [{ amount: "1", denom: "uatom" }]
+                  denom: "uatom",
+                  amount: "1"
                 }
               ]
             }
           }
         ]
       };
+
+      // set up the account details
+      let account = await fetch(
+        `${this.blockchain.lcd}/auth/accounts/${sender}`
+      );
+      let accountJson = await account.json();
+      console.log("account info", accountJson);
       let signMeta = {
-        account_number: "1",
+        account_number: accountJson.value.account_number,
         chain_id: this.blockchain.chainId,
-        sequence: "0"
+        sequence: accountJson.value.sequence
       };
+
       let wallet = {
         address: sender,
         privateKey: Uint8Array.from(walletData.privateKey),
         publicKey: Uint8Array.from(walletData.publicKey)
       };
 
-      console.log("tx", tx);
-      console.log("signMeta", signMeta);
-      console.log("wallet", wallet);
+      // prepare the transaction for sending
+      const txSigned = signTx(tx, signMeta, wallet);
+      const txBroadcast = createBroadcastTx(txSigned, "sync");
 
-      const stdTx = signTx(tx, signMeta, wallet);
-
-      let response = await fetch(this.blockchain.lcd + "/txs", {
+      // send tx and await results
+      let txResponse = await fetch(`${this.blockchain.lcd}/txs`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json;charset=utf-8"
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(stdTx)
+        body: JSON.stringify(txBroadcast)
       });
-      let result = await response.json();
-      alert(result.message);
+      let txResponseJson = await txResponse.json();
+      console.log(txResponseJson);
     }
   },
   mounted() {}
