@@ -42,7 +42,8 @@ const storeData = {
   state: {
     blockchain: {
       chainId: "cosmoshub-2",
-      lcd: "https://lcd.nylira.net"
+      lcd: "https://lcd.nylira.net",
+      to_address: "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq"
     },
     userSignedIn: false,
     user: {
