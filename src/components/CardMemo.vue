@@ -1,5 +1,5 @@
 <template lang="pug">
-router-link.card-memo(:to="{ name: 'memo', params: { memo: memo.id } }")
+.card-memo(@click="actionView($event)")
   .container-avatar
     .avatar(v-html="avatar")
   .container-text
@@ -7,19 +7,27 @@ router-link.card-memo(:to="{ name: 'memo', params: { memo: memo.id } }")
       .sender {{ addrShort(getSender(memo.tx)) }}
       .time {{ timeAgo(memo.timestamp) }} ago
     .body {{ memo.memo }}
+    .actions
+      btn-icon(slot="btn-left" size="small" icon="message-circle" @click.native="actionReply($event)")
+      btn-icon(slot="btn-left" size="small" icon="repeat" @click.native="actionRelay($event)")
+      btn-icon(slot="btn-left" size="small" icon="heart" @click.native="actionLike($event)")
+      btn-icon(slot="btn-left" size="small" icon="share" @click.native="actionShare($event)")
 </template>
 
 <script>
 import identicon from "identicon.js";
 import createHash from "create-hash";
 import { formatDistance, subDays } from "date-fns";
+
 import AppFooter from "./AppFooter";
 import PageHeader from "./PageHeader";
+import BtnIcon from "./BtnIcon";
 export default {
   name: "card-memo",
   components: {
+    PageHeader,
     AppFooter,
-    PageHeader
+    BtnIcon
   },
   computed: {
     avatar() {
@@ -64,6 +72,25 @@ export default {
     },
     timeAgo(date) {
       return formatDistance(new Date(date), new Date());
+    },
+    actionView(e) {
+      this.$router.push({ name: "memo", params: { memo: this.memo.id } });
+    },
+    actionReply(e) {
+      e.stopPropagation();
+      alert("WIP: reply");
+    },
+    actionRelay(e) {
+      e.stopPropagation();
+      alert("WIP: relay");
+    },
+    actionLike(e) {
+      e.stopPropagation();
+      alert("WIP: like");
+    },
+    actionShare(e) {
+      e.stopPropagation();
+      alert("WIP: share");
     }
   },
   props: ["memo"]
@@ -116,4 +143,7 @@ export default {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+
+.actions
+  display flex
 </style>
