@@ -2,7 +2,7 @@
 .page-home
   app-header(page-title="Home")
     template(v-if="userSignedIn")
-      btn-icon(slot="btn-left" type="link" :to="{ name: 'profile' }" icon="user")
+      btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
     template(v-else)

@@ -52,21 +52,12 @@ export default new Router({
         }
       ]
     },
-
     {
       path: "/notifications",
       name: "notifications",
       component: () =>
         import(
           /* webpackChunkName: "notifications" */ "../components/PageNotifications.vue"
-        )
-    },
-    {
-      path: "/settings",
-      name: "profile",
-      component: () =>
-        import(
-          /* webpackChunkName: "profile" */ "../components/PageProfile.vue"
         )
     },
     {

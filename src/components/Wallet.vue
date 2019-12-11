@@ -1,18 +1,16 @@
 <template lang="pug">
-.section-wallet
+.wallet
   template(v-if="settings && settings.data && settings.data.wallet")
-    section-default
-      dl
-        dt Address
-        dd {{ settings.data.wallet.address }}
-        dd send ATOM to the address above
-        dt ATOM
-        dd {{ settings.data.uatom / 1000000 }}
-        dd you can send ~{{ Math.round(settings.data.uatom / blockchain.defaultGas) }} memos
-      btn-large(@click.native="deleteWallet") Delete wallet
+    dl
+      dt Address
+      dd {{ settings.data.wallet.address }}
+      dd send ATOM to the address above
+      dt ATOM
+      dd {{ settings.data.uatom / 1000000 }}
+      dd you can send ~{{ Math.round(settings.data.uatom / blockchain.defaultGas) }} memos
+    a(@click.native="deleteWallet") Delete wallet
   template(v-else)
-    section-default
-      btn-large(@click.native="createWallet") Create wallet
+    a(@click.native="createWallet") Create wallet
 </template>
 
 <script>
@@ -24,7 +22,7 @@ import { mapGetters } from "vuex";
 import BtnLarge from "./BtnLarge";
 import SectionDefault from "./SectionDefault";
 export default {
-  name: "section-wallet",
+  name: "wallet",
   components: {
     BtnLarge,
     SectionDefault

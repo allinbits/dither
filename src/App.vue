@@ -40,6 +40,11 @@ body
   margin 0 auto
   background #fff
 
+a
+  color var(--link)
+  cursor pointer
+  &:hover
+    color var(--hover)
 p
   margin 0
 </style>
