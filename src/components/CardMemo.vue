@@ -4,7 +4,7 @@ router-link.card-memo(:to="{ name: 'memo', params: { memo: memo.id } }")
     .avatar(v-html="avatar")
   .container-text
     .meta
-      .sender {{ addrShort(memo.sender) }}
+      .sender {{ addrShort(getSender(memo.tx)) }}
       .time {{ timeAgo(memo.timestamp) }} ago
     .body {{ memo.memo }}
 </template>
@@ -32,9 +32,9 @@ export default {
       };
       let data;
       // create a base64 encoded SVG
-      if (this.memo.sender) {
+      if (this.getSender(this.memo.tx)) {
         let hash = createHash("sha224");
-        let hexstring = hash.update(this.memo.sender).digest("hex");
+        let hexstring = hash.update(this.memo.tx).digest("hex");
         data = new identicon(hexstring, options).toString();
       } else {
         data = new identicon("0000000000000000", options).toString();
@@ -43,9 +43,24 @@ export default {
     }
   },
   methods: {
+    getSender(tx) {
+      let sender = "Loading...";
+      if (tx) {
+        let txEventMessage = tx.events.find(e => e.type === "message");
+        let txEventMessageAttribute = txEventMessage.attributes.find(
+          a => a.key === "sender"
+        );
+        sender = txEventMessageAttribute.value;
+      }
+      return sender;
+    },
     addrShort(addr) {
-      let value = addr.slice(7, addr.length);
-      return value.slice(value.length - 8, value.length);
+      if (addr) {
+        let value = addr.slice(7, addr.length);
+        return value.slice(value.length - 8, value.length);
+      } else {
+        return "N/A";
+      }
     },
     timeAgo(date) {
       return formatDistance(new Date(date), new Date());

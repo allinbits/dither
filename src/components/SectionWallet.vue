@@ -2,7 +2,11 @@
 .section-wallet
   template(v-if="settings && settings.data && settings.data.wallet")
     section-default
-      | {{ settings.data.wallet.address }}
+      dl
+        dt Address
+        dl {{ settings.data.wallet.address }}
+        dt ATOM
+        dl {{ settings.data.uatom / 1000000 }}
       btn-large(@click.native="deleteWallet") Delete wallet
   template(v-else)
     section-default
@@ -48,6 +52,17 @@ export default {
         this.$store.dispatch("settings/delete", "mnemonic");
         this.$store.dispatch("settings/delete", "wallet");
       }
+    }
+  },
+  watch: {
+    async "settings.data.wallet"() {
+      let response = await fetch(
+        `${this.blockchain.lcd}/bank/balances/${this.settings.data.wallet.address}`
+      );
+      let balance = await response.json();
+      let amount = balance.result[0].amount;
+      console.log("balance amount", amount);
+      this.$store.dispatch("settings/set", { uatom: amount });
     }
   }
 };
