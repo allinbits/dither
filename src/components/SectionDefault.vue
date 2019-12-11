@@ -3,13 +3,6 @@
 </template>
 
 <script>
-import { Firebase } from "../store/firebase.js";
-import * as firebaseui from "firebaseui";
-import "firebaseui/dist/firebaseui.css";
-
-import { mapGetters } from "vuex";
-import PageHeader from "./PageHeader";
-import BtnIcon from "./BtnIcon";
 export default {
   name: "section-default"
 };

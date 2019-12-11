@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tendermint/sig": "^0.4.1",
+    "byte-length": "^1.0.2",
     "create-hash": "^1.2.0",
     "date-fns": "^2.8.1",
     "firebase": "^7.5.2",

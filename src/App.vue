@@ -30,8 +30,15 @@ export default {
 @import './styles/variables.css'
 @import './styles/screen.css'
 
+html
+  background hsl(0,0,97%)
 body
   padding 3rem 0
+  min-height 100vh
+  max-width 40rem
+  margin 0 auto
+  background #fff
+
 p
   margin 0
 </style>

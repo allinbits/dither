@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-memos-memo
-  page-header(page-title="Memo Info")
+  app-header(page-title="Memo Info")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
   card-memo(v-if="memo" :memo="memo")
   card-loading(v-else)
@@ -13,7 +13,7 @@ import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";
 import CardLoading from "./CardLoading";
 import CardMemo from "./CardMemo";
-import PageHeader from "./PageHeader";
+import AppHeader from "./AppHeader";
 export default {
   name: "page-memos-memo",
   components: {
@@ -21,7 +21,7 @@ export default {
     BtnIcon,
     CardLoading,
     CardMemo,
-    PageHeader
+    AppHeader
   },
   computed: {
     memo() {

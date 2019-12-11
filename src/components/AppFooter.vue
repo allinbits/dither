@@ -1,9 +1,10 @@
 <template lang="pug">
 .app-footer
-  btn-icon(type="link" icon="home" :to="{ name: 'home' }")
-  btn-icon(type="link" icon="search" :to="{ name: 'memos' }")
-  btn-icon(type="link" icon="bell" :to="{ name: 'notifications' }")
-  btn-icon(type="link" icon="mail" :to="{ name: 'messages' }")
+  .app-footer__container
+    btn-icon(type="link" icon="home" :to="{ name: 'home' }")
+    btn-icon(type="link" icon="search" :to="{ name: 'memos' }")
+    btn-icon(type="link" icon="bell" :to="{ name: 'notifications' }")
+    btn-icon(type="link" icon="mail" :to="{ name: 'messages' }")
 </template>
 
 <script>
@@ -20,11 +21,18 @@ export default {
 .app-footer
   line-height 3rem
   background #fff
+
   position fixed
   bottom 0
   left 0
   width 100vw
   border-top 1px solid var(--bc)
+
+  margin 0 auto
+
+.app-footer__container
+  max-width 40rem
+  margin 0 auto
 
   display flex
   flex-flow row nowrap

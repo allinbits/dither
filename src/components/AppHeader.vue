@@ -1,14 +1,15 @@
 <template lang="pug">
-.page-header
-  slot(name="btn-left"): .btn-placeholder
-  .title {{ pageTitle }}
-  slot(name="btn-right"): .btn-placeholder
+.app-header
+  .app-header__container
+    slot(name="btn-left"): .btn-placeholder
+    .title {{ pageTitle }}
+    slot(name="btn-right"): .btn-placeholder
 </template>
 
 <script>
 import BtnIcon from "./BtnIcon";
 export default {
-  name: "page-header",
+  name: "app-header",
   components: {
     BtnIcon
   },
@@ -17,17 +18,23 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-.page-header
+.app-header
   line-height 3rem
   background #fff
   position fixed
   top 0
   left 0
   width 100vw
+
   border-bottom 1px solid var(--bc)
+
+.app-header__container
+  max-width 40rem
+  margin 0 auto
 
   display flex
   flex-flow row nowrap
+  justify-content space-around
 
 .title
   flex 1

@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-home
-  page-header(page-title="Home")
+  app-header(page-title="Home")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'profile' }" icon="user")
     template(v-if="userSignedIn")
@@ -20,15 +20,15 @@ import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";
 import CardLoading from "./CardLoading";
 import CardMemo from "./CardMemo";
-import PageHeader from "./PageHeader";
+import AppHeader from "./AppHeader";
 export default {
   name: "page-index",
   components: {
+    AppHeader,
     AppFooter,
     BtnIcon,
     CardLoading,
-    CardMemo,
-    PageHeader
+    CardMemo
   },
   computed: {
     ...mapGetters(["memos", "userSignedIn"])

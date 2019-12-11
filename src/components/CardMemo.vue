@@ -19,14 +19,10 @@ import identicon from "identicon.js";
 import createHash from "create-hash";
 import { formatDistance, subDays } from "date-fns";
 
-import AppFooter from "./AppFooter";
-import PageHeader from "./PageHeader";
 import BtnIcon from "./BtnIcon";
 export default {
   name: "card-memo",
   components: {
-    PageHeader,
-    AppFooter,
     BtnIcon
   },
   computed: {
@@ -39,10 +35,14 @@ export default {
         format: "svg" // use SVG instead of PNG
       };
       let data;
+
+      let senderAddress = this.getSender(this.memo.tx);
+      let truncatedSenderAddress = senderAddress.slice(7, senderAddress.length);
+
       // create a base64 encoded SVG
-      if (this.getSender(this.memo.tx)) {
+      if (senderAddress) {
         let hash = createHash("sha224");
-        let hexstring = hash.update(this.memo.tx).digest("hex");
+        let hexstring = hash.update(truncatedSenderAddress).digest("hex");
         data = new identicon(hexstring, options).toString();
       } else {
         data = new identicon("0000000000000000", options).toString();
@@ -107,16 +107,17 @@ export default {
   padding 0.5rem
 
 .avatar
-  width 4rem
-  height 4rem
   display flex
   align-items center
   justify-content center
 
+.meta, .body
+  margin-bottom 0.25rem
+
 .meta
-  font-size 0.75rem
   display flex
   align-items center
+  margin-bottom 0.25rem
   .sender
     font-weight bold
     color var(--txt)
@@ -128,6 +129,8 @@ export default {
   padding 0.5rem 0.5rem 0.5rem 0
 
 .body
+  line-height 1.25
+
   /* These are technically the same, but use both */
   overflow-wrap: break-word;
   word-wrap: break-word;

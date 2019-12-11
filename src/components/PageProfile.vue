@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-profile
-  page-header(page-title="Profile")
+  app-header(page-title="Profile")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
   section-default.user
     .display-name {{ user.displayName }}
@@ -25,7 +25,7 @@ import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";
 import BtnLarge from "./BtnLarge";
 import CardWip from "./CardWip";
-import PageHeader from "./PageHeader";
+import AppHeader from "./AppHeader";
 import SectionWallet from "./SectionWallet";
 import SectionDefault from "./SectionDefault";
 export default {
@@ -35,7 +35,7 @@ export default {
     BtnIcon,
     BtnLarge,
     CardWip,
-    PageHeader,
+    AppHeader,
     SectionDefault,
     SectionWallet
   },

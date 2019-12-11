@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-settings
-  page-header(page-title="Settings")
+  app-header(page-title="Settings")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
     btn-icon(slot="btn-right" icon="save" @click.native="saveSettings")
   card-wip
@@ -9,7 +9,7 @@
 
 <script>
 import AppFooter from "./AppFooter";
-import PageHeader from "./PageHeader";
+import AppHeader from "./AppHeader";
 import BtnIcon from "./BtnIcon";
 import CardWip from "./CardWip";
 export default {
@@ -18,7 +18,7 @@ export default {
     AppFooter,
     BtnIcon,
     CardWip,
-    PageHeader
+    AppHeader
   },
   methods: {
     saveSettings() {

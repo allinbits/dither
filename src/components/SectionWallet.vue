@@ -4,9 +4,10 @@
     section-default
       dl
         dt Address
-        dl {{ settings.data.wallet.address }}
+        dd {{ settings.data.wallet.address }}
         dt ATOM
-        dl {{ settings.data.uatom / 1000000 }}
+        dd {{ settings.data.uatom / 1000000 }}
+        dd you can send {{ settings.data.uatom }}
       btn-large(@click.native="deleteWallet") Delete wallet
   template(v-else)
     section-default

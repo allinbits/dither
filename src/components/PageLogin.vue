@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-login
-  page-header(page-title="Sign In")
+  app-header(page-title="Sign In")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
   #firebaseui-auth-container
 </template>
@@ -11,13 +11,13 @@ import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 
 import { mapGetters } from "vuex";
-import PageHeader from "./PageHeader";
+import AppHeader from "./AppHeader";
 import BtnIcon from "./BtnIcon";
 export default {
   name: "page-login",
   components: {
     BtnIcon,
-    PageHeader
+    AppHeader
   },
   mounted() {
     let ui = firebaseui.auth.AuthUI.getInstance();

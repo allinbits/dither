@@ -1,12 +1,12 @@
 <template lang="pug">
 .page-memos-new
-  page-header(page-title="New Memo")
+  app-header(page-title="New Memo")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
     btn-icon(slot="btn-right" icon="send" @click.native="publishMemo")
   section-default
     form(v-if="settings && settings.data && settings.data.wallet" @submit.prevent.default="publishMemo")
       textarea(v-model="memoBody" placeholder="Write your memo here...")
-      .characters-remaining Characters remaining: {{ charactersRemaining }}
+      .bytes-left Bytes left: {{ bytesLeft }}
       input(type="submit" value="Publish")
     template(v-else)
       | You can't send memos without an ATOM balance.
@@ -16,10 +16,11 @@
 
 <script>
 import { signTx, createBroadcastTx } from "@tendermint/sig";
+import { byteLength } from "byte-length";
 
 import { mapGetters } from "vuex";
 import AppFooter from "./AppFooter";
-import PageHeader from "./PageHeader";
+import AppHeader from "./AppHeader";
 import BtnIcon from "./BtnIcon";
 import BtnLarge from "./BtnLarge";
 import CardWip from "./CardWip";
@@ -31,12 +32,12 @@ export default {
     BtnIcon,
     BtnLarge,
     CardWip,
-    PageHeader,
+    AppHeader,
     SectionDefault
   },
   computed: {
-    charactersRemaining() {
-      return 140 - this.memoBody.length;
+    bytesLeft() {
+      return 512 - byteLength(this.memoBody);
     },
     ...mapGetters(["settings", "blockchain"])
   },
@@ -46,21 +47,21 @@ export default {
   methods: {
     async publishMemo() {
       let walletData = this.settings.data.wallet;
-      let from_address = walletData.address;
-      let to_address = this.blockchain.to_address;
+      let fromAddress = walletData.address;
+      let toAddress = this.blockchain.toAddress;
 
       let tx = {
         fee: {
           amount: [{ amount: "0", denom: "" }],
-          gas: "30000"
+          gas: this.blockchain.defaultGas
         },
         memo: this.memoBody,
         msg: [
           {
             type: "cosmos-sdk/MsgSend",
             value: {
-              from_address: from_address,
-              to_address: to_address,
+              from_address: fromAddress,
+              to_address: toAddress,
               amount: [
                 {
                   denom: "uatom",
@@ -74,18 +75,18 @@ export default {
 
       // set up the account details
       let account = await fetch(
-        `${this.blockchain.lcd}/auth/accounts/${from_address}`
+        `${this.blockchain.lcd}/auth/accounts/${fromAddress}`
       );
       let accountJson = await account.json();
-      console.log("account info", accountJson);
+      console.log("account info", accountJson.result);
       let signMeta = {
-        account_number: accountJson.value.account_number,
+        account_number: accountJson.result.value.account_number,
         chain_id: this.blockchain.chainId,
-        sequence: accountJson.value.sequence
+        sequence: accountJson.result.value.sequence
       };
 
       let wallet = {
-        address: from_address,
+        address: fromAddress,
         privateKey: Uint8Array.from(walletData.privateKey),
         publicKey: Uint8Array.from(walletData.publicKey)
       };
@@ -114,7 +115,7 @@ textarea
   width 100%
   border 1px solid var(--txt)
 
-.characters-remaining
+.bytes-left
   font-size 0.75rem
   margin-bottom 1rem
   color var(--dim)

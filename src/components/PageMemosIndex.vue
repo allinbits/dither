@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-memos-index
-  page-header(page-title="Search")
+  app-header(page-title="Search")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'profile' }" icon="user")
   card-wip
   app-footer
@@ -8,14 +8,14 @@
 
 <script>
 import AppFooter from "./AppFooter";
-import PageHeader from "./PageHeader";
+import AppHeader from "./AppHeader";
 import CardWip from "./CardWip";
 export default {
   name: "page-search",
   components: {
     AppFooter,
     CardWip,
-    PageHeader
+    AppHeader
   }
 };
 </script>
