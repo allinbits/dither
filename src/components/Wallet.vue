@@ -3,14 +3,14 @@
   template(v-if="settings && settings.data && settings.data.wallet")
     dl
       dt Address
-      dd {{ settings.data.wallet.address }}
+      dd.dont-break-out {{ settings.data.wallet.address }}
       dd send ATOM to the address above
       dt ATOM
       dd {{ settings.data.uatom / 1000000 }}
       dd you can send ~{{ Math.round(settings.data.uatom / blockchain.defaultGas) }} memos
-    a(@click.native="deleteWallet") Delete wallet
+    a(@click="deleteWallet") Delete wallet
   template(v-else)
-    a(@click.native="createWallet") Create wallet
+    a(@click="createWallet") Create wallet
 </template>
 
 <script>

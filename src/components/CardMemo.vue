@@ -6,7 +6,7 @@
     .meta
       .sender {{ addrShort(getSender(memo.tx)) }}
       .time {{ timeAgo(memo.timestamp) }} ago
-    .body {{ memo.memo }}
+    .body.dont-break-out {{ memo.memo }}
     .actions
       btn-icon(slot="btn-left" size="small" icon="message-circle" @click.native.stop="actionReply($event)")
       btn-icon(slot="btn-left" size="small" icon="repeat" @click.native.stop="actionRelay($event)")
@@ -137,24 +137,6 @@ export default {
 
 .body
   margin-bottom 0.25rem
-
-  line-height 1.25
-
-  /* These are technically the same, but use both */
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  -ms-word-break: break-all;
-  /* This is the dangerous one in WebKit, as it breaks things wherever */
-  word-break: break-all;
-  /* Instead use this non-standard one: */
-  word-break: break-word;
-
-  /* Adds a hyphen where the word breaks, if supported (No Blink) */
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
 
 .actions
   display flex
