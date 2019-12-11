@@ -4,6 +4,8 @@
   --primary: hsl(233, 96%, 65%);
   --link: hsl(233, 96%, 65%);
   --hover: #46509f;
+  --hover-bg: hsl(0, 0%, 98%);
+  --hover-fg: hsl(0, 0%, 90%);
   --bright: hsl(0, 100%, 0%);
   --txt: hsla(0, 100%, 0%, 0.8);
   --dim: hsla(0, 100%, 0%, 0.667);

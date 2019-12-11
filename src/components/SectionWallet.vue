@@ -5,9 +5,10 @@
       dl
         dt Address
         dd {{ settings.data.wallet.address }}
+        dd send ATOM to the address above
         dt ATOM
         dd {{ settings.data.uatom / 1000000 }}
-        dd you can send {{ settings.data.uatom }}
+        dd you can send ~{{ Math.round(settings.data.uatom / blockchain.defaultGas) }} memos
       btn-large(@click.native="deleteWallet") Delete wallet
   template(v-else)
     section-default

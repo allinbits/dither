@@ -8,10 +8,10 @@
       .time {{ timeAgo(memo.timestamp) }} ago
     .body {{ memo.memo }}
     .actions
-      btn-icon(slot="btn-left" size="small" icon="message-circle" @click.native="actionReply($event)")
-      btn-icon(slot="btn-left" size="small" icon="repeat" @click.native="actionRelay($event)")
-      btn-icon(slot="btn-left" size="small" icon="heart" @click.native="actionLike($event)")
-      btn-icon(slot="btn-left" size="small" icon="share" @click.native="actionShare($event)")
+      btn-icon(slot="btn-left" size="small" icon="message-circle" @click.native.stop="actionReply($event)")
+      btn-icon(slot="btn-left" size="small" icon="repeat" @click.native.stop="actionRelay($event)")
+      btn-icon(slot="btn-left" size="small" icon="heart" @click.native.stop="actionLike($event)")
+      btn-icon(slot="btn-left" size="small" icon="share" @click.native.stop="actionShare($event)")
 </template>
 
 <script>
@@ -19,6 +19,7 @@ import identicon from "identicon.js";
 import createHash from "create-hash";
 import { formatDistance, subDays } from "date-fns";
 
+import { mapGetters } from "vuex";
 import BtnIcon from "./BtnIcon";
 export default {
   name: "card-memo",
@@ -26,6 +27,7 @@ export default {
     BtnIcon
   },
   computed: {
+    ...mapGetters(["userSignedIn"]),
     avatar() {
       let options = {
         foreground: [0, 0, 0, 255], // rgba black
@@ -73,23 +75,29 @@ export default {
     timeAgo(date) {
       return formatDistance(new Date(date), new Date());
     },
-    actionView(e) {
-      this.$router.push({ name: "memo", params: { memo: this.memo.id } });
+    auth() {
+      if (!this.userSignedIn) {
+        this.$router.push({ name: "login" });
+      }
     },
-    actionReply(e) {
-      e.stopPropagation();
+    actionView() {
+      if (this.user)
+        this.$router.push({ name: "memo", params: { memo: this.memo.id } });
+    },
+    actionReply() {
+      if (!this.auth()) return;
       alert("WIP: reply");
     },
-    actionRelay(e) {
-      e.stopPropagation();
+    actionRelay() {
+      if (!this.auth()) return;
       alert("WIP: relay");
     },
-    actionLike(e) {
-      e.stopPropagation();
+    actionLike() {
+      if (!this.auth()) return;
       alert("WIP: like");
     },
-    actionShare(e) {
-      e.stopPropagation();
+    actionShare() {
+      if (!this.auth()) return;
       alert("WIP: share");
     }
   },
@@ -102,6 +110,9 @@ export default {
   border-top 1px solid var(--bc)
   display flex
   color var(--txt)
+  cursor pointer
+  &:hover
+    background var(--hover-bg)
 
 .container-avatar
   padding 0.5rem
@@ -111,13 +122,10 @@ export default {
   align-items center
   justify-content center
 
-.meta, .body
-  margin-bottom 0.25rem
-
 .meta
   display flex
   align-items center
-  margin-bottom 0.25rem
+  margin-bottom 0.125rem
   .sender
     font-weight bold
     color var(--txt)
@@ -127,8 +135,11 @@ export default {
 
 .container-text
   padding 0.5rem 0.5rem 0.5rem 0
+  width 100%
 
 .body
+  margin-bottom 0.25rem
+
   line-height 1.25
 
   /* These are technically the same, but use both */
@@ -149,4 +160,7 @@ export default {
 
 .actions
   display flex
+  justify-content space-between
+  width 100%
+  max-width 20rem
 </style>

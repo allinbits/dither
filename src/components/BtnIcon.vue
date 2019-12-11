@@ -44,6 +44,9 @@ export default {
 .btn-icon--size-small
   width 2rem
   height 2rem
+  opacity 0.5
+  &:hover
+    background var(--hover-fg)
   img
     width 1rem
     height 1rem
