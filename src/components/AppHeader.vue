@@ -20,13 +20,14 @@ export default {
 <style scoped lang="stylus">
 .app-header
   line-height 3rem
-  background #fff
   position fixed
   top 0
   left 0
   width 100vw
 
+  z-index var(--z-app-header)
   border-bottom 1px solid var(--bc)
+  background #fff
 
 .app-header__container
   max-width 40rem

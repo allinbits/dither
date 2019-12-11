@@ -11,5 +11,6 @@ export default {
 <style scoped lang="stylus">
 .section-default
   border-bottom 1px solid var(--bc)
+  width 100%
   padding 1rem
 </style>

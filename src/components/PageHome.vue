@@ -8,13 +8,14 @@
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
   template(v-if="Object.keys(memos).length > 0")
-    card-memo(v-for="memo in memos" :memo="memo" :key="memo.id")
+    card-memo(v-for="memo in orderedMemos" :memo="memo" :key="memo.id")
     .load-more(@click="loadMore") Load more
   card-loading(v-else)
   app-footer
 </template>
 
 <script>
+import { orderBy } from "lodash";
 import { mapGetters } from "vuex";
 import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";
@@ -31,6 +32,12 @@ export default {
     CardMemo
   },
   computed: {
+    orderedMemos() {
+      if (this.memos) {
+        return orderBy(this.memos, m => parseInt(m.height), "desc");
+      }
+      return [];
+    },
     ...mapGetters(["memos", "userSignedIn"])
   },
   methods: {

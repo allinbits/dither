@@ -20,7 +20,6 @@ export default {
 <style scoped lang="stylus">
 .app-footer
   line-height 3rem
-  background #fff
 
   position fixed
   bottom 0
@@ -29,6 +28,8 @@ export default {
   border-top 1px solid var(--bc)
 
   margin 0 auto
+  z-index var(--z-app-header)
+  background #fff
 
 .app-footer__container
   max-width 40rem

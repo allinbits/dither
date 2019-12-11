@@ -2,15 +2,18 @@
 .page-memos-new
   app-header(page-title="New Memo")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
-    btn-icon(slot="btn-right" icon="send" @click.native="publishMemo")
+    btn-icon(slot="btn-right" icon="send" @click.native="broadcastTx")
+  section-default(v-if="settings && settings.data && settings.data.wallet")
+    form(@submit.prevent.default="sendMemo")
+      textarea#memo-body(v-model="memoBody" placeholder="Write your memo here...")
+      .field-note Bytes left: {{ bytesLeft }}
+      .field-note.field-note--error(v-if="formHasError") {{ formErrorMsg }}
+      dc-btn(type="submit") Publish
+  template(v-else)
+    | You can't send memos without an ATOM balance.
+    router-link(:to="{ name: 'profile' }") Create a wallet
   section-default
-    form(v-if="settings && settings.data && settings.data.wallet" @submit.prevent.default="publishMemo")
-      textarea(v-model="memoBody" placeholder="Write your memo here...")
-      .bytes-left Bytes left: {{ bytesLeft }}
-      input(type="submit" value="Publish")
-    template(v-else)
-      | You can't send memos without an ATOM balance.
-      router-link(:to="{ name: 'profile' }") Create a wallet
+    | {{ response }}
   app-footer
 </template>
 
@@ -21,6 +24,7 @@ import { byteLength } from "byte-length";
 import { mapGetters } from "vuex";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
+import DcBtn from "./DcBtn";
 import BtnIcon from "./BtnIcon";
 import BtnLarge from "./BtnLarge";
 import CardWip from "./CardWip";
@@ -29,6 +33,7 @@ export default {
   name: "page-settings",
   components: {
     AppFooter,
+    DcBtn,
     BtnIcon,
     BtnLarge,
     CardWip,
@@ -42,10 +47,29 @@ export default {
     ...mapGetters(["settings", "blockchain"])
   },
   data: () => ({
-    memoBody: ""
+    memoBody: "",
+    response: "",
+    formHasError: false,
+    formErrorMsg: ""
   }),
   methods: {
-    async publishMemo() {
+    async sendMemo() {
+      if (this.bytesLeft === 512) {
+        this.formHasError = true;
+        this.formErrorMsg = "Memo needs to have some text";
+        return;
+      } else if (this.bytesLeft < 0) {
+        this.formHasError = true;
+        this.formErrorMsg = "Memo is too long";
+        return;
+      } else {
+        this.formHasError = false;
+        this.formErrorMessage = "";
+      }
+      this.broadcastTx();
+      this.$router.push({ name: "home" });
+    },
+    async broadcastTx() {
       let walletData = this.settings.data.wallet;
       let fromAddress = walletData.address;
       let toAddress = this.blockchain.toAddress;
@@ -78,7 +102,8 @@ export default {
         `${this.blockchain.lcd}/auth/accounts/${fromAddress}`
       );
       let accountJson = await account.json();
-      console.log("account info", accountJson.result);
+      // console.log("account info", accountJson.result);
+
       let signMeta = {
         account_number: accountJson.result.value.account_number,
         chain_id: this.blockchain.chainId,
@@ -104,26 +129,33 @@ export default {
         body: JSON.stringify(txBroadcast)
       });
       let txResponseJson = await txResponse.json();
-      console.log(txResponseJson);
+      this.response = txResponseJson;
+      console.log(txResponseJson.logs[0]);
     }
+  },
+  mounted() {
+    this.$el.querySelector("#memo-body").focus();
   }
 };
 </script>
 
 <style scoped lang="stylus">
-textarea
+form
   width 100%
-  border 1px solid var(--txt)
 
-.bytes-left
-  font-size 0.75rem
-  margin-bottom 1rem
-  color var(--dim)
-
-input[type=submit]
-  border 1px solid var(--bc)
-  line-height 2rem
-  padding 0 1rem
+textarea
   display block
-  border none
+  border 1px solid var(--bc-input)
+  height 8rem
+  margin-bottom 0.5rem
+  box-sizing border-box
+  width 100%
+  padding 0.5rem
+
+.field-note
+  font-size 0.75rem
+  margin-bottom 0.5rem
+  color var(--dim)
+.field-note--error
+  color var(--danger)
 </style>

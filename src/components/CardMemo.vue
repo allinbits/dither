@@ -5,7 +5,8 @@
   .container-text
     .meta
       .sender {{ addrShort(getSender(memo.tx)) }}
-      .time {{ timeAgo(memo.timestamp) }} ago
+      .time {{ timeAgo(memo.timestamp) }}
+      .block \#{{ memo.height }}
     .body.dont-break-out {{ memo.memo }}
     .actions
       btn-icon(slot="btn-left" size="small" icon="message-circle" @click.native.stop="actionReply($event)")
@@ -75,24 +76,25 @@ export default {
     timeAgo(date) {
       return formatDistance(new Date(date), new Date());
     },
-    auth() {
-      if (!this.userSignedIn) {
-        this.$router.push({ name: "login" });
-      }
-    },
     actionView() {
       this.$router.push({ name: "memo", params: { memo: this.memo.id } });
     },
     actionReply() {
-      if (!this.auth()) return;
+      if (!this.userSignedIn) {
+        this.$router.push({ name: "login" });
+      }
       alert("WIP: reply");
     },
     actionRelay() {
-      if (!this.auth()) return;
+      if (!this.userSignedIn) {
+        this.$router.push({ name: "login" });
+      }
       alert("WIP: relay");
     },
     actionLike() {
-      if (!this.auth()) return;
+      if (!this.userSignedIn) {
+        this.$router.push({ name: "login" });
+      }
       alert("WIP: like");
     },
     actionShare() {
@@ -124,12 +126,18 @@ export default {
   display flex
   align-items center
   margin-bottom 0.125rem
+  > div
+    margin-right 0.25rem
+
   .sender
     font-weight bold
     color var(--txt)
     margin-right 0.5rem
   .time
     color var(--dim)
+  .block
+    color var(--faint)
+
 
 .container-text
   padding 0.5rem 0.5rem 0.5rem 0
