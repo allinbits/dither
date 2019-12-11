@@ -81,8 +81,7 @@ export default {
       }
     },
     actionView() {
-      if (this.user)
-        this.$router.push({ name: "memo", params: { memo: this.memo.id } });
+      this.$router.push({ name: "memo", params: { memo: this.memo.id } });
     },
     actionReply() {
       if (!this.auth()) return;
@@ -97,7 +96,6 @@ export default {
       alert("WIP: like");
     },
     actionShare() {
-      if (!this.auth()) return;
       alert("WIP: share");
     }
   },
