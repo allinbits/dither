@@ -1,16 +1,18 @@
 <template lang="pug">
-.card-memo(@click="actionView($event)")
-  router-link.container-avatar(:to="{ name: 'account', params: {account: getSender(memo.tx)}}")
-    .avatar(v-html="avatar")
+.card-memo
+  .container-avatar(@click.self="actionView($event)")
+    router-link.avatar(
+      :to="{ name: 'account', params: {account: getSender(memo.tx)}}"
+      v-html="avatar")
   .container-text
-    .meta
+    .meta(@click.self="actionView($event)")
       router-link.sender(:to="{ name: 'account', params: {account: getSender(memo.tx)}}")
         | {{ addrShort(getSender(memo.tx)) }}
       router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
         | {{ timeAgo(memo.timestamp) }}
-      .block \#{{ memo.height }}
-    .body.dont-break-out {{ memo.memo }}
-    .actions
+      // .block \#{{ memo.height }}
+    .body.dont-break-out(@click.self="actionView($event)") {{ memo.memo }}
+    .actions(@click.self="actionView($event)")
       btn-icon(slot="btn-left" size="small" icon="message-circle" @click.native.stop="actionReply($event)")
       btn-icon(slot="btn-left" size="small" icon="repeat" @click.native.stop="actionRelay($event)")
       btn-icon(slot="btn-left" size="small" icon="heart" @click.native.stop="actionLike($event)")

@@ -9,6 +9,7 @@ import { Firebase, initFirebase } from "./firebase.js";
 
 // import vuex-firestore modules
 import memos from "./modules/memos.js";
+import accounts from "./modules/accounts.js";
 import settings from "./modules/settings.js";
 
 // connect vuex-firestore modules to firestore
@@ -20,6 +21,9 @@ const easyFirestore = VuexEasyFirestore([memos, settings], {
 const storeData = {
   plugins: [easyFirestore],
   getters: {
+    accounts: state => {
+      return state.accounts.data;
+    },
     blockchain: state => {
       return state.blockchain;
     },

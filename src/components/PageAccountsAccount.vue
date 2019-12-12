@@ -2,7 +2,7 @@
 .page-accounts-account
   app-header(:page-title="address")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
-  template(v-if="Object.keys(memos).length > 0")
+  template(v-if="Object.keys(orderedMemos).length > 0")
     card-memo(v-for="memo in orderedMemos" :memo="memo" :key="memo.id")
     btn-load-more
   card-loading(v-else)
@@ -11,29 +11,37 @@
 
 <script>
 import { orderBy } from "lodash";
+
 import { mapGetters } from "vuex";
+import { getTxSender, truncAddress } from "../scripts/helpers.js";
+
+import AppHeader from "./AppHeader";
 import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";
 import BtnLoadMore from "./BtnLoadMore";
 import CardLoading from "./CardLoading";
 import CardMemo from "./CardMemo";
-import AppHeader from "./AppHeader";
 export default {
   name: "page-accounts-account",
   components: {
     AppHeader,
     AppFooter,
     BtnIcon,
+    BtnLoadMore,
     CardLoading,
     CardMemo
   },
   computed: {
     address() {
-      return this.$route.params.account;
+      return truncAddress(this.$route.params.account);
     },
     orderedMemos() {
-      if (this.memos) {
-        return orderBy(this.memos, m => parseInt(m.height), "desc");
+      let memos = this.memos;
+      if (memos) {
+        let filteredMemos = Object.values(memos).filter(
+          m => m.accountId === this.address
+        );
+        return orderBy(filteredMemos, m => parseInt(m.height), "desc");
       }
       return [];
     },
@@ -43,7 +51,8 @@ export default {
     loadMore() {
       this.$store.dispatch("memos/fetchAndAdd", {
         limit: 10,
-        orderBy: ["timestamp", "desc"]
+        orderBy: ["timestamp", "desc"],
+        where: [["accountId"], "==", this.$route.params.account]
       });
     }
   },
@@ -51,7 +60,7 @@ export default {
     this.$store.dispatch("memos/fetchAndAdd", {
       limit: 10,
       orderBy: ["timestamp", "desc"],
-      where: [""]
+      where: [["accountId"], "==", this.$route.params.account]
     });
   }
 };
