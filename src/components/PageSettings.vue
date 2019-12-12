@@ -7,7 +7,7 @@
     .section-title Welcome, {{ user.displayName }}!
     .subtitle(v-for="provider in user.providerData")
       | logged in via {{ provider.providerId }}
-    .subtitle
+    // .subtitle
       | user id is {{ user.uid }}
   section-default.section
     .section-title Your wallet

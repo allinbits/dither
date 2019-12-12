@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-accounts-account
-  app-header(:page-title="address")
+  app-header(:page-title="shortAddress")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
   template(v-if="Object.keys(orderedMemos).length > 0")
     card-memo(v-for="memo in orderedMemos" :memo="memo" :key="memo.id")
@@ -13,7 +13,7 @@
 import { orderBy } from "lodash";
 
 import { mapGetters } from "vuex";
-import { getTxSender, truncAddress } from "../scripts/helpers.js";
+import h from "../scripts/helpers.js";
 
 import AppHeader from "./AppHeader";
 import AppFooter from "./AppFooter";
@@ -32,35 +32,26 @@ export default {
     CardMemo
   },
   computed: {
-    address() {
-      return truncAddress(this.$route.params.account);
+    shortAddress() {
+      return h.truncAddress(this.$route.params.account);
     },
     orderedMemos() {
       let memos = this.memos;
       if (memos) {
-        let filteredMemos = Object.values(memos).filter(
-          m => m.accountId === this.address
+        let filtered = Object.values(memos).filter(
+          m => m.accountId === this.$route.params.account
         );
-        return orderBy(filteredMemos, m => parseInt(m.height), "desc");
+        return orderBy(filtered, m => parseInt(m.height), "desc");
       }
       return [];
     },
-    ...mapGetters(["memos", "userSignedIn"])
-  },
-  methods: {
-    loadMore() {
-      this.$store.dispatch("memos/fetchAndAdd", {
-        limit: 10,
-        orderBy: ["timestamp", "desc"],
-        where: [["accountId"], "==", this.$route.params.account]
-      });
-    }
+    ...mapGetters(["memos"])
   },
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {
       limit: 10,
       orderBy: ["timestamp", "desc"],
-      where: [["accountId"], "==", this.$route.params.account]
+      where: [["accountId", "==", this.$route.params.account]]
     });
   }
 };

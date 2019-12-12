@@ -11,7 +11,7 @@ export default {
   name: "App",
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {
-      limit: 10,
+      limit: 3,
       orderBy: ["timestamp", "desc"]
     });
 
