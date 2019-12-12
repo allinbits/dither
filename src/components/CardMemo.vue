@@ -2,12 +2,12 @@
 .card-memo
   .container-avatar(@click.self="actionView($event)")
     router-link.avatar(
-      :to="{ name: 'account', params: {address: getSender(memo.tx)}}"
+      :to="{ name: 'account', params: {address: memo.address}}"
       v-html="avatar")
   .container-text
     .meta(@click.self="actionView($event)")
-      router-link.sender(:to="{ name: 'account', params: {address: getSender(memo.tx)}}")
-        | {{ addrShort(getSender(memo.tx)) }}
+      router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
+        | {{ shortAddress }}
       router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
         | {{ timeAgo(memo.timestamp) }}
       // .block \#{{ memo.height }}
@@ -25,6 +25,7 @@ import createHash from "create-hash";
 import randomColor from "randomColor";
 import { formatDistance, subDays } from "date-fns";
 
+import h from "../scripts/helpers";
 import { mapGetters } from "vuex";
 import BtnIcon from "./BtnIcon";
 export default {
@@ -34,14 +35,19 @@ export default {
   },
   computed: {
     ...mapGetters(["userSignedIn"]),
+    shortAddress() {
+      return h.truncAddress(this.memo.address);
+    },
     avatar() {
       let data;
 
-      let senderAddress = this.getSender(this.memo.tx);
-      let truncatedSenderAddress = senderAddress.slice(7, senderAddress.length);
+      let truncatedSenderAddress = this.memo.address.slice(
+        7,
+        this.memo.address.length
+      );
 
       // create a base64 encoded SVG
-      if (senderAddress) {
+      if (this.memo.address) {
         let hash = createHash("sha224");
         let hexstring = hash.update(truncatedSenderAddress).digest("hex");
 
@@ -65,25 +71,6 @@ export default {
     }
   },
   methods: {
-    getSender(tx) {
-      let sender = "Loading...";
-      if (tx) {
-        let txEventMessage = tx.events.find(e => e.type === "message");
-        let txEventMessageAttribute = txEventMessage.attributes.find(
-          a => a.key === "sender"
-        );
-        sender = txEventMessageAttribute.value;
-      }
-      return sender;
-    },
-    addrShort(addr) {
-      if (addr) {
-        let value = addr.slice(7, addr.length);
-        return value.slice(value.length - 8, value.length);
-      } else {
-        return "N/A";
-      }
-    },
     timeAgo(date) {
       return formatDistance(new Date(date), new Date());
     },

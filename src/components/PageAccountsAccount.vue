@@ -50,7 +50,6 @@ export default {
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {
       limit: 10,
-      orderBy: ["timestamp", "desc"],
       where: [["address", "==", this.$route.params.address]]
     });
   }

@@ -11,8 +11,7 @@ export default {
   name: "App",
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {
-      limit: 3,
-      orderBy: ["timestamp", "desc"]
+      limit: 10
     });
 
     Firebase.auth().onAuthStateChanged(user => {
