@@ -33,13 +33,13 @@ export default {
   },
   computed: {
     shortAddress() {
-      return h.truncAddress(this.$route.params.account);
+      return h.truncAddress(this.$route.params.address);
     },
     orderedMemos() {
       let memos = this.memos;
       if (memos) {
         let filtered = Object.values(memos).filter(
-          m => m.account === this.$route.params.account
+          m => m.address === this.$route.params.address
         );
         return orderBy(filtered, m => parseInt(m.height), "desc");
       }
@@ -51,7 +51,7 @@ export default {
     this.$store.dispatch("memos/fetchAndAdd", {
       limit: 10,
       orderBy: ["timestamp", "desc"],
-      where: [["account", "==", this.$route.params.account]]
+      where: [["address", "==", this.$route.params.address]]
     });
   }
 };

@@ -29,7 +29,7 @@ export default new Router({
             )
         },
         {
-          path: ":account",
+          path: ":address",
           name: "account",
           component: () =>
             import(

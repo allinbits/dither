@@ -2,11 +2,11 @@
 .card-memo
   .container-avatar(@click.self="actionView($event)")
     router-link.avatar(
-      :to="{ name: 'account', params: {account: getSender(memo.tx)}}"
+      :to="{ name: 'account', params: {address: getSender(memo.tx)}}"
       v-html="avatar")
   .container-text
     .meta(@click.self="actionView($event)")
-      router-link.sender(:to="{ name: 'account', params: {account: getSender(memo.tx)}}")
+      router-link.sender(:to="{ name: 'account', params: {address: getSender(memo.tx)}}")
         | {{ addrShort(getSender(memo.tx)) }}
       router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
         | {{ timeAgo(memo.timestamp) }}
