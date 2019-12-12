@@ -10,8 +10,8 @@ import { Firebase } from "./store/firebase.js";
 export default {
   name: "App",
   mounted() {
-    this.$store.dispatch("memos/openDBChannel", {
-      limit: 50,
+    this.$store.dispatch("memos/fetchAndAdd", {
+      limit: 10,
       orderBy: ["timestamp", "desc"]
     });
 

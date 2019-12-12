@@ -1,11 +1,13 @@
 <template lang="pug">
 .card-memo(@click="actionView($event)")
-  .container-avatar
+  router-link.container-avatar(:to="{ name: 'account', params: {account: getSender(memo.tx)}}")
     .avatar(v-html="avatar")
   .container-text
     .meta
-      .sender {{ addrShort(getSender(memo.tx)) }}
-      .time {{ timeAgo(memo.timestamp) }}
+      router-link.sender(:to="{ name: 'account', params: {account: getSender(memo.tx)}}")
+        | {{ addrShort(getSender(memo.tx)) }}
+      router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
+        | {{ timeAgo(memo.timestamp) }}
       .block \#{{ memo.height }}
     .body.dont-break-out {{ memo.memo }}
     .actions
@@ -18,6 +20,7 @@
 <script>
 import identicon from "identicon.js";
 import createHash from "create-hash";
+import randomColor from "randomColor";
 import { formatDistance, subDays } from "date-fns";
 
 import { mapGetters } from "vuex";
@@ -30,13 +33,6 @@ export default {
   computed: {
     ...mapGetters(["userSignedIn"]),
     avatar() {
-      let options = {
-        foreground: [0, 0, 0, 255], // rgba black
-        background: [240, 240, 240, 255], // rgba white
-        margin: 0.2,
-        size: 64,
-        format: "svg" // use SVG instead of PNG
-      };
       let data;
 
       let senderAddress = this.getSender(this.memo.tx);
@@ -46,6 +42,19 @@ export default {
       if (senderAddress) {
         let hash = createHash("sha224");
         let hexstring = hash.update(truncatedSenderAddress).digest("hex");
+
+        let options = {
+          foreground: randomColor({
+            seed: hexstring,
+            format: "rgbArray",
+            luminosity: "dark"
+          }),
+          background: [240, 240, 240], // rgba white
+          margin: 0.2,
+          size: 64,
+          format: "svg" // use SVG instead of PNG
+        };
+
         data = new identicon(hexstring, options).toString();
       } else {
         data = new identicon("0000000000000000", options).toString();
@@ -133,11 +142,12 @@ export default {
     font-weight bold
     color var(--txt)
     margin-right 0.5rem
+    &:hover
+      text-decoration underline
   .time
     color var(--dim)
   .block
     color var(--faint)
-
 
 .container-text
   padding 0.5rem 0.5rem 0.5rem 0

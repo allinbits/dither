@@ -14,6 +14,31 @@ export default new Router({
         import(/* webpackChunkName: "home" */ "../components/PageHome.vue")
     },
     {
+      path: "/accounts",
+      component: () =>
+        import(
+          /* webpackChunkName: "accounts" */ "@/components/PageAccounts.vue"
+        ),
+      children: [
+        {
+          path: "/",
+          name: "accounts",
+          component: () =>
+            import(
+              /* webpackChunkName: "accounts-index" */ "@/components/PageAccountsIndex.vue"
+            )
+        },
+        {
+          path: ":account",
+          name: "account",
+          component: () =>
+            import(
+              /* webpackChunkName: "account" */ "@/components/PageAccountsAccount.vue"
+            )
+        }
+      ]
+    },
+    {
       path: "/messages",
       name: "messages",
       component: () =>

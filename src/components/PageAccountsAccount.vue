@@ -1,12 +1,7 @@
 <template lang="pug">
-.page-home
-  app-header(page-title="Home")
-    template(v-if="userSignedIn")
-      btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
-    template(v-if="userSignedIn")
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
-    template(v-else)
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
+.page-accounts-account
+  app-header(:page-title="address")
+    btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
   template(v-if="Object.keys(memos).length > 0")
     card-memo(v-for="memo in orderedMemos" :memo="memo" :key="memo.id")
     btn-load-more
@@ -24,16 +19,18 @@ import CardLoading from "./CardLoading";
 import CardMemo from "./CardMemo";
 import AppHeader from "./AppHeader";
 export default {
-  name: "page-index",
+  name: "page-accounts-account",
   components: {
     AppHeader,
     AppFooter,
     BtnIcon,
-    BtnLoadMore,
     CardLoading,
     CardMemo
   },
   computed: {
+    address() {
+      return this.$route.params.account;
+    },
     orderedMemos() {
       if (this.memos) {
         return orderBy(this.memos, m => parseInt(m.height), "desc");
@@ -41,6 +38,21 @@ export default {
       return [];
     },
     ...mapGetters(["memos", "userSignedIn"])
+  },
+  methods: {
+    loadMore() {
+      this.$store.dispatch("memos/fetchAndAdd", {
+        limit: 10,
+        orderBy: ["timestamp", "desc"]
+      });
+    }
+  },
+  mounted() {
+    this.$store.dispatch("memos/fetchAndAdd", {
+      limit: 10,
+      orderBy: ["timestamp", "desc"],
+      where: [""]
+    });
   }
 };
 </script>

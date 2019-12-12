@@ -41,22 +41,30 @@ export default {
   justify-content center
 
   background transparent
-  padding 0 1rem
-  border 1px solid var(--link)
-  color var(--link)
+  border 1px solid var(--bc-input)
+  color var(--txt)
   font-weight bold
-  height 2rem
 
   display flex
   align-items center
 
   cursor pointer
 
-.dc-btn--size-default
-  height 2rem
   &:hover
     background var(--hover-fg)
+
   img
+    margin-right 0.5rem
     width 1rem
     height 1rem
+
+
+.dc-btn--size-default
+  height 2rem
+  padding 0 1rem
+
+
+.dc-btn--size-large
+  height 3rem
+  padding 0 1.5rem
 </style>

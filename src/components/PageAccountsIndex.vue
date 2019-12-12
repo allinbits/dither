@@ -1,6 +1,6 @@
 <template lang="pug">
-.page-memos-index
-  app-header(page-title="Search")
+.page-accounts-index
+  app-header(page-title="Contacts")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
   card-wip
@@ -13,7 +13,7 @@ import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
 import CardWip from "./CardWip";
 export default {
-  name: "page-memos-index",
+  name: "page-accounts-index",
   components: {
     AppFooter,
     CardWip,
