@@ -13,7 +13,7 @@ import accounts from "./modules/accounts.js";
 import settings from "./modules/settings.js";
 
 // connect vuex-firestore modules to firestore
-const easyFirestore = VuexEasyFirestore([memos, settings], {
+const easyFirestore = VuexEasyFirestore([memos, accounts, settings], {
   logging: true,
   FirebaseDependency: Firebase
 });

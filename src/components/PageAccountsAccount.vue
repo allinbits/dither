@@ -39,7 +39,7 @@ export default {
       let memos = this.memos;
       if (memos) {
         let filtered = Object.values(memos).filter(
-          m => m.accountId === this.$route.params.account
+          m => m.account === this.$route.params.account
         );
         return orderBy(filtered, m => parseInt(m.height), "desc");
       }
@@ -51,7 +51,7 @@ export default {
     this.$store.dispatch("memos/fetchAndAdd", {
       limit: 10,
       orderBy: ["timestamp", "desc"],
-      where: [["accountId", "==", this.$route.params.account]]
+      where: [["account", "==", this.$route.params.account]]
     });
   }
 };
