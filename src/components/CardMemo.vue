@@ -143,6 +143,7 @@ export default {
   width 100%
 
 .body
+  line-height 1.25
   margin-bottom 0.25rem
 
 .actions

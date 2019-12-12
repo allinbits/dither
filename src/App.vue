@@ -48,8 +48,6 @@ p
   margin 0
 
 .dont-break-out
-  line-height 1.25
-
   /* These are technically the same, but use both */
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -65,4 +63,15 @@ p
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+
+.break-address
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
 </style>

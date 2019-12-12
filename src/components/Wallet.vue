@@ -3,11 +3,11 @@
   template(v-if="settings && settings.data && settings.data.wallet")
     dl
       dt Address:
-      dd.dont-break-out: a(:href="`https://cosmos.bigdipper.live/account/${settings.data.wallet.address}`" target="_blank" rel="noreferrer noopener") {{ settings.data.wallet.address }}
-      dd.dim send tokens to this address
+      dd.break-address {{ settings.data.wallet.address }}
+      dd.dim
+        a(:href="`https://cosmos.bigdipper.live/account/${settings.data.wallet.address}`" target="_blank" rel="noreferrer noopener") details
       dt Tokens:
       dd {{ settings.data.uatom / 1000000 }} ATOM
-      dd.dim you can send ~{{ Math.round(settings.data.uatom / blockchain.defaultGas) }} memos
     a(@click="deleteWallet") Delete wallet
   template(v-else)
     a(@click="createWallet") Create wallet
