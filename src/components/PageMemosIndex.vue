@@ -11,13 +11,15 @@
 import { mapGetters } from "vuex";
 import AppFooter from "./AppFooter";
 import AppHeader from "./AppHeader";
+import BtnIcon from "./BtnIcon";
 import CardWip from "./CardWip";
 export default {
   name: "page-memos-index",
   components: {
+    AppHeader,
     AppFooter,
-    CardWip,
-    AppHeader
+    BtnIcon,
+    CardWip
   },
   computed: {
     ...mapGetters(["memos", "userSignedIn"])
