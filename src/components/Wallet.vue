@@ -5,6 +5,10 @@
       dt Address:
       dd.break-address {{ settings.data.wallet.address }}
       dd.dim
+        router-link(
+          :to="{ name: 'account', params: { address: settings.data.wallet.address } }")
+          | public profile
+      // dd.dim
         a(:href="`https://cosmos.bigdipper.live/account/${settings.data.wallet.address}`" target="_blank" rel="noreferrer noopener") details
       dt Tokens:
       dd {{ settings.data.uatom / 1000000 }} ATOM
