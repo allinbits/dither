@@ -22,7 +22,6 @@
 <script>
 import identicon from "identicon.js";
 import createHash from "create-hash";
-// import randomColor from "randomColor";
 import { formatDistance, subDays } from "date-fns";
 
 import h from "../scripts/helpers";
@@ -52,15 +51,8 @@ export default {
         let hexstring = hash.update(truncatedSenderAddress).digest("hex");
 
         let options = {
-          /*
-          foreground: randomColor({
-            seed: hexstring,
-            format: "rgbArray",
-            luminosity: "dark"
-          }),
-          */
-          foreground: [0, 0, 0],
-          background: [240, 240, 240], // rgba white
+          foreground: [0, 0, 0, 204], // 80% black
+          background: [255, 255, 255], // very light gray
           margin: 0.2,
           size: 64,
           format: "svg" // use SVG instead of PNG
