@@ -21,7 +21,6 @@
     "lodash": "^4.17.15",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
-    "randomcolor": "^0.5.4",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
     "vue": "^2.5.2",
