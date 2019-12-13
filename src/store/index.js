@@ -48,7 +48,7 @@ const storeData = {
       chainId: "cosmoshub-3",
       lcd: "https://lcd.nylira.net",
       toAddress: "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq",
-      defaultGas: "80000"
+      defaultGas: "100000"
     },
     userSignedIn: false,
     user: {

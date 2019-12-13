@@ -13,7 +13,8 @@ export default {
   methods: {
     loadMore() {
       this.$store.dispatch("memos/fetchAndAdd", {
-        limit: 10
+        limit: 10,
+        orderBy: ["timestamp", "desc"]
       });
     }
   }
