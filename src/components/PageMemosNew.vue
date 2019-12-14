@@ -12,9 +12,6 @@
 </template>
 
 <script>
-import { signTx, createBroadcastTx } from "@tendermint/sig";
-import { byteLength } from "byte-length";
-
 import { mapGetters } from "vuex";
 import AppHeader from "./AppHeader";
 import AppFooter from "./AppFooter";
@@ -31,7 +28,7 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["settings", "blockchain"])
+    ...mapGetters(["settings"])
   }
 };
 </script>
