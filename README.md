@@ -23,20 +23,21 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ## Depth commands
 
 ## 0.x commands - MVP
-/b [cosmos1addr] [cosmos1addr] ... - block one or more addresses
-/c [txhash] [memo] - comment on a memo (start a thread/chain)
-/l [txhash] - like a memo
-/q [txhash] - quote a memo with user's own memo
-/r [txhash] - relay (aka retweet) a memo
-/s [memo] - publish a memo
+/comment [txhash] [memo] - comment on a memo (start a thread/chain)
+/like [txhash] - like a memo
+/post [memo] - post a memo
+/quote [txhash] - quote a memo
+/repost [txhash] - repost a memo
 
 ## 1.0 commands - user settings
 
-/setusername [username] - set a username
+/setname [username] - set a user's name
 /setavatar [image-url] - set a user avatar
 /setemail [email] - set a user email address
 /setstatus [memo] - set a user status
+
 /auth [cosmos1addr] - associate an address with user
+/block [cosmos1addr] [cosmos1addr] ... - block one or more addresses
 /tip [txhash] - tip a memo with ATOM
 
 ## 2.0 commands - following & unfollowing
@@ -44,11 +45,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 /follow [cosmos1addr] - follows an address
 /unfollow [cosmos1addr] - unfollows an address
 
-## 3.0 commands - more fun features
+## 3.0 commands
 
 /join [channel] - join a channel
-/leave [channel] - leave a channel
-/poll [poll] [option1] [option2] ...
-/shrug [memo> - adds ¯\_(ツ)_/¯ to the end of your memo
-/tell [cosmos1addr] [memo] - direct message
+/quit [channel] - quit a channel
+/survey [poll] [option1] [option2] ...
 /whisper [cosmos1addr] [memo] - encrypted direct message
