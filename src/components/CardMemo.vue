@@ -10,13 +10,21 @@
         | {{ shortAddress }}
       router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
         | {{ timeAgo(memo.timestamp) }}
-      // .block \#{{ memo.height }}
-    .body.dont-break-out(@click.self="actionView($event)") {{ memo.memo }}
+    .body.dont-break-out(@click.self="actionView($event)")
+      | {{ memo.memo }}
     .actions(@click.self="actionView($event)")
-      btn-icon(slot="btn-left" size="small" icon="message-circle" @click.native.stop="actionReply($event)")
-      btn-icon(slot="btn-left" size="small" icon="repeat" @click.native.stop="actionRelay($event)")
-      btn-icon(slot="btn-left" size="small" icon="heart" @click.native.stop="actionLike($event)")
-      btn-icon(slot="btn-left" size="small" icon="share" @click.native.stop="actionShare($event)")
+      btn-icon(
+        slot="btn-left" size="small" icon="message-circle"
+        @click.native.stop="actionReply($event)")
+      btn-icon(
+        slot="btn-left" size="small" icon="repeat"
+        @click.native.stop="actionRelay($event)")
+      btn-icon(
+        slot="btn-left" size="small" icon="heart"
+        @click.native.stop="actionLike($event)")
+      btn-icon(
+        slot="btn-left" size="small" icon="share"
+        @click.native.stop="actionShare($event)")
 </template>
 
 <script>

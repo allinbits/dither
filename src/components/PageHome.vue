@@ -7,6 +7,8 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
+  template(v-if="Object.keys(queuedMemos).length > 0")
+    card-memo(v-for="memo in queuedMemos" :memo="memo" :key="memo.id")
   template(v-if="Object.keys(memos).length > 0")
     card-memo(v-for="memo in orderedMemos" :memo="memo" :key="memo.id")
     btn-load-more
@@ -40,7 +42,7 @@ export default {
       }
       return [];
     },
-    ...mapGetters(["memos", "userSignedIn"])
+    ...mapGetters(["memos", "userSignedIn", "queuedMemos"])
   },
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {

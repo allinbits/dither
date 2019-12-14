@@ -33,14 +33,17 @@ const storeData = {
     memos: state => {
       return state.memos.data;
     },
+    settings: state => {
+      return state.settings;
+    },
+    queuedMemos: state => {
+      return state.queuedMemos;
+    },
     user: state => {
       return state.user;
     },
     userSignedIn: state => {
       return state.userSignedIn;
-    },
-    settings: state => {
-      return state.settings;
     }
   },
   state: {
@@ -60,9 +63,18 @@ const storeData = {
           providerId: "Loading"
         }
       ]
-    }
+    },
+    queuedMemos: {}
   },
   mutations: {
+    addQueuedMemo(state, memo) {
+      console.log("adding queued memo:", memo);
+      state.queuedMemos[memo.txHash] = memo;
+    },
+    rmQueuedMemo(state, txHash) {
+      console.log("removing memo from queue");
+      delete state.queuedMemos[memo.txHash];
+    },
     signInUser(state, user) {
       state.user = user;
       state.userSignedIn = true;

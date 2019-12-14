@@ -12,8 +12,6 @@
   template(v-else)
     | You can't send memos without an ATOM balance.
     router-link(:to="{ name: 'profile' }") Create a wallet
-  section-default
-    | {{ response }}
   app-footer
 </template>
 
@@ -48,7 +46,6 @@ export default {
   },
   data: () => ({
     memoBody: "",
-    response: "",
     formHasError: false,
     formErrorMsg: ""
   }),
@@ -129,8 +126,17 @@ export default {
         body: JSON.stringify(txBroadcast)
       });
       let txResponseJson = await txResponse.json();
-      this.response = txResponseJson;
-      console.log(txResponseJson.logs[0]);
+
+      let queuedMemo = {
+        id: txResponseJson.txhash,
+        address: fromAddress,
+        height: 0,
+        memo: this.memoBody,
+        timestamp: new Date().toISOString(),
+        response: txResponseJson,
+        tx: txBroadcast
+      };
+      this.$store.commit("addQueuedMemo", queuedMemo);
     }
   },
   mounted() {
