@@ -2,8 +2,8 @@
 .card-memo
   .container-avatar(@click.self="actionView($event)")
     router-link.avatar(
-      :to="{ name: 'account', params: {address: memo.address}}"
-      v-html="avatar")
+      :to="{ name: 'account', params: {address: memo.address}}")
+      img-avatar(:address="memo.address")
   .container-text
     .meta(@click.self="actionView($event)")
       router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
@@ -20,49 +20,22 @@
 </template>
 
 <script>
-import identicon from "identicon.js";
-import createHash from "create-hash";
 import { formatDistance, subDays } from "date-fns";
 
 import h from "../scripts/helpers";
 import { mapGetters } from "vuex";
 import BtnIcon from "./BtnIcon";
+import ImgAvatar from "./ImgAvatar";
 export default {
   name: "card-memo",
   components: {
-    BtnIcon
+    BtnIcon,
+    ImgAvatar
   },
   computed: {
     ...mapGetters(["userSignedIn"]),
     shortAddress() {
       return h.truncAddress(this.memo.address);
-    },
-    avatar() {
-      let data;
-
-      let truncatedSenderAddress = this.memo.address.slice(
-        7,
-        this.memo.address.length
-      );
-
-      // create a base64 encoded SVG
-      if (this.memo.address) {
-        let hash = createHash("sha224");
-        let hexstring = hash.update(truncatedSenderAddress).digest("hex");
-
-        let options = {
-          foreground: [0, 0, 0, 204], // 80% black
-          background: [255, 255, 255], // very light gray
-          margin: 0.2,
-          size: 64,
-          format: "svg" // use SVG instead of PNG
-        };
-
-        data = new identicon(hexstring, options).toString();
-      } else {
-        data = new identicon("0000000000000000", options).toString();
-      }
-      return '<img src="data:image/svg+xml;base64,' + data + '">';
     }
   },
   methods: {

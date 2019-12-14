@@ -27,7 +27,7 @@ export default {
 
   z-index var(--z-app-header)
   border-bottom 1px solid var(--bc)
-  background #fff
+  background var(--app-bg)
 
 .app-header__container
   max-width 40rem

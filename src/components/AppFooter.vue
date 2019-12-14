@@ -29,7 +29,7 @@ export default {
 
   margin 0 auto
   z-index var(--z-app-header)
-  background #fff
+  background var(--app-bg)
 
 .app-footer__container
   max-width 40rem

@@ -28,9 +28,12 @@ export default {
 <style lang="stylus">
 @import './styles/normalize.css'
 @import './styles/variables.css'
-@import './styles/screen.css'
+
+*
+  box-sizing border-box
 
 html
+  font 16px/1.5 var(--sans)
   background hsl(0,0,97%)
 
 body
@@ -38,9 +41,10 @@ body
   min-height 100vh
   max-width 40rem
   margin 0 auto
-  background #fff
+  background var(--app-bg)
 
 a
+  text-decoration none
   color var(--link)
   cursor pointer
   &:hover
