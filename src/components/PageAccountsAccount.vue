@@ -1,7 +1,7 @@
 <template lang="pug">
 .page-accounts-account
   app-header(:page-title="shortAddress")
-    btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
+    btn-icon(slot="btn-left" icon="arrow-left" @click.native="back")
   .page-header
     .cover
     .avatar: img-avatar(:address="this.$route.params.address" size="96")
@@ -63,6 +63,11 @@ export default {
       return [];
     },
     ...mapGetters(["memos", "accounts"])
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    }
   },
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {

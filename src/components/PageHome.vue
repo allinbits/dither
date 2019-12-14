@@ -41,6 +41,12 @@ export default {
       return [];
     },
     ...mapGetters(["memos", "userSignedIn"])
+  },
+  mounted() {
+    this.$store.dispatch("memos/fetchAndAdd", {
+      limit: 10,
+      orderBy: ["timestamp", "desc"]
+    });
   }
 };
 </script>
