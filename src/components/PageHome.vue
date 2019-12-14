@@ -38,7 +38,8 @@ export default {
   computed: {
     orderedMemos() {
       if (this.memos) {
-        return orderBy(this.memos, m => parseInt(m.height), "desc");
+        let ordered = orderBy(this.memos, m => parseInt(m.height), "desc");
+        return ordered.slice(0, 20);
       }
       return [];
     },
