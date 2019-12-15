@@ -69,11 +69,13 @@ const storeData = {
   mutations: {
     addQueuedMemo(state, memo) {
       state.queuedMemos[memo.id] = memo;
-      console.log("adding queued memo:", state.queuedMemos[memo.id]);
+      console.log("adding to queue:", state.queuedMemos[memo.id]);
     },
-    rmQueuedMemo(state, txHash) {
-      console.log("removing memo from queue");
-      delete state.queuedMemos[memo.id];
+    rmQueuedMemo(state, id) {
+      if (state.queuedMemos[id]) {
+        // console.log("removing from queue", state.queuedMemos[id]);
+        delete state.queuedMemos[id];
+      }
     },
     signInUser(state, user) {
       state.user = user;

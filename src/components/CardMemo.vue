@@ -1,6 +1,7 @@
 <template lang="pug">
 .card-memo
-  corner-spinner(v-if="memo.height === 0")
+  corner-error(v-if="memo.height === 0 && memo.response.code")
+  corner-spinner(v-else-if="memo.height === 0")
   .container-avatar(@click.self="actionView($event)")
     router-link.avatar(
       :to="{ name: 'account', params: {address: memo.address}}")
@@ -34,12 +35,14 @@ import { formatDistance, subDays } from "date-fns";
 import h from "../scripts/helpers";
 import { mapGetters } from "vuex";
 import BtnIcon from "./BtnIcon";
+import CornerError from "./CornerError";
 import CornerSpinner from "./CornerSpinner";
 import ImgAvatar from "./ImgAvatar";
 export default {
   name: "card-memo",
   components: {
     BtnIcon,
+    CornerError,
     CornerSpinner,
     ImgAvatar
   },

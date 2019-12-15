@@ -1,3 +1,5 @@
+import store from "../index.js";
+
 const memos = {
   firestorePath: "memos",
   firestoreRefType: "collection", // or 'doc'
@@ -10,7 +12,15 @@ const memos = {
   state: {},
   getters: {},
   mutations: {},
-  actions: {}
+  actions: {},
+
+  serverChange: {
+    addedHook: function(updateStore, doc, id, store) {
+      // console.log("memo is added", id);
+      store.commit("rmQueuedMemo", id);
+      updateStore(doc);
+    }
+  }
 };
 
 export default memos;
