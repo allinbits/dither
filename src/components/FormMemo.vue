@@ -1,6 +1,6 @@
 <template lang="pug">
 form.form-memo(@submit.prevent.default="sendMemo")
-  textarea#memo-body(v-model="memo" placeholder="Write your memo here...")
+  textarea#memo-body(v-model="memo" placeholder="What's on your mind?")
   .field-note Bytes left: {{ bytesLeft }}
   .field-note.field-note--error(v-if="formHasError") {{ formErrorMsg }}
   dc-btn(type="submit") Publish
@@ -20,7 +20,22 @@ export default {
   computed: {
     ...mapGetters(["settings", "blockchain", "queuedMemos"]),
     bytesLeft() {
-      return 512 - byteLength(this.memo);
+      return 512 - byteLength(this.command) - byteLength(this.memo);
+    },
+    command() {
+      switch (this.type) {
+        case "comment":
+          return `/c ${this.parentAddress} `;
+          break;
+        case "quote":
+          return `/q ${this.parentAddress} `;
+          break;
+        case "repost":
+          return `/r ${this.parentAddress} `;
+          break;
+        default:
+          return "/p ";
+      }
     },
     fromAddress() {
       return this.settings.data.wallet.address;
@@ -85,7 +100,7 @@ export default {
       // console.log("account info", accountJson.result);
 
       let tx = this.tx;
-      tx.memo = this.memo;
+      tx.memo = this.command + this.memo;
 
       // set the sequence to be the current account sequence plus any queued memos
       let accountSequence = accountJson.result.value.sequence;
@@ -138,7 +153,8 @@ export default {
   },
   mounted() {
     this.$el.querySelector("#memo-body").focus();
-  }
+  },
+  props: ["type", "parent"]
 };
 </script>
 
