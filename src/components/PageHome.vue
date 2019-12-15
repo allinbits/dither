@@ -45,12 +45,7 @@ export default {
     },
     ...mapGetters(["memos", "userSignedIn", "queuedMemos"])
   },
-  mounted() {
-    this.$store.dispatch("memos/fetchAndAdd", {
-      limit: 10,
-      orderBy: ["timestamp", "desc"]
-    });
-  }
+  mounted() {}
 };
 </script>
 

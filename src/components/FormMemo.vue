@@ -18,7 +18,7 @@ export default {
     DcBtn
   },
   computed: {
-    ...mapGetters(["settings", "blockchain"]),
+    ...mapGetters(["settings", "blockchain", "queuedMemos"]),
     bytesLeft() {
       return 512 - byteLength(this.memo);
     },
@@ -73,7 +73,6 @@ export default {
         this.formErrorMessage = "";
       }
       this.broadcastTx();
-      this.$router.push({ name: "home" });
     },
     async broadcastTx() {
       let walletData = this.settings.data.wallet;
@@ -88,10 +87,21 @@ export default {
       let tx = this.tx;
       tx.memo = this.memo;
 
+      // set the sequence to be the current account sequence plus any queued memos
+      let accountSequence = accountJson.result.value.sequence;
+      let queuedMemosLength = Object.keys(this.queuedMemos).length;
+      let currentSequence =
+        parseInt(accountSequence) + parseInt(queuedMemosLength);
+      currentSequence = currentSequence.toString();
+      // console.log("queuedMemosLength", queuedMemosLength);
+      // console.log("accountSequence", accountSequence);
+      // console.log("currentSequence", currentSequence);
+
       let signMeta = {
         account_number: accountJson.result.value.account_number,
         chain_id: this.blockchain.chainId,
-        sequence: accountJson.result.value.sequence
+
+        sequence: currentSequence
       };
 
       let wallet = {
@@ -113,7 +123,6 @@ export default {
         body: JSON.stringify(txBroadcast)
       });
       let txResponseJson = await txResponse.json();
-
       let queuedMemo = {
         id: txResponseJson.txhash,
         address: this.fromAddress,
@@ -124,6 +133,7 @@ export default {
         tx: txBroadcast
       };
       this.$store.commit("addQueuedMemo", queuedMemo);
+      this.$router.push({ name: "home" });
     }
   },
   mounted() {

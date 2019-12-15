@@ -10,6 +10,11 @@ import { Firebase } from "./store/firebase.js";
 export default {
   name: "App",
   mounted() {
+    this.$store.dispatch("memos/openDBChannel", {
+      limit: 10,
+      orderBy: ["timestamp", "desc"]
+    });
+
     Firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.$store.commit("signInUser", user);
