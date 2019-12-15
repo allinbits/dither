@@ -16,8 +16,9 @@ const memos = {
 
   serverChange: {
     addedHook: function(updateStore, doc, id, store) {
-      // console.log("memo is added", id);
+      //console.log("added memo", doc);
       store.commit("rmQueuedMemo", id);
+      store.commit("setHeight", doc.height);
       updateStore(doc);
     }
   }

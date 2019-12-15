@@ -51,7 +51,9 @@ const storeData = {
       chainId: "cosmoshub-3",
       lcd: "https://lcd.nylira.net",
       toAddress: "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq",
-      defaultGas: "100000"
+      defaultGas: "100000",
+      height: 0,
+      blockRange: 50
     },
     userSignedIn: false,
     user: {
@@ -67,6 +69,15 @@ const storeData = {
     queuedMemos: {}
   },
   mutations: {
+    showMoreBlocks() {
+      state.blockchain.blockRange += 50;
+    },
+    setHeight(state, height) {
+      if (height > state.blockchain.height) {
+        state.blockchain.height = height;
+        // console.log("set blockchain height to", state.blockchain.height);
+      }
+    },
     addQueuedMemo(state, memo) {
       state.queuedMemos[memo.id] = memo;
       console.log("adding to queue:", state.queuedMemos[memo.id]);

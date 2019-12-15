@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-home
-  app-header(page-title="Home")
+  app-header(:page-title="blockchain.height")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
     template(v-if="userSignedIn")
@@ -39,13 +39,12 @@ export default {
     orderedMemos() {
       if (this.memos) {
         let ordered = orderBy(this.memos, m => parseInt(m.height), "desc");
-        return ordered.slice(0, 20);
+        return ordered;
       }
       return [];
     },
-    ...mapGetters(["memos", "userSignedIn", "queuedMemos"])
-  },
-  mounted() {}
+    ...mapGetters(["memos", "userSignedIn", "queuedMemos", "blockchain"])
+  }
 };
 </script>
 

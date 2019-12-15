@@ -6,20 +6,32 @@
 
 <script>
 import { Firebase } from "./store/firebase.js";
-
+import { mapGetters } from "vuex";
 export default {
   name: "App",
-  mounted() {
-    this.$store.dispatch("memos/openDBChannel", {
-      limit: 10,
-      orderBy: ["timestamp", "desc"]
-    });
-
+  computed: {
+    ...mapGetters(["blockchain"])
+  },
+  async mounted() {
+    // log in the user if they exist
     Firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.$store.commit("signInUser", user);
         this.$store.dispatch("settings/openDBChannel").catch(console.error);
       }
+    });
+
+    // fetch the current block, and then get some recent memos
+    let response = await fetch(`${this.blockchain.lcd}/blocks/latest`);
+    let data = await response.json();
+    let height = data.block_meta.header.height;
+    this.$store.commit("setHeight", data.block_meta.header.height);
+
+    this.$store.dispatch("memos/openDBChannel", {
+      orderBy: ["height", "desc"],
+      where: [
+        ["height", ">=", this.blockchain.height - this.blockchain.blockRange]
+      ]
     });
   }
 };
