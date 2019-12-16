@@ -1,10 +1,13 @@
 <template lang="pug">
 router-link.btn-icon(v-if="type == 'link'" :class="cssClass" :to="to")
   img(:src="imgSrc")
+  .value(v-if="value") {{ value }}
 a.btn-icon(v-else-if="type == 'anchor'" :class="cssClass" :href="href")
   img(:src="imgSrc")
+  .value(v-if="value") {{ value }}
 .btn-icon(v-else :class="cssClass")
   img(:src="imgSrc")
+  .value(v-if="value") {{ value }}
 </template>
 
 <script>
@@ -21,7 +24,7 @@ export default {
       return require("../assets/feather/" + this.icon + ".svg");
     }
   },
-  props: ["type", "icon", "to", "href", "size"]
+  props: ["type", "icon", "to", "href", "size", "value"]
 };
 </script>
 
@@ -33,6 +36,14 @@ export default {
   align-items center
   justify-content center
   cursor pointer
+  img
+    opacity 0.5
+
+  .value
+    font-size 0.75rem
+    color var(--dim)
+    margin-left 0.25rem
+
 
 .btn-icon--size-default
   width 3rem
@@ -44,7 +55,6 @@ export default {
 .btn-icon--size-small
   width 2rem
   height 2rem
-  opacity 0.5
   &:hover
     background var(--hover-fg)
   img

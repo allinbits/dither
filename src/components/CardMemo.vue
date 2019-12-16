@@ -16,13 +16,13 @@
       | {{ memoBody }}
     .actions(@click.self="actionView")
       btn-icon(
-        slot="btn-left" size="small" icon="message-circle"
+        slot="btn-left" size="small" icon="message-circle" :value="memoComments"
         @click.native.stop="actionView")
       btn-icon(
-        slot="btn-left" size="small" icon="repeat"
+        slot="btn-left" size="small" icon="repeat" :value="memoReposts"
         @click.native.stop="actionRelay")
       btn-icon(
-        slot="btn-left" size="small" icon="heart"
+        slot="btn-left" size="small" icon="heart" :value="memoLikes"
         @click.native.stop="actionLike")
       btn-icon(
         slot="btn-left" size="small" icon="share"
@@ -59,6 +59,24 @@ export default {
         value = value.join(" ");
         return value;
       }
+    },
+    memoComments() {
+      if (this.memo && this.memo.comments) {
+        return this.memo.comments;
+      }
+      return 0;
+    },
+    memoReposts() {
+      if (this.memo && this.memo.reposts) {
+        return this.memo.reposts;
+      }
+      return 0;
+    },
+    memoLikes() {
+      if (this.memo && this.memo.likes) {
+        return this.memo.likes;
+      }
+      return 0;
     }
   },
   methods: {

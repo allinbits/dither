@@ -160,7 +160,10 @@ export default {
         tx: txBroadcast
       };
       this.$store.commit("addQueuedMemo", queuedMemo);
-      this.$router.push({ name: "home" });
+
+      if (this.type === "post") {
+        this.$router.push({ name: "home" });
+      }
     }
   },
   mounted() {

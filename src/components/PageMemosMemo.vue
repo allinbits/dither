@@ -6,7 +6,9 @@
     card-memo(:memo="memo")
     section-default
       form-memo(type="comment" :parent-address="memo.id")
-    card-memo(v-for="memo in children" :memo="memo" :key="memo.id")
+    template(v-if="Object.keys(queuedComments).length > 0")
+      card-memo(v-for="memo in queuedComments" :memo="memo" :key="memo.id")
+    card-memo(v-for="memo in comments" :memo="memo" :key="memo.id")
   card-loading(v-else)
   app-footer
 </template>
@@ -34,7 +36,7 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["memos"]),
+    ...mapGetters(["memos", "queuedMemos"]),
     memo() {
       if (this.memos) {
         return this.memos[this.$route.params.memo];
@@ -42,13 +44,24 @@ export default {
         return {};
       }
     },
-    children() {
+    comments() {
       if (this.memos) {
-        let children = pickBy(
+        let comments = pickBy(
           this.memos,
           m => m.parent === this.$route.params.memo
         );
-        return children;
+        return comments;
+      } else {
+        return [];
+      }
+    },
+    queuedComments() {
+      if (this.queuedMemos) {
+        let comments = pickBy(
+          this.queuedMemos,
+          m => m.parent === this.$route.params.memo
+        );
+        return comments;
       } else {
         return [];
       }
