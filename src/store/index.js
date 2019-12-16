@@ -53,7 +53,8 @@ const storeData = {
       toAddress: "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq",
       defaultGas: "100000",
       height: 0,
-      blockRange: 50
+      // assuming 7 seconds per block, load the last x hours of memos
+      blockRange: (48 * 60 * 60) / 7
     },
     userSignedIn: false,
     user: {
@@ -69,9 +70,6 @@ const storeData = {
     queuedMemos: {}
   },
   mutations: {
-    showMoreBlocks() {
-      state.blockchain.blockRange += 50;
-    },
     setHeight(state, height) {
       if (height > state.blockchain.height) {
         state.blockchain.height = height;

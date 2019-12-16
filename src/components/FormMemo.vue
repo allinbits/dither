@@ -1,9 +1,9 @@
 <template lang="pug">
 form.form-memo(@submit.prevent.default="sendMemo")
-  textarea#memo-body(v-model="memo" placeholder="What's on your mind?")
+  textarea#memo-body(v-model="memo" :placeholder="placeholderText")
   .field-note Bytes left: {{ bytesLeft }}
   .field-note.field-note--error(v-if="formHasError") {{ formErrorMsg }}
-  dc-btn(type="submit") Publish
+  dc-btn(type="submit") {{ submitText }}
 </template>
 
 <script>
@@ -19,6 +19,18 @@ export default {
   },
   computed: {
     ...mapGetters(["settings", "blockchain", "queuedMemos"]),
+    placeholderText() {
+      if (this.type === "comment") {
+        return "Leave your comment";
+      }
+      return "What's on your mind?";
+    },
+    submitText() {
+      if (this.type === "comment") {
+        return "Comment";
+      }
+      return "Post";
+    },
     bytesLeft() {
       return 512 - byteLength(this.command) - byteLength(this.memo);
     },
@@ -154,7 +166,7 @@ export default {
   mounted() {
     this.$el.querySelector("#memo-body").focus();
   },
-  props: ["type", "parent"]
+  props: ["type", "parent-address"]
 };
 </script>
 
@@ -165,7 +177,7 @@ form
 textarea
   display block
   border 1px solid var(--bc-input)
-  height 8rem
+  height 6rem
   margin-bottom 0.5rem
   box-sizing border-box
   width 100%

@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-home
-  app-header(:page-title="blockchain.height")
+  app-header(page-title="Home")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
     template(v-if="userSignedIn")
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { orderBy } from "lodash";
+import { orderBy, pickBy } from "lodash";
 import { mapGetters } from "vuex";
 import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";
@@ -38,8 +38,9 @@ export default {
   computed: {
     orderedMemos() {
       if (this.memos) {
-        let ordered = orderBy(this.memos, m => parseInt(m.height), "desc");
-        return ordered;
+        let value = pickBy(this.memos, m => !m.parent);
+        value = orderBy(value, m => parseInt(m.height), "desc");
+        return value;
       }
       return [];
     },

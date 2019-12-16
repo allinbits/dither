@@ -2,31 +2,31 @@
 .card-memo
   corner-error(v-if="memo.height === 0 && memo.response.code")
   corner-spinner(v-else-if="memo.height === 0")
-  .container-avatar(@click.self="actionView($event)")
+  .container-avatar(@click.self="actionView")
     router-link.avatar(
       :to="{ name: 'account', params: {address: memo.address}}")
       img-avatar(:address="memo.address")
   .container-text
-    .meta(@click.self="actionView($event)")
+    .meta(@click.self="actionView")
       router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
         | {{ shortAddress }}
       router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
         | {{ timeAgo(memo.timestamp) }}
-    .body.dont-break-out(@click.self="actionView($event)")
-      | {{ memo.memo }}
-    .actions(@click.self="actionView($event)")
+    .body.dont-break-out(@click.self="actionView")
+      | {{ memoBody }}
+    .actions(@click.self="actionView")
       btn-icon(
         slot="btn-left" size="small" icon="message-circle"
-        @click.native.stop="actionReply($event)")
+        @click.native.stop="actionView")
       btn-icon(
         slot="btn-left" size="small" icon="repeat"
-        @click.native.stop="actionRelay($event)")
+        @click.native.stop="actionRelay")
       btn-icon(
         slot="btn-left" size="small" icon="heart"
-        @click.native.stop="actionLike($event)")
+        @click.native.stop="actionLike")
       btn-icon(
         slot="btn-left" size="small" icon="share"
-        @click.native.stop="actionShare($event)")
+        @click.native.stop="actionShare")
 </template>
 
 <script>
@@ -50,6 +50,15 @@ export default {
     ...mapGetters(["userSignedIn"]),
     shortAddress() {
       return h.truncAddress(this.memo.address);
+    },
+    memoBody() {
+      let value = this.memo.memo;
+      value = value.split(" ");
+      value.shift();
+      if (this.memo.type === "post") {
+        value = value.join(" ");
+        return value;
+      }
     }
   },
   methods: {
