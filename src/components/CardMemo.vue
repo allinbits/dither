@@ -59,6 +59,11 @@ export default {
         value = value.join(" ");
         return value;
       }
+      if (this.memo.type === "comment") {
+        value.shift();
+        value = value.join(" ");
+        return value;
+      }
     },
     memoComments() {
       if (this.memo && this.memo.comments) {

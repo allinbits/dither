@@ -1,7 +1,7 @@
 <template lang="pug">
 .page-memos-memo
   app-header(page-title="Memo Info")
-    btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
+    btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
   template(v-if="memo")
     card-memo(:memo="memo")
     section-default
@@ -57,6 +57,7 @@ export default {
     },
     queuedComments() {
       if (this.queuedMemos) {
+        console.log(this.queuedMemos);
         let comments = pickBy(
           this.queuedMemos,
           m => m.parent === this.$route.params.memo

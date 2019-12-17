@@ -1,3 +1,19 @@
+function getMemoPrefix(type, parentAddress) {
+  switch (type) {
+    case "comment":
+      return `/c ${parentAddress} `;
+      break;
+    case "quote":
+      return `/q ${parentAddress} `;
+      break;
+    case "repost":
+      return `/r ${parentAddress} `;
+      break;
+    default:
+      return "/p ";
+  }
+}
+
 function getTxSender(tx) {
   let sender = "Loading...";
   if (tx) {
@@ -17,4 +33,5 @@ function truncAddress(addr) {
     return "N/A";
   }
 }
-export default { getTxSender, truncAddress };
+
+export default { getMemoPrefix, getTxSender, truncAddress };

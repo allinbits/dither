@@ -11,6 +11,8 @@ import { signTx, createBroadcastTx } from "@tendermint/sig";
 import { byteLength } from "byte-length";
 
 import { mapGetters } from "vuex";
+import h from "../scripts/helpers";
+import tx from "../scripts/tx";
 import DcBtn from "./DcBtn";
 export default {
   name: "form-memo",
@@ -32,52 +34,14 @@ export default {
       return "Post";
     },
     bytesLeft() {
-      return 512 - byteLength(this.command) - byteLength(this.memo);
-    },
-    command() {
-      switch (this.type) {
-        case "comment":
-          return `/c ${this.parentAddress} `;
-          break;
-        case "quote":
-          return `/q ${this.parentAddress} `;
-          break;
-        case "repost":
-          return `/r ${this.parentAddress} `;
-          break;
-        default:
-          return "/p ";
-      }
+      return (
+        512 -
+        byteLength(h.getMemoPrefix(this.type, this.parentAddress)) -
+        byteLength(this.memo)
+      );
     },
     fromAddress() {
       return this.settings.data.wallet.address;
-    },
-    toAddress() {
-      return this.blockchain.toAddress;
-    },
-    tx() {
-      return {
-        fee: {
-          amount: [{ amount: "0", denom: "" }],
-          gas: this.blockchain.defaultGas
-        },
-        memo: "",
-        msg: [
-          {
-            type: "cosmos-sdk/MsgSend",
-            value: {
-              from_address: this.fromAddress,
-              to_address: this.toAddress,
-              amount: [
-                {
-                  denom: "uatom",
-                  amount: "1"
-                }
-              ]
-            }
-          }
-        ]
-      };
     }
   },
   data: () => ({
@@ -99,68 +63,18 @@ export default {
         this.formHasError = false;
         this.formErrorMessage = "";
       }
-      this.broadcastTx();
+      this.send();
     },
-    async broadcastTx() {
-      let walletData = this.settings.data.wallet;
-
-      // set up the account details
-      let account = await fetch(
-        `${this.blockchain.lcd}/auth/accounts/${this.fromAddress}`
+    async send() {
+      let queuedMemo = await tx.sendTx(
+        this.fromAddress,
+        this.type,
+        this.parentAddress,
+        this.memo
       );
-      let accountJson = await account.json();
-      // console.log("account info", accountJson.result);
-
-      let tx = this.tx;
-      tx.memo = this.command + this.memo;
-
-      // set the sequence to be the current account sequence plus any queued memos
-      let accountSequence = accountJson.result.value.sequence;
-      let queuedMemosLength = Object.keys(this.queuedMemos).length;
-      let currentSequence =
-        parseInt(accountSequence) + parseInt(queuedMemosLength);
-      currentSequence = currentSequence.toString();
-      // console.log("queuedMemosLength", queuedMemosLength);
-      // console.log("accountSequence", accountSequence);
-      // console.log("currentSequence", currentSequence);
-
-      let signMeta = {
-        account_number: accountJson.result.value.account_number,
-        chain_id: this.blockchain.chainId,
-
-        sequence: currentSequence
-      };
-
-      let wallet = {
-        address: this.fromAddress,
-        privateKey: Uint8Array.from(walletData.privateKey),
-        publicKey: Uint8Array.from(walletData.publicKey)
-      };
-
-      // prepare the transaction for sending
-      const txSigned = signTx(tx, signMeta, wallet);
-      const txBroadcast = createBroadcastTx(txSigned, "sync");
-
-      // send tx and await results
-      let txResponse = await fetch(`${this.blockchain.lcd}/txs`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(txBroadcast)
-      });
-      let txResponseJson = await txResponse.json();
-      let queuedMemo = {
-        id: txResponseJson.txhash,
-        address: this.fromAddress,
-        height: 0,
-        memo: this.tx.memo,
-        timestamp: new Date().toISOString(),
-        response: txResponseJson,
-        tx: txBroadcast
-      };
       this.$store.commit("addQueuedMemo", queuedMemo);
 
+      console.log("");
       if (this.type === "post") {
         this.$router.push({ name: "home" });
       }

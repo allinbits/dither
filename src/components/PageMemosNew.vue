@@ -4,7 +4,7 @@
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
     btn-icon(slot="btn-right" icon="send" @click.native="broadcastTx")
   section-default(v-if="settings && settings.data && settings.data.wallet")
-    form-memo
+    form-memo(type="post")
   template(v-else)
     | You can't send memos without an ATOM balance.
     router-link(:to="{ name: 'profile' }") Create a wallet
