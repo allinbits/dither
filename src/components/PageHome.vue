@@ -41,7 +41,10 @@ export default {
   computed: {
     posts() {
       if (this.memos) {
-        let value = pickBy(this.memos, m => !m.parent);
+        let value = pickBy(
+          this.memos,
+          m => m.type !== "like" && m.type !== "comment"
+        );
         value = orderBy(value, m => parseInt(m.height), "desc");
         return value;
       }
@@ -49,7 +52,10 @@ export default {
     },
     queuedPosts() {
       if (this.queuedMemos) {
-        let value = pickBy(this.queuedMemos, m => !m.parent);
+        let value = pickBy(
+          this.queuedMemos,
+          m => m.type !== "like" && m.type !== "comment"
+        );
         value = orderBy(value, m => parseInt(m.height), "desc");
         return value;
       }

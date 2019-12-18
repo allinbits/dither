@@ -80,5 +80,5 @@ export default {
     color #f00
 
   &.btn-icon--color-green .value
-    color #0f0
+    color #090
 </style>

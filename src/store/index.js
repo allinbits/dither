@@ -54,7 +54,7 @@ const storeData = {
       defaultGas: "100000",
       height: 0,
       // assuming 7 seconds per block, load the last x hours of memos
-      blockRange: (48 * 60 * 60) / 7
+      blockRange: (144 * 60 * 60) / 7
     },
     userSignedIn: false,
     user: {

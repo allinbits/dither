@@ -146,11 +146,17 @@ export default {
     actionView() {
       this.$router.push({ name: "memo", params: { memo: this.memo.id } });
     },
-    actionRepost() {
+    async actionRepost() {
       if (!this.userSignedIn) {
         this.$router.push({ name: "login" });
       }
-      alert("WIP: repost");
+      let queuedMemo = await tx.sendTx(
+        this.fromAddress, // memo from
+        "repost", // memo type
+        this.memo.id, // memo parent id
+        "" // memo body
+      );
+      this.$store.commit("addQueuedMemo", queuedMemo);
     },
     async actionLike() {
       if (!this.userSignedIn) {
