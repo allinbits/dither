@@ -166,15 +166,23 @@ export default {
     },
     actionShare() {
       alert("WIP: share");
+    },
+    checkForUserInteractions() {
+      if (this.memo.likes || this.memo.reposts) {
+        // console.log("checking...");
+        this.$store.dispatch("memos/fetchAndAdd", {
+          where: [
+            ["parent", "==", this.memo.id],
+            ["address", "==", this.fromAddress]
+          ]
+        });
+      } else {
+        // console.log("no interactions, skipping...");
+      }
     }
   },
   mounted() {
-    this.$store.dispatch("memos/fetchAndAdd", {
-      where: [
-        ["parent", "==", this.memo.id],
-        ["address", "==", this.fromAddress]
-      ]
-    });
+    this.checkForUserInteractions();
   },
   props: ["memo"]
 };
