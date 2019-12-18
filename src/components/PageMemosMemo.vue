@@ -58,7 +58,10 @@ export default {
       if (this.memos) {
         let comments = pickBy(
           this.memos,
-          m => m.parent === this.$route.params.memo
+          m =>
+            m.parent === this.$route.params.memo &&
+            m.type !== "like" &&
+            m.type !== "repost"
         );
         comments = orderBy(comments, ["height"], ["desc"]);
         return comments;
