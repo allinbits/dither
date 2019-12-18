@@ -74,7 +74,8 @@ export default {
       );
       this.$store.commit("addQueuedMemo", queuedMemo);
 
-      console.log("");
+      this.memo = "";
+
       if (this.type === "post") {
         this.$router.push({ name: "home" });
       }

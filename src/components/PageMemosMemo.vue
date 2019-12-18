@@ -2,19 +2,30 @@
 .page-memos-memo
   app-header(page-title="Memo Info")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
+
   template(v-if="memo")
+
+    // the memo
     card-memo(:memo="memo")
+
+    // comment form
     section-default
       form-memo(type="comment" :parent-address="memo.id")
+
+    // queued comments
     template(v-if="Object.keys(queuedComments).length > 0")
       card-memo(v-for="memo in queuedComments" :memo="memo" :key="memo.id")
+
+    // comments
     card-memo(v-for="memo in comments" :memo="memo" :key="memo.id")
+
   card-loading(v-else)
+
   app-footer
 </template>
 
 <script>
-import { pickBy } from "lodash";
+import { pickBy, orderBy } from "lodash";
 
 import { mapGetters } from "vuex";
 import AppHeader from "./AppHeader";
@@ -36,7 +47,6 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["memos", "queuedMemos"]),
     memo() {
       if (this.memos) {
         return this.memos[this.$route.params.memo];
@@ -50,23 +60,25 @@ export default {
           this.memos,
           m => m.parent === this.$route.params.memo
         );
+        comments = orderBy(comments, ["height"], ["desc"]);
         return comments;
       } else {
-        return [];
+        return {};
       }
     },
     queuedComments() {
       if (this.queuedMemos) {
-        console.log(this.queuedMemos);
         let comments = pickBy(
           this.queuedMemos,
           m => m.parent === this.$route.params.memo
         );
+        comments = orderBy(comments, ["height"], ["desc"]);
         return comments;
       } else {
-        return [];
+        return {};
       }
-    }
+    },
+    ...mapGetters(["memos", "queuedMemos"])
   },
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {

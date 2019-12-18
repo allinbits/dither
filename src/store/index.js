@@ -77,13 +77,13 @@ const storeData = {
       }
     },
     addQueuedMemo(state, memo) {
-      state.queuedMemos[memo.id] = memo;
+      Vue.set(state.queuedMemos, memo.id, memo);
       console.log("adding to queue:", state.queuedMemos[memo.id]);
     },
     rmQueuedMemo(state, id) {
       if (state.queuedMemos[id]) {
         // console.log("removing from queue", state.queuedMemos[id]);
-        delete state.queuedMemos[id];
+        Vue.delete(state.queuedMemos, id);
       }
     },
     signInUser(state, user) {

@@ -86,6 +86,7 @@ async function sendTx(fromAddress, type, parentAddress, memo) {
     address: fromAddress,
     height: 0,
     memo: tx.memo,
+    parent: parentAddress,
     response: txResponseJson,
     timestamp: new Date().toISOString(),
     tx: txBroadcast,
