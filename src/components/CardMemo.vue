@@ -18,12 +18,27 @@
       btn-icon(
         slot="btn-left" size="small" icon="message-circle" :value="memoComments"
         @click.native.stop="actionView")
-      btn-icon(
+
+      // repost button
+      btn-icon.btn-repost.btn-repost--active(
+        v-if="userReposted"
+        slot="btn-left" size="small" icon="repeat" color="green" :value="memoReposts")
+      btn-icon.btn-repost(
+        v-else
+        :class="btnRepostCss"
         slot="btn-left" size="small" icon="repeat" :value="memoReposts"
-        @click.native.stop="actionRelay")
-      btn-icon(
+        @click.native.stop="actionRepost")
+
+      // like button
+      btn-icon.btn-like.btn-like--active(
+        v-if="userLiked"
+        slot="btn-left" size="small" icon="heart" color="red" :value="memoLikes")
+      btn-icon.btn-like(
+        v-else
         slot="btn-left" size="small" icon="heart" :value="memoLikes"
         @click.native.stop="actionLike")
+
+      // share button
       btn-icon(
         slot="btn-left" size="small" icon="share"
         @click.native.stop="actionShare")
@@ -31,8 +46,10 @@
 
 <script>
 import { formatDistance, subDays } from "date-fns";
+import { find } from "lodash";
 
 import h from "../scripts/helpers";
+import tx from "../scripts/tx";
 import { mapGetters } from "vuex";
 import BtnIcon from "./BtnIcon";
 import CornerError from "./CornerError";
@@ -47,9 +64,15 @@ export default {
     ImgAvatar
   },
   computed: {
-    ...mapGetters(["userSignedIn"]),
+    ...mapGetters(["memos", "settings", "userSignedIn"]),
     shortAddress() {
       return h.truncAddress(this.memo.address);
+    },
+    fromAddress() {
+      if (this.settings && this.settings.data && this.settings.data.wallet) {
+        return this.settings.data.wallet.address;
+      }
+      return "";
     },
     memoBody() {
       let value = this.memo.memo;
@@ -82,6 +105,38 @@ export default {
         return this.memo.likes;
       }
       return 0;
+    },
+    btnLikeCss() {
+      if (this.userLiked) return "btn-like--active";
+      return "btn-like--default";
+    },
+    btnRepostCss() {
+      if (this.userReposted) return "btn-repost--active";
+      return "btn-repost--default";
+    },
+    userLiked() {
+      if (this.memos && this.fromAddress) {
+        return find(
+          this.memos,
+          m =>
+            m.parent === this.memo.id &&
+            m.address === this.fromAddress &&
+            m.type === "like"
+        );
+      }
+      return false;
+    },
+    userReposted() {
+      if (this.memos && this.fromAddress) {
+        return find(
+          this.memos,
+          m =>
+            m.parent === this.memo.id &&
+            m.address === this.fromAddress &&
+            m.type === "repost"
+        );
+      }
+      return false;
     }
   },
   methods: {
@@ -91,27 +146,35 @@ export default {
     actionView() {
       this.$router.push({ name: "memo", params: { memo: this.memo.id } });
     },
-    actionReply() {
+    actionRepost() {
       if (!this.userSignedIn) {
         this.$router.push({ name: "login" });
       }
-      alert("WIP: reply");
+      alert("WIP: repost");
     },
-    actionRelay() {
+    async actionLike() {
       if (!this.userSignedIn) {
         this.$router.push({ name: "login" });
       }
-      alert("WIP: relay");
-    },
-    actionLike() {
-      if (!this.userSignedIn) {
-        this.$router.push({ name: "login" });
-      }
-      alert("WIP: like");
+      let queuedMemo = await tx.sendTx(
+        this.fromAddress, // memo from
+        "like", // memo type
+        this.memo.id, // memo parent id
+        "" // memo body
+      );
+      this.$store.commit("addQueuedMemo", queuedMemo);
     },
     actionShare() {
       alert("WIP: share");
     }
+  },
+  mounted() {
+    this.$store.dispatch("memos/fetchAndAdd", {
+      where: [
+        ["parent", "==", this.memo.id],
+        ["address", "==", this.fromAddress]
+      ]
+    });
   },
   props: ["memo"]
 };

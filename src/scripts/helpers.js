@@ -3,6 +3,9 @@ function getMemoPrefix(type, parentAddress) {
     case "comment":
       return `/c ${parentAddress} `;
       break;
+    case "like":
+      return `/l ${parentAddress} `;
+      break;
     case "quote":
       return `/q ${parentAddress} `;
       break;

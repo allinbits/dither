@@ -8,7 +8,6 @@
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
   template(v-if="Object.keys(queuedMemos).length > 0")
-    | {{ queuedMemos }}
     card-memo(v-for="memo in queuedMemos" :memo="memo" :key="memo.id")
   template(v-if="Object.keys(memos).length > 0")
     card-memo(v-for="memo in orderedMemos" :memo="memo" :key="memo.id")
@@ -39,7 +38,7 @@ export default {
   computed: {
     orderedMemos() {
       if (this.memos) {
-        let value = pickBy(this.memos, m => !m.parent);
+        let value = pickBy(this.memos, m => !m.parent && m.type !== "like");
         value = orderBy(value, m => parseInt(m.height), "desc");
         return value;
       }

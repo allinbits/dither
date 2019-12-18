@@ -29,7 +29,6 @@ function defaultTx(defaultGas, fromAddress, toAddress) {
 
 async function sendTx(fromAddress, type, parentAddress, memo) {
   let walletData = store.state.settings.data.wallet;
-  // let fromAddress = store.state.settings.data.wallet.address;
   let toAddress = store.state.blockchain.toAddress;
 
   // set up the account details

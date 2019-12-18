@@ -15,16 +15,26 @@ export default {
   name: "btn-icon",
   computed: {
     cssClass() {
+      let css = "";
       if (this.size) {
-        return `btn-icon--size-${this.size}`;
+        css += ` btn-icon--size-${this.size}`;
       }
-      return `btn-icon--size-default`;
+      if (this.color) {
+        css += " btn-icon--color";
+        if (this.color !== "true") {
+          css += ` btn-icon--color-${this.color}`;
+        }
+      }
+      return css;
     },
     imgSrc() {
+      if (this.color) {
+        return require("../assets/feather/color/" + this.icon + ".svg");
+      }
       return require("../assets/feather/" + this.icon + ".svg");
     }
   },
-  props: ["type", "icon", "to", "href", "size", "value"]
+  props: ["color", "href", "icon", "size", "to", "type", "value"]
 };
 </script>
 
@@ -36,28 +46,39 @@ export default {
   align-items center
   justify-content center
   cursor pointer
-  img
-    opacity 0.5
+
+  width 3rem
+  height 3rem
 
   .value
     font-size 0.75rem
     color var(--dim)
     margin-left 0.25rem
 
-
-.btn-icon--size-default
-  width 3rem
-  height 3rem
   img
     width 1.5rem
     height 1.5rem
 
-.btn-icon--size-small
-  width 2rem
-  height 2rem
-  &:hover
-    background var(--hover-fg)
-  img
-    width 1rem
-    height 1rem
+  &.btn-icon--size-small
+    width 2rem
+    height 2rem
+    &:hover
+      background var(--hover-fg)
+    img
+      width 1rem
+      height 1rem
+      opacity 0.5
+
+  &.btn-icon--color
+    cursor not-allowed
+    &:hover
+      background transparent
+    img
+      opacity 1.0
+
+  &.btn-icon--color-red .value
+    color #f00
+
+  &.btn-icon--color-green .value
+    color #0f0
 </style>
