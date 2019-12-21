@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { pickBy } from "lodash";
 import h from "../scripts/helpers";
 import { mapGetters } from "vuex";
 import BtnIcon from "./BtnIcon";
@@ -26,13 +27,19 @@ export default {
     ...mapGetters(["memos"])
   },
   data: () => ({
-    repostedMemo: {}
+    repostedMemo: {
+      id: "loading",
+      address: "cosmos1loading"
+    }
   }),
   async mounted() {
-    this.repostedMemo = await this.$store.dispatch(
-      "memos/fetchById",
-      this.memo.parent
-    );
+    this.repostedMemo = this.memos[this.memo.parent];
+    if (!this.repostedMemo) {
+      this.repostedMemo = await this.$store.dispatch(
+        "memos/fetchById",
+        this.memo.parent
+      );
+    }
   },
   props: ["memo"]
 };

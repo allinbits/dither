@@ -76,17 +76,20 @@ export default {
     },
     memoBody() {
       let value = this.memo.memo;
-      value = value.split(" ");
-      value.shift();
-      if (this.memo.type === "post") {
-        value = value.join(" ");
-        return value;
-      }
-      if (this.memo.type === "comment") {
+      if (value) {
+        value = value.split(" ");
         value.shift();
-        value = value.join(" ");
-        return value;
+        if (this.memo.type === "post") {
+          value = value.join(" ");
+          return value;
+        }
+        if (this.memo.type === "comment") {
+          value.shift();
+          value = value.join(" ");
+          return value;
+        }
       }
+      return "";
     },
     memoComments() {
       if (this.memo && this.memo.comments) {
@@ -141,7 +144,10 @@ export default {
   },
   methods: {
     timeAgo(date) {
-      return formatDistance(new Date(date), new Date());
+      if (date) {
+        return formatDistance(new Date(date), new Date());
+      }
+      return "";
     },
     actionView() {
       this.$router.push({ name: "memo", params: { memo: this.memo.id } });
