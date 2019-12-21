@@ -2,25 +2,12 @@
 .page-memos-memo
   app-header(page-title="Memo Info")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
-
   template(v-if="memo")
-
-    // the memo
     card-memo(:memo="memo")
-
-    // comment form
-    section-default
-      form-memo(type="comment" :parent-address="memo.id")
-
-    // queued comments
-    template(v-if="Object.keys(queuedComments).length > 0")
-      card-memo(v-for="memo in queuedComments" :memo="memo" :key="memo.id")
-
-    // comments
-    card-memo(v-for="memo in comments" :memo="memo" :key="memo.id")
-
-  card-loading(v-else)
-
+    section-default: form-memo(type="comment" :parent-address="memo.id")
+    infinite-feed(:memos="comments" :queued="queuedComments")
+  template(v-else)
+    card-loading
   app-footer
 </template>
 
@@ -31,9 +18,10 @@ import { mapGetters } from "vuex";
 import AppHeader from "./AppHeader";
 import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";
+import FormMemo from "./FormMemo";
 import CardLoading from "./CardLoading";
 import CardMemo from "./CardMemo";
-import FormMemo from "./FormMemo";
+import InfiniteFeed from "./InfiniteFeed";
 import SectionDefault from "./SectionDefault";
 export default {
   name: "page-memos-memo",
@@ -44,6 +32,7 @@ export default {
     CardLoading,
     CardMemo,
     FormMemo,
+    InfiniteFeed,
     SectionDefault
   },
   computed: {

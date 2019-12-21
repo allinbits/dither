@@ -7,15 +7,13 @@
     .avatar: img-avatar(:address="this.$route.params.address" size="96")
     .title {{ shortAddress }}
     .subtitle {{ account.memos }} memos
-  template(v-if="Object.keys(orderedMemos).length > 0")
-    card-memo(v-for="memo in orderedMemos" :memo="memo" :key="memo.id")
-    btn-load-more
-  card-loading(v-else)
+
+  infinite-feed(:memos="posts" :queued="queuedPosts")
   app-footer
 </template>
 
 <script>
-import { orderBy } from "lodash";
+import { orderBy, pickBy } from "lodash";
 
 import { mapGetters } from "vuex";
 import h from "../scripts/helpers.js";
@@ -25,8 +23,8 @@ import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";
 import BtnLoadMore from "./BtnLoadMore";
 import CardLoading from "./CardLoading";
-import CardMemo from "./CardMemo";
 import ImgAvatar from "./ImgAvatar";
+import InfiniteFeed from "./InfiniteFeed";
 export default {
   name: "page-accounts-account",
   components: {
@@ -35,8 +33,8 @@ export default {
     BtnIcon,
     BtnLoadMore,
     CardLoading,
-    CardMemo,
-    ImgAvatar
+    ImgAvatar,
+    InfiniteFeed
   },
   computed: {
     shortAddress() {
@@ -52,17 +50,35 @@ export default {
         };
       }
     },
-    orderedMemos() {
-      let memos = this.memos;
-      if (memos) {
-        let filtered = Object.values(memos).filter(
-          m => m.address === this.$route.params.address
+    posts() {
+      if (this.memos) {
+        let value = pickBy(
+          this.memos,
+          m =>
+            m.type !== "like" &&
+            m.type !== "comment" &&
+            m.address === this.$route.params.address
         );
-        return orderBy(filtered, m => parseInt(m.height), "desc");
+        value = orderBy(value, m => parseInt(m.height), "desc");
+        return value;
       }
       return [];
     },
-    ...mapGetters(["memos", "accounts"])
+    queuedPosts() {
+      if (this.queuedMemos) {
+        let value = pickBy(
+          this.queuedMemos,
+          m =>
+            m.type !== "like" &&
+            m.type !== "comment" &&
+            m.address === this.$route.params.address
+        );
+        value = orderBy(value, m => parseInt(m.height), "desc");
+        return value;
+      }
+      return [];
+    },
+    ...mapGetters(["memos", "queuedMemos", "accounts"])
   },
   methods: {
     back() {

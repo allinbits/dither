@@ -8,14 +8,8 @@
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
 
-  template(v-if="Object.keys(queuedPosts).length > 0")
-    card-memo(v-for="memo in queuedPosts" :memo="memo" :key="memo.id")
+  infinite-feed(:memos="posts" :queued="queuedPosts")
 
-  template(v-if="Object.keys(posts).length > 0")
-    card-memo(v-for="memo in posts" :memo="memo" :key="memo.id")
-    btn-load-more
-
-  card-loading(v-else)
   app-footer
 </template>
 
@@ -26,7 +20,7 @@ import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";
 import BtnLoadMore from "./BtnLoadMore";
 import CardLoading from "./CardLoading";
-import CardMemo from "./CardMemo";
+import InfiniteFeed from "./InfiniteFeed";
 import AppHeader from "./AppHeader";
 export default {
   name: "page-index",
@@ -35,8 +29,7 @@ export default {
     AppFooter,
     BtnIcon,
     BtnLoadMore,
-    CardLoading,
-    CardMemo
+    InfiniteFeed
   },
   computed: {
     posts() {
