@@ -31,7 +31,7 @@ function getTxSender(tx) {
 function truncAddress(addr) {
   if (addr) {
     let value = addr.slice(7, addr.length);
-    return value.slice(value.length - 8, value.length);
+    return value.slice(value.length - 4, value.length);
   } else {
     return "N/A";
   }

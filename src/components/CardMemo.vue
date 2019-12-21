@@ -39,7 +39,7 @@
         @click.native.stop="actionLike")
 
       // share button
-      btn-icon(
+      // btn-icon(
         slot="btn-left" size="small" icon="share"
         @click.native.stop="actionShare")
 </template>
@@ -196,7 +196,7 @@ export default {
 
 <style scoped lang="stylus">
 .card-memo
-  border-top 1px solid var(--bc)
+  border-bottom 1px solid var(--bc)
   display flex
   color var(--txt)
   cursor pointer
@@ -244,5 +244,5 @@ export default {
   display flex
   justify-content space-between
   width 100%
-  max-width 20rem
+  max-width 15rem
 </style>
