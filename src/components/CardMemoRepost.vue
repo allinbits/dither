@@ -5,20 +5,18 @@
     router-link.reposter(:to="{ name: 'account', params: { address: memo.address }}")
       | {{ shortAddress}}
     | reposted
-  card-memo(:memo="repostedMemo" :key="repostedMemo.id")
+  card-memo-post(:memo="repostedMemo" :key="repostedMemo.id")
 </template>
 
 <script>
 import { pickBy } from "lodash";
 import h from "../scripts/helpers";
 import { mapGetters } from "vuex";
-import BtnIcon from "./BtnIcon";
-import CardMemo from "./CardMemo";
+import CardMemoPost from "./CardMemoPost";
 export default {
   name: "card-memo-repost",
   components: {
-    BtnIcon,
-    CardMemo
+    CardMemoPost
   },
   computed: {
     shortAddress() {

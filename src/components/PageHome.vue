@@ -12,9 +12,7 @@
     card-memo(v-for="memo in queuedPosts" :memo="memo" :key="memo.id")
 
   template(v-if="Object.keys(posts).length > 0")
-    template(v-for="memo in posts")
-      card-memo-repost(v-if="memo.type === 'repost'" :memo="memo" :key="memo.id")
-      card-memo(v-else :memo="memo" :key="memo.id")
+    card-memo(v-for="memo in posts" :memo="memo" :key="memo.id")
     btn-load-more
 
   card-loading(v-else)
@@ -29,7 +27,6 @@ import BtnIcon from "./BtnIcon";
 import BtnLoadMore from "./BtnLoadMore";
 import CardLoading from "./CardLoading";
 import CardMemo from "./CardMemo";
-import CardMemoRepost from "./CardMemoRepost";
 import AppHeader from "./AppHeader";
 export default {
   name: "page-index",
@@ -39,8 +36,7 @@ export default {
     BtnIcon,
     BtnLoadMore,
     CardLoading,
-    CardMemo,
-    CardMemoRepost
+    CardMemo
   },
   computed: {
     posts() {
