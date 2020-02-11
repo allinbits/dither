@@ -1,6 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App";
+import VueGtag from "vue-gtag";
+
+Vue.use(VueGtag, {
+  config: { id: "G-0DGE9350DG" }
+});
 
 // sync store and router
 import { sync } from "vuex-router-sync";
