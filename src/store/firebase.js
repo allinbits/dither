@@ -3,14 +3,14 @@ import "firebase/firestore";
 
 function initFirebase() {
   Firebase.initializeApp({
-    apiKey: "AIzaSyBwhML0zwS6Bxg3xZAamCZsjdxp8Omj_p8",
-    authDomain: "depthchat.firebaseapp.com",
-    databaseURL: "https://depthchat.firebaseio.com",
-    projectId: "depthchat",
-    storageBucket: "depthchat.appspot.com",
-    messagingSenderId: "689660525897",
-    appId: "1:689660525897:web:967687c6922411834f2e98",
-    measurementId: "G-W0BD948NZ2"
+    apiKey: "AIzaSyBN-WIpBZXmnuEK6xIMzMX6IEDvOtpR5uc",
+    authDomain: "dither-chat.firebaseapp.com",
+    databaseURL: "https://dither-chat.firebaseio.com",
+    projectId: "dither-chat",
+    storageBucket: "dither-chat.appspot.com",
+    messagingSenderId: "165753878836",
+    appId: "1:165753878836:web:3642734bed0a78ced20d61",
+    measurementId: "G-EZHC9P3N4V"
   });
   return new Promise((resolve, reject) => {
     Firebase.firestore()
