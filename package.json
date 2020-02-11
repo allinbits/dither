@@ -81,7 +81,7 @@
     "not ie <= 8"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/virgo/dither.git"
+    "type": "git",
+    "url": "https://github.com/virgo/dither.git"
   }
 }
