@@ -1,4 +1,4 @@
-# dither-client
+# dither
 
 > A web client for Dither.
 

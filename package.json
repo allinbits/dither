@@ -1,9 +1,9 @@
 {
   "name": "dither-client",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A web client for Dither.",
   "author": "Peng Zhong <172531+nylira@users.noreply.github.com>",
-  "private": true,
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
