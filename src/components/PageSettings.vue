@@ -9,9 +9,7 @@
       | logged in via {{ provider.providerId }}
     // .subtitle
       | user id is {{ user.uid }}
-  section-default.section
-    .section-title Your wallet
-    wallet
+  wallet
   app-footer
 </template>
 
@@ -52,27 +50,8 @@ export default {
 .section
   .section-title
     font-weight bold
-    font-size 1.25rem
-    margin-bottom 0.25rem
+    font-size 1.125rem
   .subtitle
-    color var(--dim)
-
-.provider
-  border 1px solid var(--bc)
-  display flex
-
-  .photo-url
-    margin-right 0.5rem
-    img
-      width 3rem
-      height 3rem
-      display block
-  .text
-    flex 1
-    display flex
-    justify-content center
-    flex-flow column nowrap
-  .display-name
     color var(--dim)
     font-size 0.75rem
 </style>

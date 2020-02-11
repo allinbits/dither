@@ -1,20 +1,20 @@
 <template lang="pug">
 .wallet
-  template(v-if="settings && settings.data && settings.data.wallet")
-    dl
-      dt Address:
-      dd.break-address {{ settings.data.wallet.address }}
-      dd.dim
-        router-link(
-          :to="{ name: 'account', params: { address: settings.data.wallet.address } }")
-          | public profile
-      // dd.dim
-        a(:href="`https://cosmos.bigdipper.live/account/${settings.data.wallet.address}`" target="_blank" rel="noreferrer noopener") details
-      dt Tokens:
-      dd {{ settings.data.uatom / 1000000 }} ATOM
-    a(@click="deleteWallet") Delete wallet
-  template(v-else)
-    a(@click="createWallet") Create wallet
+  section-default.wallet-active(v-if="settings && settings.data && settings.data.wallet")
+    p(v-if="tokens") You need ATOM tokens to post messages on Dither. You currently have enough!
+    p(v-else) You need ATOM tokens to post messages on Dither, but you don't have any! You can get some by messaging #[a(:href="tweetUrl" target="_blank" rel="noopener noreferrer") @VirgoUDV on Twitter].
+
+    p
+      .break-address This is your wallet address:
+      .break-address {{ settings.data.wallet.address }}
+
+    p You have {{ tokens }} ATOM
+
+    p: a.delete-wallet(@click="deleteWallet") Delete wallet
+
+  section-default.wallet-inactive(v-else)
+    p Dither is an open source, uncensorable chat app that runs on the Cosmos Hub. To post messages, you need to have ATOM tokens. Create an ATOM wallet now:
+    dc-btn(@click.native="createWallet") Create new wallet
 </template>
 
 <script>
@@ -23,16 +23,42 @@ import { createWalletFromMnemonic } from "@tendermint/sig";
 import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
+import DcBtn from "./DcBtn";
 import BtnLarge from "./BtnLarge";
 import SectionDefault from "./SectionDefault";
 export default {
   name: "wallet",
   components: {
-    BtnLarge,
+    DcBtn,
     SectionDefault
   },
   computed: {
-    ...mapGetters(["user", "settings", "blockchain"])
+    ...mapGetters(["user", "settings", "blockchain"]),
+    tokens() {
+      let atoms = this.settings.data.uatom;
+      if (atoms) {
+        return atoms / 1000000;
+      } else {
+        return 0;
+      }
+    },
+    tweetUrl() {
+      if (
+        this.settings &&
+        this.settings.data &&
+        this.settings.data.wallet &&
+        this.settings.data.wallet.address
+      ) {
+        let address = this.settings.data.wallet.address;
+        return (
+          "https://twitter.com/intent/tweet?via=VirgoUDV&text=I%20want%20to%20try%20out%20https%3A//dither.chat.%20Please%20send%20ATOM%20to%20" +
+          address +
+          "&hashtags=dither"
+        );
+      } else {
+        return "https://twitter.com/VirgoUDV";
+      }
+    }
   },
   methods: {
     createWallet() {
@@ -73,6 +99,8 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-dd.dim
-  color var(--dim)
+p
+  margin-bottom 1.5rem
+a.delete-wallet
+  color #f00
 </style>

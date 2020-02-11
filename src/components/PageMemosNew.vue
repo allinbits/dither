@@ -5,9 +5,10 @@
     btn-icon(slot="btn-right" icon="send" @click.native="broadcastTx")
   section-default(v-if="settings && settings.data && settings.data.wallet")
     form-memo(type="post")
-  template(v-else)
-    | You can't send memos without an ATOM balance.
-    router-link(:to="{ name: 'profile' }") Create a wallet
+  section-default(v-else)
+    | You can't send memos without any ATOM.
+    = ' '
+    router-link(:to="{ name: 'settings' }") Create a wallet &raquo;
   app-footer
 </template>
 
