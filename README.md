@@ -1,6 +1,6 @@
-# depth-client
+# dither-client
 
-> A web client for Depth.
+> A web client for Dither.
 
 ## Build Setup
 
@@ -20,7 +20,7 @@ npm run build --report
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-## Depth commands
+## Dither commands
 
 ## 0.x commands - MVP
 /comment [txhash] [memo] - comment on a memo (start a thread/chain)

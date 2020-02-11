@@ -1,7 +1,7 @@
 {
-  "name": "depth-client",
+  "name": "dither-client",
   "version": "1.0.0",
-  "description": "A web client for Depth.",
+  "description": "A web client for Dither.",
   "author": "Peng Zhong <172531+nylira@users.noreply.github.com>",
   "private": true,
   "scripts": {
