@@ -4,7 +4,7 @@ import App from "./App";
 import VueGtag from "vue-gtag";
 
 Vue.use(VueGtag, {
-  config: { id: "G-0DGE9350DG" }
+  config: { id: "UA-158201725-1" }
 });
 
 // sync store and router
