@@ -2,22 +2,21 @@
 .card-memo-post
   corner-error(v-if="memo.height === 0 && memo.response.code")
   corner-spinner(v-else-if="memo.height === 0")
-  .container-avatar(@click.self="actionView")
+  .container-avatar(@click.self="navToMemo")
     router-link.avatar(
       :to="{ name: 'account', params: {address: memo.address}}")
       img-avatar(:address="memo.address")
   .container-text
-    .meta(@click.self="actionView")
+    .meta(@click.self="navToMemo")
       router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
         | {{ shortAddress }}
       router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
         | {{ timeAgo(memo.timestamp) }}
-    .body.dont-break-out(@click.self="actionView")
-      | {{ memoBody }}
-    .actions(@click.self="actionView")
+    memo-body(:memo="memo")
+    .actions(@click.self="navToMemo")
       btn-icon(
         slot="btn-left" size="small" icon="message-circle" :value="memoComments"
-        @click.native.stop="actionView")
+        @click.native.stop="navToMemo")
 
       // repost button
       btn-icon.btn-repost.btn-repost--active(
@@ -25,7 +24,7 @@
         slot="btn-left" size="small" icon="repeat" color="green" :value="memoReposts")
       btn-icon.btn-repost(
         v-else
-        :class="btnRepostCss"
+        :class="btnRepostStyle"
         slot="btn-left" size="small" icon="repeat" :value="memoReposts"
         @click.native.stop="actionRepost")
 
@@ -48,6 +47,12 @@
 import { formatDistance, subDays } from "date-fns";
 import { find } from "lodash";
 
+// linkify
+import * as linkify from "linkifyjs";
+import linkifyHtml from "linkifyjs/html";
+import hashtag from "linkifyjs/plugins/hashtag"; // optional
+hashtag(linkify);
+
 import h from "../scripts/helpers";
 import tx from "../scripts/tx";
 import { mapGetters } from "vuex";
@@ -55,13 +60,15 @@ import BtnIcon from "./BtnIcon";
 import CornerError from "./CornerError";
 import CornerSpinner from "./CornerSpinner";
 import ImgAvatar from "./ImgAvatar";
+import MemoBody from "./MemoBody";
 export default {
   name: "card-memo-post",
   components: {
     BtnIcon,
     CornerError,
     CornerSpinner,
-    ImgAvatar
+    ImgAvatar,
+    MemoBody
   },
   computed: {
     ...mapGetters(["memos", "settings", "userSignedIn"]),
@@ -75,18 +82,18 @@ export default {
       return "";
     },
     memoBody() {
-      let value = this.memo.memo;
-      if (value) {
-        value = value.split(" ");
-        value.shift();
+      let text = this.memo.memo;
+      if (text) {
+        text = text.split(" ");
+        text.shift();
         if (this.memo.type === "post") {
-          value = value.join(" ");
-          return value;
+          text = text.join(" ");
+          return linkifyHtml(text);
         }
         if (this.memo.type === "comment") {
-          value.shift();
-          value = value.join(" ");
-          return value;
+          text.shift();
+          text = text.join(" ");
+          return linkifyHtml(text);
         }
       }
       return "";
@@ -109,11 +116,11 @@ export default {
       }
       return 0;
     },
-    btnLikeCss() {
+    btnLikeStyle() {
       if (this.userLiked) return "btn-like--active";
       return "btn-like--default";
     },
-    btnRepostCss() {
+    btnRepostStyle() {
       if (this.userReposted) return "btn-repost--active";
       return "btn-repost--default";
     },
@@ -149,7 +156,7 @@ export default {
       }
       return "";
     },
-    actionView() {
+    navToMemo() {
       this.$router.push({ name: "memo", params: { memo: this.memo.id } });
     },
     async actionRepost() {
