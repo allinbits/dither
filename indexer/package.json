@@ -8,6 +8,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "firebase-admin": "^8.9.2",
+    "linkifyjs": "^2.1.9",
     "tendermint": "^4.0.2"
   },
   "devDependencies": {},
