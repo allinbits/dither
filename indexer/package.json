@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "firebase-admin": "^8.9.2",
     "reconnecting-websocket": "^4.4.0",
     "ws": "^7.2.1"
