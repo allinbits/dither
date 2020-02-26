@@ -10,7 +10,6 @@ import { Firebase } from "../store/firebase.js";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 
-import { mapGetters } from "vuex";
 import AppHeader from "./AppHeader";
 import BtnIcon from "./BtnIcon";
 export default {

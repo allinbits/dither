@@ -14,8 +14,6 @@
 </template>
 
 <script>
-import { Firebase } from "../store/firebase.js";
-
 import { mapGetters } from "vuex";
 import AppFooter from "./AppFooter";
 import BtnIcon from "./BtnIcon";

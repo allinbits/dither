@@ -1,5 +1,3 @@
-import store from "../index.js";
-
 const memos = {
   firestorePath: "memos",
   firestoreRefType: "collection", // or 'doc'

@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { formatDistance, subDays } from "date-fns";
+import { formatDistance } from "date-fns";
 import { find } from "lodash";
 
 // linkify

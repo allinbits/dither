@@ -27,6 +27,7 @@ export default {
       if (this.icon) {
         return require("../assets/feather/" + this.icon + ".svg");
       }
+      return "";
     }
   },
   props: ["type", "icon", "to", "href", "size", "value"]

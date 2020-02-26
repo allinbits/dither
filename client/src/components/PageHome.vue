@@ -8,7 +8,8 @@
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
 
-  infinite-feed(:memos="posts" :queued="queuedPosts")
+  infinite-feed(v-if="posts" :memos="posts" :queued="queuedPosts")
+  card-loading(v-else)
 
   app-footer
 </template>
@@ -29,6 +30,7 @@ export default {
     AppFooter,
     BtnIcon,
     BtnLoadMore,
+    CardLoading,
     InfiniteFeed
   },
   computed: {

@@ -2,16 +2,12 @@ function getMemoPrefix(type, parentAddress) {
   switch (type) {
     case "comment":
       return `/c ${parentAddress} `;
-      break;
     case "like":
       return `/l ${parentAddress} `;
-      break;
     case "quote":
       return `/q ${parentAddress} `;
-      break;
     case "repost":
       return `/r ${parentAddress} `;
-      break;
     default:
       return "/p ";
   }

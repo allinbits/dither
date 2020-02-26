@@ -20,11 +20,9 @@
 <script>
 import * as bip39 from "bip39";
 import { createWalletFromMnemonic } from "@tendermint/sig";
-import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
 import DcBtn from "./DcBtn";
-import BtnLarge from "./BtnLarge";
 import SectionDefault from "./SectionDefault";
 export default {
   name: "wallet",

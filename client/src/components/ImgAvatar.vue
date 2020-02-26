@@ -5,9 +5,7 @@
 <script>
 import identicon from "identicon.js";
 import createHash from "create-hash";
-import { formatDistance, subDays } from "date-fns";
 
-import h from "../scripts/helpers";
 export default {
   name: "img-avatar",
   computed: {
@@ -26,7 +24,7 @@ export default {
         };
         data = new identicon(hexstring, options).toString();
       } else {
-        data = new identicon("0000000000000000", options).toString();
+        data = new identicon("0000000000000000").toString();
       }
       return '<img src="data:image/svg+xml;base64,' + data + '">';
     }

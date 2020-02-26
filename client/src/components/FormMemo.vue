@@ -7,7 +7,6 @@ form.form-memo(@submit.prevent.default="sendMemo")
 </template>
 
 <script>
-import { signTx, createBroadcastTx } from "@tendermint/sig";
 import { byteLength } from "byte-length";
 
 import { mapGetters } from "vuex";

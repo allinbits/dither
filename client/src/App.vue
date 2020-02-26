@@ -24,7 +24,7 @@ export default {
     // fetch the current block, and then get some recent memos
     let response = await fetch(`${this.blockchain.lcd}/blocks/latest`);
     let data = await response.json();
-    let height = data.block_meta.header.height;
+    // let height = data.block_meta.header.height;
     this.$store.commit("setHeight", data.block_meta.header.height);
 
     this.$store.dispatch("memos/openDBChannel", {

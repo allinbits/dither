@@ -90,7 +90,7 @@ const storeData = {
       state.user = user;
       state.userSignedIn = true;
     },
-    signOutUser(state, user) {
+    signOutUser(state) {
       Firebase.auth().signOut();
       state.user = {};
       state.userSignedIn = false;
@@ -106,6 +106,7 @@ const store = new Vuex.Store(storeData);
 
 // init Firebase
 initFirebase().catch(error => {
+  console.log("there was a firebase error", error);
   // take user to a page stating an error occurred
   // (might be a connection error, or the app is open in another tab)
 });

@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import { pickBy } from "lodash";
 import h from "../scripts/helpers";
 import { mapGetters } from "vuex";
 import CardMemoPost from "./CardMemoPost";
@@ -31,8 +30,10 @@ export default {
     }
   }),
   async mounted() {
-    this.repostedMemo = this.memos[this.memo.parent];
-    if (!this.repostedMemo) {
+    let repostedMemo = this.memos[this.memo.parent];
+    if (repostedMemo) {
+      this.repostedMemo = repostedMemo;
+    } else {
       this.repostedMemo = await this.$store.dispatch(
         "memos/fetchById",
         this.memo.parent
