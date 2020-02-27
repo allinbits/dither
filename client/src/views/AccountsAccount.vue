@@ -6,6 +6,7 @@
     .cover
     .avatar: img-avatar(:address="this.$route.params.address" size="96")
     .title {{ shortAddress }}
+    .subtitle {{ this.$route.params.address }}
     .subtitle {{ account.memos }} memos
 
   infinite-feed(:memos="posts" :queued="queuedPosts")
@@ -111,4 +112,5 @@ export default {
     font-weight bold
   .subtitle
     color var(--dim)
+    font-size 0.75rem
 </style>
