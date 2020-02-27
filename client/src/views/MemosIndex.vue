@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-memos-index
-  app-header(page-title="Search")
+  app-header(page-title="Dither Search")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
   card-wip

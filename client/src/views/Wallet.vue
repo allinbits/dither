@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-wallet
-  app-header(page-title="Wallet")
+  app-header(page-title="Dither Wallet")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
     template(v-if="userSignedIn")
