@@ -24,6 +24,9 @@ export default {
     ...mapGetters(["user", "userSignedIn", "settings"]),
     fromAddress() {
       return this.settings.data.wallet.address;
+    },
+    sendAmountUatom() {
+      return (this.sendAmount * 1000000).toString();
     }
   },
   data: () => ({
@@ -35,13 +38,15 @@ export default {
       this.sendTx();
     },
     async sendTx() {
-      await tx.sendTx(
+      let queuedTxSend = await tx.sendTx(
         this.fromAddress,
         "send",
         "",
         "Sent by dither.chat",
-        this.sendTo
+        this.sendTo,
+        this.sendAmountUatom
       );
+      this.$store.commit("addQueuedTxSends", queuedTxSend);
 
       this.sendTo = "";
       this.sendAmount = 0;

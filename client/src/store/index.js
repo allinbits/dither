@@ -67,7 +67,8 @@ const storeData = {
         }
       ]
     },
-    queuedMemos: {}
+    queuedMemos: {},
+    queuedTxSends: {}
   },
   mutations: {
     setHeight(state, height) {
@@ -79,6 +80,10 @@ const storeData = {
     addQueuedMemo(state, memo) {
       Vue.set(state.queuedMemos, memo.id, memo);
       console.log("adding to queue:", state.queuedMemos[memo.id]);
+    },
+    addQueuedTxSends(state, txSend) {
+      Vue.set(state.queuedTxSends, txSend.id, txSend);
+      console.log("adding to queue:", state.queuedTxSends[txSend.id]);
     },
     rmQueuedMemo(state, id) {
       if (state.queuedMemos[id]) {

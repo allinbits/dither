@@ -55,7 +55,6 @@ async function sendTx(fromAddr, type, parentAddr, memo, toAddr, amount) {
     txToAddr,
     txAmount
   );
-  console.log("tx", tx);
 
   // set the sequence to be the current account sequence plus any queued memos
   let accountSequence = accountJson.result.value.sequence;
@@ -69,7 +68,6 @@ async function sendTx(fromAddr, type, parentAddr, memo, toAddr, amount) {
   let signMeta = {
     account_number: accountJson.result.value.account_number,
     chain_id: store.state.blockchain.chainId,
-
     sequence: currentSequence
   };
 

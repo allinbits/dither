@@ -15,7 +15,7 @@
 
     p
       .break-address This is your wallet address:
-      a.break-address(href="`https://stargazer.certus.one/accounts/${settings.data.wallet.address}`" rel="noopener noreferrer" target="_blank") {{ settings.data.wallet.address }}
+      a.break-address(:href="`https://stargazer.certus.one/accounts/${settings.data.wallet.address}`" rel="noopener noreferrer" target="_blank") {{ settings.data.wallet.address }}
 
     p You have #[strong {{ tokens }} ATOM]
 
@@ -108,7 +108,7 @@ export default {
         this.$store.dispatch("settings/delete", "wallet");
       }
     }
-  } /*,
+  },
   watch: {
     async "settings.data.wallet"() {
       let response = await fetch(
@@ -119,6 +119,6 @@ export default {
       // console.log("balance amount", amount);
       this.$store.dispatch("settings/set", { uatom: amount });
     }
-  }*/
+  }
 };
 </script>
