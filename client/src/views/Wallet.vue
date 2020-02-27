@@ -25,7 +25,8 @@
     p(v-if="devMode")
       a.delete-wallet(@click="deleteWallet") Delete wallet
 
-  section-default.wallet-inactive(v-else)
+  section-default(v-else)
+    div(slot="section-title") Create a wallet
     p Dither is an open source, uncensorable chat app that runs on the Cosmos Hub. To post messages, you need to have ATOM tokens. Create an ATOM wallet now:
     dc-btn(@click.native="createWallet") Create new wallet
 
