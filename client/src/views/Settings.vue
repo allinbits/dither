@@ -10,7 +10,7 @@
     p If you wish to view your balance or send tokens, go to #[router-link(:to="{ name: 'wallet'}") your wallet].
     p There are no settings available yet. Usernames and avatar customization is coming soon. Thanks for your patience!
     p Dither is an #[a(href="https://github.com/virgo-project/dither" rel="noopener noreferrer" target="_blank") open source project] built on the #[a(href="https://cosmos.network" rel="noopener noreferrer" target="_blank") Cosmos Hub]. We are funded by #[a(href="https://virgo.org" target="_blank" rel="noopener noreferrer") Virgo].
-    p.warning DISCLAIMER: Dither's burner wallet is designed to hold small amounts (> 1) of ATOM tokens. These ATOMs are used as gas to send messages on Dither. Dither's wallet is designed for convenience over security. Any loss of ATOMs will not be covered by either Dither or Virgo.
+    p.warning DISCLAIMER: Dither's burner wallet is designed to hold small amounts (<1) of ATOM tokens. These ATOMs are used as gas to send messages on Dither. Dither's wallet is designed for convenience over security. Any loss of ATOMs will not be covered by either Dither or Virgo.
   app-footer
 </template>
 
