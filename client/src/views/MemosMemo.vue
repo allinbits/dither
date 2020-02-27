@@ -4,7 +4,8 @@
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
   template(v-if="memo")
     card-memo(:memo="memo")
-    section-default: form-memo(type="comment" :parent-address="memo.id")
+    section-default
+      form-send-memo(type="comment" :parent-address="memo.id")
     infinite-feed(:memos="comments" :queued="queuedComments")
   template(v-else)
     card-loading
@@ -18,7 +19,7 @@ import { mapGetters } from "vuex";
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
-import FormMemo from "@/components/FormMemo";
+import FormSendMemo from "@/components/FormSendMemo";
 import CardLoading from "@/components/CardLoading";
 import CardMemo from "@/components/CardMemo";
 import InfiniteFeed from "@/components/InfiniteFeed";
@@ -31,7 +32,7 @@ export default {
     BtnIcon,
     CardLoading,
     CardMemo,
-    FormMemo,
+    FormSendMemo,
     InfiniteFeed,
     SectionDefault
   },

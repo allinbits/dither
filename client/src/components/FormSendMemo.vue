@@ -14,7 +14,7 @@ import h from "../scripts/helpers";
 import tx from "../scripts/tx";
 import DcBtn from "./DcBtn";
 export default {
-  name: "form-memo",
+  name: "form-send-memo",
   components: {
     DcBtn
   },

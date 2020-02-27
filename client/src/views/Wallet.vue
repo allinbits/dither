@@ -28,15 +28,7 @@
 
   section-default(v-if="settings && settings.data && settings.data.wallet")
     div(slot="section-title") Send tokens
-    form
-      fieldset
-        label To Address
-        input(type="text" v-model="sendTo" placeholder="cosmos1address")
-      fieldset
-        label ATOM Amount
-        input(type="number" v-model="sendAmount" placeholder="Number of ATOM")
-      fieldset
-        input(type="submit" value="Send ATOM")
+    form-send-tokens(:balance="tokens")
 
   app-footer
 </template>
@@ -44,13 +36,13 @@
 <script>
 import * as bip39 from "bip39";
 import { createWalletFromMnemonic } from "@tendermint/sig";
-// import tx from "../scripts/tx";
 
 import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import BtnIcon from "@/components/BtnIcon";
 import DcBtn from "@/components/DcBtn";
+import FormSendTokens from "@/components/FormSendTokens";
 import SectionDefault from "@/components/SectionDefault";
 export default {
   name: "page-wallet",
@@ -59,6 +51,7 @@ export default {
     AppHeader,
     BtnIcon,
     DcBtn,
+    FormSendTokens,
     SectionDefault
   },
   computed: {
@@ -92,10 +85,6 @@ export default {
       }
     }
   },
-  data: () => ({
-    sendTo: "",
-    sendAmount: 0
-  }),
   methods: {
     createWallet() {
       const mnemonic = bip39.generateMnemonic();
@@ -118,9 +107,8 @@ export default {
         this.$store.dispatch("settings/delete", "mnemonic");
         this.$store.dispatch("settings/delete", "wallet");
       }
-    },
-    sendTokens() {}
-  },
+    }
+  } /*,
   watch: {
     async "settings.data.wallet"() {
       let response = await fetch(
@@ -131,35 +119,6 @@ export default {
       // console.log("balance amount", amount);
       this.$store.dispatch("settings/set", { uatom: amount });
     }
-  }
+  }*/
 };
 </script>
-
-<style scoped lang="stylus">
-a.delete-wallet
-  color #f00
-
-fieldset
-  padding 1rem 0
-  border none
-fieldset:not(:last-child)
-  border-bottom 1px solid var(--bc)
-label
-  display block
-
-input[type="text"]
-input[type="number"]
-input[type="email"]
-input[type="password"]
-input[type="submit"]
-  border 1px solid var(--bc-input)
-  height 2rem
-  padding 0 0.5rem
-
-input[type="text"]
-input[type="number"]
-input[type="email"]
-input[type="password"]
-  max-width 40rem
-  width 100%
-</style>

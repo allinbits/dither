@@ -2,23 +2,23 @@ import { signTx, createBroadcastTx } from "@tendermint/sig";
 import store from "../store/index.js";
 import h from "./helpers";
 
-function defaultTx(defaultGas, fromAddress, toAddress) {
+function defaultTx(defaultGas, fromAddr, memo, toAddr, amount) {
   return {
     fee: {
       amount: [{ amount: "0", denom: "" }],
       gas: defaultGas
     },
-    memo: "",
+    memo: memo,
     msg: [
       {
         type: "cosmos-sdk/MsgSend",
         value: {
-          from_address: fromAddress,
-          to_address: toAddress,
+          from_address: fromAddr,
+          to_address: toAddr,
           amount: [
             {
               denom: "uatom",
-              amount: "1"
+              amount: amount
             }
           ]
         }
@@ -27,23 +27,35 @@ function defaultTx(defaultGas, fromAddress, toAddress) {
   };
 }
 
-async function sendTx(fromAddress, type, parentAddress, memo) {
+async function sendTx(fromAddr, type, parentAddr, memo, toAddr, amount) {
+  let txMemo, txToAddr, txAmount;
   let walletData = store.state.settings.data.wallet;
-  // let toAddress = store.state.blockchain.toAddress;
 
   // set up the account details
   let account = await fetch(
-    `${store.state.blockchain.lcd}/auth/accounts/${fromAddress}`
+    `${store.state.blockchain.lcd}/auth/accounts/${fromAddr}`
   );
   let accountJson = await account.json();
   // console.log("account info", accountJson.result);
 
+  if (type === "send") {
+    txMemo = memo;
+    txToAddr = toAddr;
+    txAmount = amount;
+  } else {
+    txMemo = h.getMemoPrefix(type, parentAddr) + memo;
+    txToAddr = store.state.blockchain.toAddress;
+    txAmount = "1";
+  }
+
   let tx = defaultTx(
     store.state.blockchain.defaultGas,
-    fromAddress,
-    store.state.blockchain.toAddress
+    fromAddr,
+    txMemo,
+    txToAddr,
+    txAmount
   );
-  tx.memo = h.getMemoPrefix(type, parentAddress) + memo;
+  console.log("tx", tx);
 
   // set the sequence to be the current account sequence plus any queued memos
   let accountSequence = accountJson.result.value.sequence;
@@ -62,7 +74,7 @@ async function sendTx(fromAddress, type, parentAddress, memo) {
   };
 
   let wallet = {
-    address: fromAddress,
+    address: fromAddr,
     privateKey: Uint8Array.from(walletData.privateKey),
     publicKey: Uint8Array.from(walletData.publicKey)
   };
@@ -80,12 +92,13 @@ async function sendTx(fromAddress, type, parentAddress, memo) {
     body: JSON.stringify(txBroadcast)
   });
   let txResponseJson = await txResponse.json();
+
   let queuedMemo = {
     id: txResponseJson.txhash,
-    address: fromAddress,
+    address: fromAddr,
     height: 0,
     memo: tx.memo,
-    parent: parentAddress,
+    parent: parentAddr,
     response: txResponseJson,
     timestamp: new Date().toISOString(),
     tx: txBroadcast,
@@ -94,7 +107,6 @@ async function sendTx(fromAddress, type, parentAddress, memo) {
     likes: 0,
     comments: 0
   };
-
   return queuedMemo;
 }
 

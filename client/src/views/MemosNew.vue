@@ -4,7 +4,7 @@
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
     btn-icon(slot="btn-right" icon="send" @click.native="broadcastTx")
   section-default(v-if="settings && settings.data && settings.data.wallet")
-    form-memo(type="post")
+    form-send-memo(type="post")
   section-default(v-else)
     | You can't send memos without any ATOM.
     = ' '
@@ -17,7 +17,7 @@ import { mapGetters } from "vuex";
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
-import FormMemo from "@/components/FormMemo";
+import FormSendMemo from "@/components/FormSendMemo";
 import SectionDefault from "@/components/SectionDefault";
 export default {
   name: "page-settings",
@@ -25,7 +25,7 @@ export default {
     AppHeader,
     AppFooter,
     BtnIcon,
-    FormMemo,
+    FormSendMemo,
     SectionDefault
   },
   computed: {
