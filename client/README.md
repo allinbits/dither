@@ -1,6 +1,6 @@
 # dither-client
 
-> A web client for Dither.
+> A web client for Dither. Try it out at [dither.chat](https://dither.chat).
 
 ## Build Setup
 
