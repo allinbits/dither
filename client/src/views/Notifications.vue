@@ -6,9 +6,9 @@
 </template>
 
 <script>
-import AppFooter from "./AppFooter";
-import AppHeader from "./AppHeader";
-import CardWip from "./CardWip";
+import AppFooter from "@/components/AppFooter";
+import AppHeader from "@/components/AppHeader";
+import CardWip from "@/components/CardWip";
 export default {
   name: "page-notifications",
   components: {

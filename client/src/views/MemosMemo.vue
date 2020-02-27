@@ -15,14 +15,14 @@
 import { pickBy, orderBy } from "lodash";
 
 import { mapGetters } from "vuex";
-import AppHeader from "./AppHeader";
-import AppFooter from "./AppFooter";
-import BtnIcon from "./BtnIcon";
-import FormMemo from "./FormMemo";
-import CardLoading from "./CardLoading";
-import CardMemo from "./CardMemo";
-import InfiniteFeed from "./InfiniteFeed";
-import SectionDefault from "./SectionDefault";
+import AppHeader from "@/components/AppHeader";
+import AppFooter from "@/components/AppFooter";
+import BtnIcon from "@/components/BtnIcon";
+import FormMemo from "@/components/FormMemo";
+import CardLoading from "@/components/CardLoading";
+import CardMemo from "@/components/CardMemo";
+import InfiniteFeed from "@/components/InfiniteFeed";
+import SectionDefault from "@/components/SectionDefault";
 export default {
   name: "page-memos-memo",
   components: {

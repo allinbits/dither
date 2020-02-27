@@ -18,13 +18,13 @@ import { orderBy, pickBy } from "lodash";
 import { mapGetters } from "vuex";
 import h from "../scripts/helpers.js";
 
-import AppHeader from "./AppHeader";
-import AppFooter from "./AppFooter";
-import BtnIcon from "./BtnIcon";
-import BtnLoadMore from "./BtnLoadMore";
-import CardLoading from "./CardLoading";
-import ImgAvatar from "./ImgAvatar";
-import InfiniteFeed from "./InfiniteFeed";
+import AppHeader from "@/components/AppHeader";
+import AppFooter from "@/components/AppFooter";
+import BtnIcon from "@/components/BtnIcon";
+import BtnLoadMore from "@/components/BtnLoadMore";
+import CardLoading from "@/components/CardLoading";
+import ImgAvatar from "@/components/ImgAvatar";
+import InfiniteFeed from "@/components/InfiniteFeed";
 export default {
   name: "page-accounts-account",
   components: {

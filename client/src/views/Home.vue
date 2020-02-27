@@ -17,12 +17,12 @@
 <script>
 import { orderBy, pickBy } from "lodash";
 import { mapGetters } from "vuex";
-import AppFooter from "./AppFooter";
-import BtnIcon from "./BtnIcon";
-import BtnLoadMore from "./BtnLoadMore";
-import CardLoading from "./CardLoading";
-import InfiniteFeed from "./InfiniteFeed";
-import AppHeader from "./AppHeader";
+import AppFooter from "@/components/AppFooter";
+import BtnIcon from "@/components/BtnIcon";
+import BtnLoadMore from "@/components/BtnLoadMore";
+import CardLoading from "@/components/CardLoading";
+import InfiniteFeed from "@/components/InfiniteFeed";
+import AppHeader from "@/components/AppHeader";
 export default {
   name: "page-index",
   components: {

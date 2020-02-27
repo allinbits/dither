@@ -1,5 +1,5 @@
 <template lang="pug">
-form.form-memo(@submit.prevent.default="sendMemo")
+form.form-memo(@submit.prevent.default="validateAndSend")
   textarea#memo-body(v-model="memo" :placeholder="placeholderText")
   .field-note Bytes left: {{ bytesLeft }}
   .field-note.field-note--error(v-if="formHasError") {{ formErrorMsg }}
@@ -49,7 +49,7 @@ export default {
     formErrorMsg: ""
   }),
   methods: {
-    async sendMemo() {
+    async validateAndSend() {
       if (this.bytesLeft === 512) {
         this.formHasError = true;
         this.formErrorMsg = "Memo needs to have some text";
@@ -62,9 +62,9 @@ export default {
         this.formHasError = false;
         this.formErrorMessage = "";
       }
-      this.send();
+      this.sendTx();
     },
-    async send() {
+    async sendTx() {
       let queuedMemo = await tx.sendTx(
         this.fromAddress,
         this.type,

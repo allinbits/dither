@@ -10,8 +10,8 @@ import { Firebase } from "../store/firebase.js";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 
-import AppHeader from "./AppHeader";
-import BtnIcon from "./BtnIcon";
+import AppHeader from "@/components/AppHeader";
+import BtnIcon from "@/components/BtnIcon";
 export default {
   name: "page-login",
   components: {

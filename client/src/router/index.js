@@ -18,21 +18,19 @@ export default new Router({
       path: "/",
       name: "home",
       component: () =>
-        import(/* webpackChunkName: "home" */ "../components/PageHome.vue")
+        import(/* webpackChunkName: "home" */ "../views/Home.vue")
     },
     {
       path: "/accounts",
       component: () =>
-        import(
-          /* webpackChunkName: "accounts" */ "@/components/PageAccounts.vue"
-        ),
+        import(/* webpackChunkName: "accounts" */ "@/views/Accounts.vue"),
       children: [
         {
           path: "/",
           name: "accounts",
           component: () =>
             import(
-              /* webpackChunkName: "accounts-index" */ "@/components/PageAccountsIndex.vue"
+              /* webpackChunkName: "accounts-index" */ "@/views/AccountsIndex.vue"
             )
         },
         {
@@ -40,47 +38,47 @@ export default new Router({
           name: "account",
           component: () =>
             import(
-              /* webpackChunkName: "account" */ "@/components/PageAccountsAccount.vue"
+              /* webpackChunkName: "account" */ "@/views/AccountsAccount.vue"
             )
         }
       ]
     },
     {
+      path: "/login",
+      name: "login",
+      component: () =>
+        import(/* webpackChunkName: "login" */ "../views/Login.vue")
+    },
+    {
       path: "/messages",
       name: "messages",
       component: () =>
-        import(
-          /* webpackChunkName: "messages" */ "../components/PageMessages.vue"
-        )
+        import(/* webpackChunkName: "messages" */ "../views/Messages.vue")
     },
     {
       path: "/memos",
       component: () =>
-        import(/* webpackChunkName: "memos" */ "@/components/PageMemos.vue"),
+        import(/* webpackChunkName: "memos" */ "@/views/Memos.vue"),
       children: [
         {
           path: "/",
           name: "memos",
           component: () =>
             import(
-              /* webpackChunkName: "memos-index" */ "@/components/PageMemosIndex.vue"
+              /* webpackChunkName: "memos-index" */ "@/views/MemosIndex.vue"
             )
         },
         {
           path: "new",
           name: "memos-new",
           component: () =>
-            import(
-              /* webpackChunkName: "memos-new" */ "@/components/PageMemosNew.vue"
-            )
+            import(/* webpackChunkName: "memos-new" */ "@/views/MemosNew.vue")
         },
         {
           path: ":memo",
           name: "memo",
           component: () =>
-            import(
-              /* webpackChunkName: "memo" */ "@/components/PageMemosMemo.vue"
-            )
+            import(/* webpackChunkName: "memo" */ "@/views/MemosMemo.vue")
         }
       ]
     },
@@ -89,22 +87,20 @@ export default new Router({
       name: "notifications",
       component: () =>
         import(
-          /* webpackChunkName: "notifications" */ "../components/PageNotifications.vue"
+          /* webpackChunkName: "notifications" */ "../views/Notifications.vue"
         )
     },
     {
       path: "/settings",
       name: "settings",
       component: () =>
-        import(
-          /* webpackChunkName: "settings" */ "../components/PageSettings.vue"
-        )
+        import(/* webpackChunkName: "settings" */ "../views/Settings.vue")
     },
     {
-      path: "/login",
-      name: "login",
+      path: "/wallet",
+      name: "wallet",
       component: () =>
-        import(/* webpackChunkName: "login" */ "../components/PageLogin.vue")
+        import(/* webpackChunkName: "notifications" */ "../views/Wallet.vue")
     }
   ]
 });

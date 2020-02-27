@@ -8,17 +8,17 @@
   section-default(v-else)
     | You can't send memos without any ATOM.
     = ' '
-    router-link(:to="{ name: 'settings' }") Create a wallet &raquo;
+    router-link(:to="{ name: 'wallet' }") Create a wallet &raquo;
   app-footer
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import AppHeader from "./AppHeader";
-import AppFooter from "./AppFooter";
-import BtnIcon from "./BtnIcon";
-import FormMemo from "./FormMemo";
-import SectionDefault from "./SectionDefault";
+import AppHeader from "@/components/AppHeader";
+import AppFooter from "@/components/AppFooter";
+import BtnIcon from "@/components/BtnIcon";
+import FormMemo from "@/components/FormMemo";
+import SectionDefault from "@/components/SectionDefault";
 export default {
   name: "page-settings",
   components: {

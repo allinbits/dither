@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-accounts-index
-  app-header(page-title="Contacts")
+  app-header(page-title="Dither Users")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
   template(v-if="Object.keys(accounts).length > 0")
@@ -19,12 +19,12 @@ import { orderBy } from "lodash";
 
 import { mapGetters } from "vuex";
 import h from "../scripts/helpers.js";
-import AppFooter from "./AppFooter";
-import AppHeader from "./AppHeader";
-import CardLoading from "./CardLoading";
-import BtnIcon from "./BtnIcon";
-import BtnLoadMore from "./BtnLoadMore";
-import ImgAvatar from "./ImgAvatar";
+import AppFooter from "@/components/AppFooter";
+import AppHeader from "@/components/AppHeader";
+import CardLoading from "@/components/CardLoading";
+import BtnIcon from "@/components/BtnIcon";
+import BtnLoadMore from "@/components/BtnLoadMore";
+import ImgAvatar from "@/components/ImgAvatar";
 export default {
   name: "page-accounts-index",
   components: {

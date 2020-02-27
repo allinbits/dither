@@ -4,7 +4,8 @@
     btn-icon(type="link" icon="home" :to="{ name: 'home' }")
     btn-icon(type="link" icon="search" :to="{ name: 'memos' }")
     btn-icon(type="link" icon="users" :to="{ name: 'accounts' }")
-    btn-icon(type="link" icon="mail" :to="{ name: 'messages' }")
+    btn-icon(type="link" icon="dollar-sign" :to="{ name: 'wallet' }")
+    // btn-icon(type="link" icon="mail" :to="{ name: 'messages' }")
 </template>
 
 <script>

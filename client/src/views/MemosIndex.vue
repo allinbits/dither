@@ -9,10 +9,10 @@
 
 <script>
 import { mapGetters } from "vuex";
-import AppFooter from "./AppFooter";
-import AppHeader from "./AppHeader";
-import BtnIcon from "./BtnIcon";
-import CardWip from "./CardWip";
+import AppFooter from "@/components/AppFooter";
+import AppHeader from "@/components/AppHeader";
+import BtnIcon from "@/components/BtnIcon";
+import CardWip from "@/components/CardWip";
 export default {
   name: "page-memos-index",
   components: {
