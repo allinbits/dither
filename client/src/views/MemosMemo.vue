@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-memos-memo
-  app-header(page-title="Memo Info")
+  app-header(page-title="View Memo")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
   template(v-if="memo")
     card-memo(:memo="memo")
@@ -26,6 +26,7 @@ import InfiniteFeed from "@/components/InfiniteFeed";
 import SectionDefault from "@/components/SectionDefault";
 export default {
   name: "page-memos-memo",
+  metaInfo: { title: "View Memo" },
   components: {
     AppHeader,
     AppFooter,

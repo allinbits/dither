@@ -20,7 +20,8 @@ import BtnIcon from "@/components/BtnIcon";
 import FormSendMemo from "@/components/FormSendMemo";
 import SectionDefault from "@/components/SectionDefault";
 export default {
-  name: "page-settings",
+  name: "page-memos-new",
+  metaInfo: { title: "New Memo" },
   components: {
     AppHeader,
     AppFooter,

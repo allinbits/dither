@@ -15,6 +15,7 @@ import BtnIcon from "@/components/BtnIcon";
 import CardWip from "@/components/CardWip";
 export default {
   name: "page-memos-index",
+  metaInfo: { title: "Search" },
   components: {
     AppHeader,
     AppFooter,

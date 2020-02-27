@@ -46,6 +46,7 @@ import FormSendTokens from "@/components/FormSendTokens";
 import SectionDefault from "@/components/SectionDefault";
 export default {
   name: "page-wallet",
+  metaInfo: { title: "Wallet" },
   components: {
     AppFooter,
     AppHeader,

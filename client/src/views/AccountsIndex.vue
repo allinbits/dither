@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-accounts-index
-  app-header(page-title="Dither Users")
+  app-header(page-title="Dither Community")
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
   template(v-if="Object.keys(accounts).length > 0")
@@ -27,6 +27,7 @@ import BtnLoadMore from "@/components/BtnLoadMore";
 import ImgAvatar from "@/components/ImgAvatar";
 export default {
   name: "page-accounts-index",
+  metaInfo: { title: "Community" },
   components: {
     AppHeader,
     AppFooter,

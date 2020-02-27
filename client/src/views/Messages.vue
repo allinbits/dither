@@ -11,6 +11,7 @@ import AppHeader from "@/components/AppHeader";
 import CardWip from "@/components/CardWip";
 export default {
   name: "page-messages",
+  metaInfo: { title: "Messages" },
   components: {
     AppFooter,
     CardWip,

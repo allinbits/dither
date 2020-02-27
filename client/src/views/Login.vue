@@ -14,6 +14,7 @@ import AppHeader from "@/components/AppHeader";
 import BtnIcon from "@/components/BtnIcon";
 export default {
   name: "page-login",
+  metaInfo: { title: "Sign In" },
   components: {
     BtnIcon,
     AppHeader

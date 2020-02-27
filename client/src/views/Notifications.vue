@@ -11,6 +11,7 @@ import AppHeader from "@/components/AppHeader";
 import CardWip from "@/components/CardWip";
 export default {
   name: "page-notifications",
+  metaInfo: { title: "Notifications" },
   components: {
     AppFooter,
     CardWip,

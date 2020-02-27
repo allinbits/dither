@@ -8,7 +8,19 @@
 import { Firebase } from "./store/firebase.js";
 import { mapGetters } from "vuex";
 export default {
-  name: "App",
+  name: "app",
+  metaInfo: {
+    title: "Uncensorable, decentralized social network built on the Cosmos Hub",
+    titleTemplate: "%s - Dither",
+    meta: [
+      { charset: "utf-8" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" }
+    ],
+    htmlAttrs: {
+      lang: "en",
+      amp: true
+    }
+  },
   computed: {
     ...mapGetters(["blockchain"])
   },

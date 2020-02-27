@@ -23,6 +23,7 @@ import AppHeader from "@/components/AppHeader";
 import SectionDefault from "@/components/SectionDefault";
 export default {
   name: "page-settings",
+  metaInfo: { title: "Settings" },
   components: {
     AppFooter,
     BtnIcon,
