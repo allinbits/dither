@@ -1,6 +1,5 @@
 <template lang="pug">
 form.form-send-tokens(@submit.prevent.default="validateAndSend")
-  p {{ balance }} ATOM
   fieldset
     label To Address
     input#to-address(type="text" v-model="sendTo" placeholder="cosmos1address")
