@@ -11,7 +11,7 @@ export default {
   name: "app",
   metaInfo: {
     title: "Uncensorable, decentralized social network built on the Cosmos Hub",
-    titleTemplate: "%s - Dither",
+    titleTemplate: "%s - Dither Alpha",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" }
