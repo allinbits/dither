@@ -50,10 +50,7 @@ export default {
         from: this.fromAddress,
         to: this.sendTo,
         amount: this.sendAmountUatom,
-        memo: JSON.stringify({
-          type: "send",
-          body: "Sent by dither.chat"
-        })
+        memo: "Sent by dither.chat"
       });
       this.$store.commit("addQueuedTxSends", queuedTxSend);
 
