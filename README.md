@@ -21,7 +21,7 @@ Here's an example Cosmos Hub memo that will be accepted by the Dither indexing s
 
 ## Roadmap
 
-## 0.x commands - MVP
+### MVP commands
 
 ```
 comment [txhash] [memo] - comment on a memo (start a thread/chain)
@@ -30,7 +30,7 @@ post [memo] - post a memo
 repost [txhash] - repost a memo
 ```
 
-## 1.0 commands - user settings
+### User settings
 
 ```
 setname [username] - set a user's name
@@ -42,14 +42,14 @@ block [cosmos1addr] [cosmos1addr] ... - block one or more addresses
 tip [txhash] - tip a memo with ATOM
 ```
 
-## 2.0 commands - following & unfollowing
+### Following & unfollowing
 
 ```
 follow [cosmos1addr] - follows an address
 unfollow [cosmos1addr] - unfollows an address
 ```
 
-## 3.0 commands
+### Futher onwards
 
 ```
 quote [txhash] - quote a memo
