@@ -8,6 +8,7 @@
   "dependencies": {
     "axios": "^0.18.1",
     "firebase-admin": "^8.9.2",
+    "is-json": "^2.0.1",
     "reconnecting-websocket": "^4.4.0",
     "ws": "^7.2.1"
   },

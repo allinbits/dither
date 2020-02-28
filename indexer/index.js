@@ -1,3 +1,5 @@
+const isJson = require('is-json')
+
 // setup firebase
 const admin = require("firebase-admin");
 let serviceAccount = require("./serviceAccountKey.json");
@@ -57,7 +59,7 @@ function processTxs(txs) {
     // console.log('tx')
     // console.log('tx.logs', tx.logs)
     let txLogMsgZero = tx.logs.find(l => l.msg_index == 0);
-    if (txLogMsgZero.success && validPrefix(tx)) {
+    if (txLogMsgZero.success && isJson(tx.tx.value.memo)) {
       console.log("valid memo", tx);
       writeToFirebase(tx);
     }
@@ -76,7 +78,7 @@ function writeToFirebase(tx) {
     reposts: 0,
     likes: 0
   };
-  let parsedMemo = parseMemo(tx.tx.value.memo);
+  let parsedMemo = destructureMemo(tx.tx.value.memo);
   txBody = { ...txBody, ...parsedMemo };
 
   db.collection("memos")
@@ -115,49 +117,14 @@ function getSender(tx) {
   return sender;
 }
 
-function validPrefix(tx) {
-  let memoPrefix = tx.tx.value.memo.slice(0, 2);
-  let validPrefixes = ["/c", "/l", "/p", "/q", "/r"];
-  return validPrefixes.find(p => p === memoPrefix);
-}
-
-function getMemoBody(fullMemo) {
-  let value = fullMemo.split(" ");
-  // remove the slash command
-  value.shift();
-  // remove cosmos address if it exists
-  if (value[0].slice(0, 6) === "cosmos") value.shift();
-  return value.join(" ");
-}
-
-function parseMemo(fullMemo) {
-  let memoType = "";
-  let memoParent = "";
-  let memoPrefix = fullMemo.slice(0, 2);
-
-  switch (memoPrefix) {
-    case "/c":
-      memoType = "comment";
-      memoParent = fullMemo.split(" ")[1];
-      break;
-    case "/l":
-      memoType = "like";
-      memoParent = fullMemo.split(" ")[1];
-      break;
-    case "/q":
-      memoType = "quote";
-      memoParent = fullMemo.split(" ")[1];
-      break;
-    case "/r":
-      memoType = "repost";
-      memoParent = fullMemo.split(" ")[1];
-      break;
-    default:
-      memoType = "post";
+function destructureMemo(memoJson) {
+  let memo = JSON.parse(memoJson)
+  let data = {
+    memo: memo,
+    type: memo.type
   }
-  return {
-    type: memoType,
-    memo: fullMemo,
-    parent: memoParent
-  };
+  if (memo.parent) {
+    data.parent = memo.parent
+  }
+  return data
 }
