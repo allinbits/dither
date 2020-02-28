@@ -5,7 +5,7 @@
 
   template(v-if="Object.keys(memos).length > 0")
     card-memo(v-for="memo in memos" :memo="memo" :key="memo.id")
-    btn-load-more
+    // btn-load-more
 
   card-loading(v-else)
 </template>

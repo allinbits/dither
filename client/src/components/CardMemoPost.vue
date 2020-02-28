@@ -6,7 +6,7 @@
     router-link.avatar(
       :to="{ name: 'account', params: {address: memo.address}}")
       img-avatar(:address="memo.address")
-  .container-text
+  .container-text(@click.self="navToMemo")
     .meta(@click.self="navToMemo")
       router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
         | {{ shortAddress }}
