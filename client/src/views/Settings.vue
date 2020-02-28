@@ -34,11 +34,16 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["user"])
+    ...mapGetters(["user", "userSignedIn"])
   },
   methods: {
     signOut() {
       this.$store.commit("signOutUser");
+    }
+  },
+  mounted() {
+    if (!this.userSignedIn) {
+      this.$router.push("/login");
     }
   }
 };
