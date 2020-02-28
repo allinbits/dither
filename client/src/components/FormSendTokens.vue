@@ -1,16 +1,22 @@
 <template lang="pug">
 form.form-send-tokens(@submit.prevent.default="validateAndSend")
-  fieldset
+  .form-group(:class="{ 'form-group--error': $v.sendTo.$error }")
     label To Address
     input#to-address(type="text" v-model="sendTo" placeholder="cosmos1address")
-  fieldset
+    .error(v-if="!$v.sendTo.required") Field is required
+    .error(v-if="!$v.sendTo.minLength")
+      | Name must have at least {{$v.sendTo.$params.minLength.min}} letters.
+  .form-group(:class="{ 'form-group--error': $v.sendAmount.$error }")
     label ATOM Amount
-    input(type="text" v-model="sendAmount" placeholder="Number of ATOM" )
-  fieldset
+    input(type="number" v-model="sendAmount" placeholder="Number of ATOM" step="0.000001")
+    .error(v-if="!$v.sendAmount.between")
+      | Must be between {{$v.sendAmount.$params.between.min}} and {{$v.sendAmount.$params.between.max}}
+  .form-group
     dc-btn(type="submit") Send ATOM
 </template>
 
 <script>
+import { between, minLength, required } from "vuelidate/lib/validators";
 import tx from "../scripts/tx";
 import { mapGetters } from "vuex";
 import DcBtn from "@/components/DcBtn";
@@ -34,50 +40,80 @@ export default {
   }),
   methods: {
     async validateAndSend() {
-      this.sendTx();
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        this.sendTx();
+      }
     },
     async sendTx() {
       let queuedTxSend = await tx.sendTx({
         from: this.fromAddress,
         to: this.sendTo,
         amount: this.sendAmountUatom,
-        memo: "Sent by dither.chat"
+        memo: JSON.stringify({
+          type: "send",
+          body: "Sent by dither.chat"
+        })
       });
       this.$store.commit("addQueuedTxSends", queuedTxSend);
 
       this.sendTo = "";
       this.sendAmount = 0;
+      this.$v.$reset();
     }
   },
   mounted() {
     this.$el.querySelector("#to-address").focus();
   },
-  props: ["balance"]
+  props: ["balance"],
+  validations: {
+    sendTo: {
+      required,
+      minLength: minLength(45)
+    },
+    sendAmount: {
+      between(value) {
+        return between(0.000001, this.$props.balance)(value);
+      }
+    }
+  }
 };
 </script>
 
 <style scoped lang="stylus">
-fieldset
-  padding 1rem 0
-  border none
-fieldset:not(:last-child)
-  border-bottom 1px solid var(--bc)
-label
-  display block
+form
+  .error
+    font-size 0.75rem
+    color var(--danger)
+    display none
 
-input[type="text"]
-input[type="number"]
-input[type="email"]
-input[type="password"]
-input[type="submit"]
-  border 1px solid var(--bc-input)
-  height 2rem
-  padding 0 0.5rem
+  .form-group
+    padding 1rem 0
+    border none
 
-input[type="text"]
-input[type="number"]
-input[type="email"]
-input[type="password"]
-  max-width 40rem
-  width 100%
+    &.form-group--error
+      .error
+        display block
+
+    &:not(:last-child)
+      border-bottom 1px solid var(--bc)
+
+  label
+    display block
+
+  input[type="text"]
+  input[type="number"]
+  input[type="email"]
+  input[type="password"]
+  input[type="submit"]
+    border 1px solid var(--bc-input)
+    height 2rem
+    padding 0 0.5rem
+
+  input[type="text"]
+  input[type="number"]
+  input[type="email"]
+  input[type="password"]
+    max-width 40rem
+    width 100%
 </style>

@@ -90,7 +90,7 @@ async function sendTx(params) {
   });
   let txResponseJson = await txResponse.json();
 
-  console.log("params", params);
+  console.log("tx params", params);
   let queuedMemo = {
     id: txResponseJson.txhash,
     address: params.from,
@@ -140,7 +140,11 @@ async function sendTxOld(fromAddr, type, parentAddr, memo, toAddr, amount) {
   // set the sequence to be the current account sequence plus any queued memos
   let accountSequence = accountJson.result.value.sequence;
   let queuedMemosLength = Object.keys(store.state.queuedMemos).length;
-  let currentSequence = parseInt(accountSequence) + parseInt(queuedMemosLength);
+  let queuedTxSendsLength = Object.keys(store.state.queuedTxSends).length;
+  let currentSequence =
+    parseInt(accountSequence) +
+    parseInt(queuedMemosLength) +
+    parseInt(queuedTxSendsLength);
   currentSequence = currentSequence.toString();
   // console.log("queuedMemosLength", queuedMemosLength);
   // console.log("accountSequence", accountSequence);
