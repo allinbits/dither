@@ -13,9 +13,11 @@ export default {
   computed: {
     memoBody() {
       let text = this.memo.memo;
+      // handle JSON based memos
       if (typeof text === "object") {
         return this.linkifyMemo(text.body);
       }
+      // handle historical slash based memos
       if (text) {
         text = text.split(" ");
         text.shift();
