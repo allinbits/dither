@@ -13,6 +13,9 @@ export default {
   computed: {
     memoBody() {
       let text = this.memo.memo;
+      if (typeof text === "object") {
+        return this.linkifyMemo(text.body);
+      }
       if (text) {
         text = text.split(" ");
         text.shift();

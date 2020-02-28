@@ -37,14 +37,12 @@ export default {
       this.sendTx();
     },
     async sendTx() {
-      let queuedTxSend = await tx.sendTx(
-        this.fromAddress,
-        "send",
-        "",
-        "Sent by dither.chat",
-        this.sendTo,
-        this.sendAmountUatom
-      );
+      let queuedTxSend = await tx.sendTx({
+        from: this.fromAddress,
+        to: this.sendTo,
+        amount: this.sendAmountUatom,
+        memo: "Sent by dither.chat"
+      });
       this.$store.commit("addQueuedTxSends", queuedTxSend);
 
       this.sendTo = "";

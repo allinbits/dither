@@ -163,24 +163,26 @@ export default {
       if (!this.userSignedIn) {
         this.$router.push({ name: "login" });
       }
-      let queuedMemo = await tx.sendTx(
-        this.fromAddress, // memo from
-        "repost", // memo type
-        this.memo.id, // memo parent id
-        "" // memo body
-      );
+      let queuedMemo = await tx.sendTx({
+        from: this.fromAddress,
+        memo: JSON.stringify({
+          type: "repost",
+          parent: this.memo.id
+        })
+      });
       this.$store.commit("addQueuedMemo", queuedMemo);
     },
     async actionLike() {
       if (!this.userSignedIn) {
         this.$router.push({ name: "login" });
       }
-      let queuedMemo = await tx.sendTx(
-        this.fromAddress, // memo from
-        "like", // memo type
-        this.memo.id, // memo parent id
-        "" // memo body
-      );
+      let queuedMemo = await tx.sendTx({
+        from: this.fromAddress,
+        memo: JSON.stringify({
+          type: "like",
+          parent: this.memo.id
+        })
+      });
       this.$store.commit("addQueuedMemo", queuedMemo);
     },
     actionShare() {

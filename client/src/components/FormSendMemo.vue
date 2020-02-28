@@ -10,7 +10,6 @@ form.form-memo(@submit.prevent.default="validateAndSend")
 import { byteLength } from "byte-length";
 
 import { mapGetters } from "vuex";
-import h from "../scripts/helpers";
 import tx from "../scripts/tx";
 import DcBtn from "./DcBtn";
 export default {
@@ -33,11 +32,11 @@ export default {
       return "Post";
     },
     bytesLeft() {
-      return (
-        512 -
-        byteLength(h.getMemoPrefix(this.type, this.parentAddress)) -
-        byteLength(this.memo)
-      );
+      if (this.type === "post") {
+        return 512 - 103 - byteLength(this.memo);
+      } else {
+        return 512 - 106 - byteLength(this.memo);
+      }
     },
     fromAddress() {
       return this.settings.data.wallet.address;
@@ -65,12 +64,14 @@ export default {
       this.sendTx();
     },
     async sendTx() {
-      let queuedMemo = await tx.sendTx(
-        this.fromAddress,
-        this.type,
-        this.parentAddress,
-        this.memo
-      );
+      let queuedMemo = await tx.sendTx({
+        from: this.fromAddress,
+        memo: JSON.stringify({
+          type: this.type,
+          parent: this.parentAddress,
+          body: this.memo
+        })
+      });
       this.$store.commit("addQueuedMemo", queuedMemo);
 
       this.memo = "";
