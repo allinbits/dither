@@ -2,9 +2,11 @@
 .page-memos-memo
   app-header(page-title="View Memo")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
+    template(v-if="!userSignedIn")
+      btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
   template(v-if="memo")
     card-memo(:memo="memo")
-    section-default
+    section-default(v-if="userSignedIn")
       form-send-memo(type="comment" :parent-address="memo.id")
     infinite-feed(:memos="comments" :queued="queuedComments")
   template(v-else)
@@ -69,7 +71,7 @@ export default {
         return {};
       }
     },
-    ...mapGetters(["memos", "queuedMemos"])
+    ...mapGetters(["memos", "queuedMemos", "userSignedIn"])
   },
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {
