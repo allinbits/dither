@@ -90,16 +90,17 @@ async function sendTx(params) {
   });
   let txResponseJson = await txResponse.json();
 
+  console.log("params", params);
   let queuedMemo = {
     id: txResponseJson.txhash,
     address: params.from,
     height: 0,
-    memo: tx.memo,
-    parent: params.memo.parent,
+    memo: JSON.parse(tx.memo),
+    parent: JSON.parse(params.memo).parent,
     response: txResponseJson,
     timestamp: new Date().toISOString(),
     tx: txBroadcast,
-    type: params.memo.type,
+    type: JSON.parse(params.memo).type,
     reposts: 0,
     likes: 0,
     comments: 0
