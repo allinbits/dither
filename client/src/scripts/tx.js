@@ -91,7 +91,7 @@ async function sendTx(params) {
 
   console.log("tx params", params);
 
-  if (params.amount === "1") {
+  if (params.amount === "20000") {
     let queuedMemo = {
       id: txResponseJson.txhash,
       address: params.from,
