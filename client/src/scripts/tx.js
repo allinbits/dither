@@ -1,6 +1,5 @@
 import { signTx, createBroadcastTx } from "@tendermint/sig";
 import store from "../store/index.js";
-import h from "./helpers";
 
 function defaultTx(from, to, amount, memo, gas) {
   return {
@@ -122,4 +121,4 @@ async function sendTx(params) {
   }
 }
 
-export default { sendTx, sendTxOld };
+export default { sendTx };
