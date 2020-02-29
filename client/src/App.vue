@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["blockchain"])
+    ...mapGetters(["blockchain", "memos"])
   },
   async mounted() {
     // log in the user if they exist
@@ -39,16 +39,15 @@ export default {
     // let height = data.block_meta.header.height;
     this.$store.commit("setHeight", data.block_meta.header.height);
 
-    /*
+    // continuouly fetch the latest blocks
     this.$store.dispatch("memos/openDBChannel", {
       orderBy: ["height", "desc"],
       where: [
         ["height", ">=", this.blockchain.height - this.blockchain.blockRange]
       ]
     });
-    */
 
-    // only fetch the latest 50 memos
+    // make sure to fetch at least 50 memos
     this.$store.dispatch("memos/fetchAndAdd", {
       limit: 50,
       orderBy: ["timestamp", "desc"]

@@ -5,7 +5,7 @@
 
   template(v-if="Object.keys(memos).length > 0")
     card-memo(v-for="memo in memos" :memo="memo" :key="memo.id")
-    btn-load-more
+    btn-load-more(:account="account")
 
   card-loading(v-else)
 </template>
@@ -21,7 +21,7 @@ export default {
     CardLoading,
     CardMemo
   },
-  props: ["memos", "queued"]
+  props: ["memos", "queued", "account"]
 };
 </script>
 

@@ -53,8 +53,8 @@ const storeData = {
       toAddress: "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq",
       defaultGas: "100000",
       height: 0,
-      // assuming 7 seconds per block, load the last 24 hours of memos
-      blockRange: (24 * 60 * 60) / 7
+      // assuming 7 seconds per block, load the last x hours of memos
+      blockRange: (4 * 60 * 60) / 7
     },
     userSignedIn: false,
     user: {

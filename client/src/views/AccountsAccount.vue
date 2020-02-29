@@ -9,7 +9,7 @@
     .subtitle {{ this.$route.params.address }}
     .subtitle {{ account.memos }} memos
 
-  infinite-feed(:memos="posts" :queued="queuedPosts")
+  infinite-feed(:memos="posts" :queued="queuedPosts" :account="this.$route.params.address")
   app-footer
 </template>
 

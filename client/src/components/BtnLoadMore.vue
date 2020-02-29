@@ -1,6 +1,6 @@
 <template lang="pug">
 .btn-load-more(style="btnStyle")
-  dc-btn(size="large" @click.native="fetchAndAdd" icon="refresh-cw") Load more
+  dc-btn(size="large" @click.native="loadMore" icon="refresh-cw") Load more
 </template>
 
 <script>
@@ -18,20 +18,27 @@ export default {
       return "";
     }
   },
+  data: () => ({
+    limit: 50,
+    orderBy: ["timestamp", "desc"]
+  }),
   methods: {
     loadMore() {
-      this.$store.dispatch("memos/fetchAndAdd", {
-        limit: 50,
-        orderBy: ["timestamp", "desc"]
-      });
-    },
-    async fetchAndAdd() {
-      let fetchResult = await this.loadMore();
-      if (fetchResult.done === true) return "all done!";
-      return "retrieved 50 docs, call again to fetch the next!";
+      if (this.account) {
+        this.$store.dispatch("memos/fetchAndAdd", {
+          limit: this.limit,
+          orderBy: this.orderBy,
+          where: [["address", "==", this.account]]
+        });
+      } else {
+        this.$store.dispatch("memos/fetchAndAdd", {
+          limit: this.limit,
+          orderBy: this.orderBy
+        });
+      }
     }
   },
-  props: ["active"]
+  props: ["active", "account"]
 };
 </script>
 
