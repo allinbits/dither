@@ -39,11 +39,19 @@ export default {
     // let height = data.block_meta.header.height;
     this.$store.commit("setHeight", data.block_meta.header.height);
 
+    /*
     this.$store.dispatch("memos/openDBChannel", {
       orderBy: ["height", "desc"],
       where: [
         ["height", ">=", this.blockchain.height - this.blockchain.blockRange]
       ]
+    });
+    */
+
+    // only fetch the latest 50 memos
+    this.$store.dispatch("memos/fetchAndAdd", {
+      limit: 50,
+      orderBy: ["timestamp", "desc"]
     });
 
     // disable service workers for now
