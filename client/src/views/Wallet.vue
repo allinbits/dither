@@ -14,7 +14,7 @@
     template(v-if="tokens")
       p You currently have enough ATOM to post messages on Dither.
     template(v-else)
-      p You need ATOM to post messages on Dither, but you don't have any! You should send some ATOM (0.05 is enough) to the address below. You can get a small amount by messaging #[a(:href="tweetUrl" target="_blank" rel="noopener noreferrer") @VirgoUDV].
+      p You need ATOM to post messages on Dither, but you don't have any! You should send some ATOM (0.5 is enough) to the address below. You can get a small amount by messaging #[a(:href="tweetUrl" target="_blank" rel="noopener noreferrer") @VirgoUDV].
 
     p
       .break-address This is your wallet address:
