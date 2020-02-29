@@ -66,6 +66,8 @@ function processTxs(txs) {
       if (msgCost === "20000") {
         console.log("valid memo", tx);
         writeToFirebase(tx);
+      } else {
+        console.log('msg cost is too low', msgCost)
       }
     }
   });
