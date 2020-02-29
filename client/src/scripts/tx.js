@@ -140,7 +140,8 @@ async function sendTxOld(fromAddr, type, parentAddr, memo, toAddr, amount) {
   } else {
     txMemo = h.getMemoPrefix(type, parentAddr) + memo;
     txToAddr = store.state.blockchain.toAddress;
-    txAmount = "1";
+    // assuming ATOM price of $5 USD, charge 10c per transaction
+    txAmount = "20000";
   }
 
   let tx = defaultTx(
