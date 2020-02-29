@@ -6,7 +6,7 @@
     .cover
     .avatar: img-avatar(:address="this.$route.params.address" size="96")
     .title {{ shortAddress }}
-    .subtitle {{ this.$route.params.address }}
+    a.subtitle(:href="`https://www.mintscan.io/account/${this.$route.params.address}`" rel="noopener noreferrer" target="_blank") {{ this.$route.params.address }}
     .subtitle {{ account.memos }} memos
 
   infinite-feed(:memos="posts" :queued="queuedPosts" :account="this.$route.params.address")
@@ -111,6 +111,5 @@ export default {
     font-size 1.5rem
     font-weight bold
   .subtitle
-    color var(--dim)
     font-size 0.75rem
 </style>
