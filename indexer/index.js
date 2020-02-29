@@ -61,13 +61,17 @@ function processTxs(txs) {
     let txLogMsgZero = tx.logs.find(l => l.msg_index == 0);
     if (txLogMsgZero.success && isJson(tx.tx.value.memo)) {
 
+      // enforce recipient is Dither
+      let msgRecipient = tx.tx.value.msg[0].value.to_address
+
       // enforce minimum cost of transaction
       let msgCost = tx.tx.value.msg[0].value.amount[0].amount
-      if (msgCost === "2000") {
+
+      if (msgRecipient === "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq" && msgCost === "2000") {
         console.log("valid memo", tx);
         writeToFirebase(tx);
       } else {
-        console.log('msg cost is too low', msgCost)
+        console.log('msg cost too low || recipient not Dither', msgCost, msgRecipient)
       }
     }
   });
