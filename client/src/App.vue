@@ -11,7 +11,7 @@ export default {
   name: "app",
   metaInfo: {
     title: "Uncensorable, decentralized social network built on the Cosmos Hub",
-    titleTemplate: "%s - Dither",
+    titleTemplate: "%s - Dither Alpha",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" }
@@ -45,6 +45,15 @@ export default {
         ["height", ">=", this.blockchain.height - this.blockchain.blockRange]
       ]
     });
+
+    // disable service workers for now
+    if (window.navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
   }
 };
 </script>

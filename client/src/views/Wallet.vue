@@ -114,6 +114,11 @@ export default {
       }
     }
   },
+  mounted() {
+    if (!this.userSignedIn) {
+      this.$router.push("/login");
+    }
+  },
   watch: {
     async "settings.data.wallet"() {
       let response = await fetch(

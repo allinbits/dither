@@ -90,22 +90,36 @@ async function sendTx(params) {
   });
   let txResponseJson = await txResponse.json();
 
-  console.log("params", params);
-  let queuedMemo = {
-    id: txResponseJson.txhash,
-    address: params.from,
-    height: 0,
-    memo: JSON.parse(tx.memo),
-    parent: JSON.parse(params.memo).parent,
-    response: txResponseJson,
-    timestamp: new Date().toISOString(),
-    tx: txBroadcast,
-    type: JSON.parse(params.memo).type,
-    reposts: 0,
-    likes: 0,
-    comments: 0
-  };
-  return queuedMemo;
+  console.log("tx params", params);
+
+  if (params.amount === "1") {
+    let queuedMemo = {
+      id: txResponseJson.txhash,
+      address: params.from,
+      height: 0,
+      memo: JSON.parse(tx.memo),
+      parent: JSON.parse(params.memo).parent,
+      response: txResponseJson,
+      timestamp: new Date().toISOString(),
+      tx: txBroadcast,
+      type: JSON.parse(params.memo).type,
+      reposts: 0,
+      likes: 0,
+      comments: 0
+    };
+    return queuedMemo;
+  } else {
+    let queuedTxSend = {
+      id: txResponseJson.txhash,
+      address: params.from,
+      height: 0,
+      memo: tx.memo,
+      response: txResponseJson,
+      timestamp: new Date().toISOString(),
+      tx: txBroadcast
+    };
+    return queuedTxSend;
+  }
 }
 
 async function sendTxOld(fromAddr, type, parentAddr, memo, toAddr, amount) {
@@ -126,7 +140,8 @@ async function sendTxOld(fromAddr, type, parentAddr, memo, toAddr, amount) {
   } else {
     txMemo = h.getMemoPrefix(type, parentAddr) + memo;
     txToAddr = store.state.blockchain.toAddress;
-    txAmount = "1";
+    // assuming ATOM price of $5 USD, charge 10c per transaction
+    txAmount = "20000";
   }
 
   let tx = defaultTx(
@@ -140,7 +155,11 @@ async function sendTxOld(fromAddr, type, parentAddr, memo, toAddr, amount) {
   // set the sequence to be the current account sequence plus any queued memos
   let accountSequence = accountJson.result.value.sequence;
   let queuedMemosLength = Object.keys(store.state.queuedMemos).length;
-  let currentSequence = parseInt(accountSequence) + parseInt(queuedMemosLength);
+  let queuedTxSendsLength = Object.keys(store.state.queuedTxSends).length;
+  let currentSequence =
+    parseInt(accountSequence) +
+    parseInt(queuedMemosLength) +
+    parseInt(queuedTxSendsLength);
   currentSequence = currentSequence.toString();
   // console.log("queuedMemosLength", queuedMemosLength);
   // console.log("accountSequence", accountSequence);

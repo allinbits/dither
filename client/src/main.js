@@ -1,13 +1,16 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import App from "./App";
+
+// vue plugins
 import VueGtag from "vue-gtag";
+import Vuelidate from "vuelidate";
 import VueMeta from "vue-meta";
 
 Vue.use(VueGtag, {
   config: { id: "UA-158201725-1" }
 });
-
+Vue.use(Vuelidate);
 Vue.use(VueMeta, {
   refreshOnceOnNavigation: true
 });
@@ -17,7 +20,6 @@ import { sync } from "vuex-router-sync";
 import store from "./store/index.js";
 import router from "./router";
 sync(store, router);
-
 Vue.use(VueRouter);
 
 Vue.config.productionTip = false;
