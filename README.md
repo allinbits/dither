@@ -19,6 +19,8 @@ Here's an example Cosmos Hub memo that will be accepted by the Dither indexing s
 }
 ```
 
+Note: To prevent a certain of spam, only transactions that are (1) sent to an official Dither address, and (2) have the correct fee, will be added to the index of memos.
+
 ## Roadmap
 
 ### MVP commands
