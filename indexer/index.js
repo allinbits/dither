@@ -60,8 +60,13 @@ function processTxs(txs) {
     // console.log('tx.logs', tx.logs)
     let txLogMsgZero = tx.logs.find(l => l.msg_index == 0);
     if (txLogMsgZero.success && isJson(tx.tx.value.memo)) {
-      console.log("valid memo", tx);
-      writeToFirebase(tx);
+
+      // enforce minimum cost of transaction
+      let msgCost = tx.tx.value.msg[0].value.amount[0].amount
+      if (msgCost === "20000") {
+        console.log("valid memo", tx);
+        writeToFirebase(tx);
+      }
     }
   });
 }
