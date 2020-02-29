@@ -63,7 +63,7 @@ function processTxs(txs) {
 
       // enforce minimum cost of transaction
       let msgCost = tx.tx.value.msg[0].value.amount[0].amount
-      if (msgCost === "20000") {
+      if (msgCost === "2000") {
         console.log("valid memo", tx);
         writeToFirebase(tx);
       } else {
