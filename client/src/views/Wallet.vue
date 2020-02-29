@@ -40,6 +40,7 @@
 <script>
 import * as bip39 from "bip39";
 import { createWalletFromMnemonic } from "@tendermint/sig";
+import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
@@ -115,9 +116,13 @@ export default {
     }
   },
   mounted() {
-    if (!this.userSignedIn) {
-      this.$router.push("/login");
-    }
+    Firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log("user signed in");
+      } else {
+        this.$router.push("/login");
+      }
+    });
   },
   watch: {
     async "settings.data.wallet"() {

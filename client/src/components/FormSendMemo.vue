@@ -2,7 +2,7 @@
 form.form-memo(@submit.prevent.default="validateAndSend")
   textarea#memo-body(v-model="memo" :placeholder="placeholderText")
   .field-note Bytes left: {{ bytesLeft }}
-  .field-note To combat spam, messages cost 20,000uatom (~10 cents)
+  .field-note To combat spam, messages cost 2000uatom ($0.01)
   .field-note.field-note--error(v-if="formHasError") {{ formErrorMsg }}
   dc-btn(type="submit") {{ submitText }}
 </template>
