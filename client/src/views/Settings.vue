@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { Firebase } from "../store/firebase.js";
+
 import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
@@ -42,9 +44,13 @@ export default {
     }
   },
   mounted() {
-    if (!this.userSignedIn) {
-      this.$router.push("/login");
-    }
+    Firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log("user signed in");
+      } else {
+        this.$router.push("/login");
+      }
+    });
   }
 };
 </script>

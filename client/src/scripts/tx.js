@@ -1,8 +1,6 @@
 import { signTx, createBroadcastTx } from "@tendermint/sig";
 import store from "../store/index.js";
 
-const fee = "2000";
-
 function defaultTx(from, to, amount, memo, gas) {
   return {
     fee: {
