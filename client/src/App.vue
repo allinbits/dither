@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["blockchain", "memos"])
+    ...mapGetters(["blockchain", "memos", "accounts", "settings"])
   },
   async mounted() {
     // log in the user if they exist
@@ -36,7 +36,6 @@ export default {
     // fetch the current block, and then get some recent memos
     let response = await fetch(`${this.blockchain.lcd}/blocks/latest`);
     let data = await response.json();
-    // let height = data.block_meta.header.height;
     this.$store.commit("setHeight", data.block_meta.header.height);
 
     // continuouly fetch the latest blocks
@@ -53,13 +52,37 @@ export default {
       orderBy: ["timestamp", "desc"]
     });
 
-    // disable service workers for now
+    // wipe out service workers (for now)
     if (window.navigator && navigator.serviceWorker) {
       navigator.serviceWorker.getRegistrations().then(function(registrations) {
         for (let registration of registrations) {
           registration.unregister();
         }
       });
+    }
+  },
+  watch: {
+    async "settings.data.wallet"() {
+      let following = [];
+      let accountRef = Firebase.firestore()
+        .collection("accounts")
+        .doc(this.settings.data.wallet.address);
+
+      await accountRef
+        .get()
+        .then(doc => {
+          if (!doc.exists) {
+            console.log("No such document!");
+          } else {
+            console.log("Document data:", doc.data());
+            following = doc.data().following;
+          }
+        })
+        .catch(err => {
+          console.log("Error getting document", err);
+        });
+
+      console.log("following", following);
     }
   }
 };

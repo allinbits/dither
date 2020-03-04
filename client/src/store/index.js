@@ -30,6 +30,9 @@ const storeData = {
     chainId: state => {
       return state.blockchain.chainId;
     },
+    defaultAccounts: state => {
+      return state.defaultAccounts.data;
+    },
     memos: state => {
       return state.memos.data;
     },
