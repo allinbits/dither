@@ -22,7 +22,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["blockchain", "memos", "accounts", "settings"])
+    ...mapGetters(["blockchain", "accounts", "settings", "following"])
   },
   async mounted() {
     // log in the user if they exist
@@ -41,15 +41,7 @@ export default {
     // continuouly fetch the latest blocks
     this.$store.dispatch("memos/openDBChannel", {
       orderBy: ["height", "desc"],
-      where: [
-        ["height", ">=", this.blockchain.height - this.blockchain.blockRange]
-      ]
-    });
-
-    // make sure to fetch at least 50 memos
-    this.$store.dispatch("memos/fetchAndAdd", {
-      limit: 50,
-      orderBy: ["timestamp", "desc"]
+      where: [["height", ">=", this.blockchain.height - 256]]
     });
 
     // wipe out service workers (for now)
@@ -74,7 +66,7 @@ export default {
           if (!doc.exists) {
             console.log("No such document!");
           } else {
-            console.log("Document data:", doc.data());
+            // console.log("Document data:", doc.data());
             following = doc.data().following;
           }
         })
@@ -82,7 +74,15 @@ export default {
           console.log("Error getting document", err);
         });
 
-      console.log("following", following);
+      this.$store.commit("setFollowing", following);
+
+      this.following.map(address => {
+        this.$store.dispatch("memos/fetchAndAdd", {
+          limit: 10,
+          orderBy: ["timestamp", "desc"],
+          where: [["address", "==", address]]
+        });
+      });
     }
   }
 };

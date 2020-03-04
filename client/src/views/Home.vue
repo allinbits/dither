@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { Firebase } from "../store/firebase.js";
+
 import { orderBy, pickBy } from "lodash";
 import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
@@ -35,12 +37,21 @@ export default {
   },
   computed: {
     posts() {
+      let value = [];
+
       if (this.memos) {
-        let value = pickBy(
+        // remove likes and comments
+        value = pickBy(
           this.memos,
           m => m.type !== "like" && m.type !== "comment"
         );
         value = orderBy(value, m => parseInt(m.height), "desc");
+
+        // filter by users following
+        value = value.filter(v => {
+          return this.following.includes(v.address);
+        });
+
         return value;
       }
       return [];
@@ -56,7 +67,20 @@ export default {
       }
       return [];
     },
-    ...mapGetters(["memos", "userSignedIn", "queuedMemos", "blockchain"])
+    ...mapGetters([
+      "memos",
+      "userSignedIn",
+      "queuedMemos",
+      "blockchain",
+      "following"
+    ])
+  },
+  mounted() {
+    Firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log("user is logged in", user);
+      }
+    });
   }
 };
 </script>
