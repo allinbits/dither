@@ -10,7 +10,6 @@ let db = admin.firestore();
 
 // setup state
 const state = {
-  rpc: "https://rpc.nylira.net",
   lcd: "https://lcd.nylira.net",
   wss: "wss://rpc.nylira.net:443/websocket",
   block: {},
@@ -67,11 +66,12 @@ function processTxs(txs) {
       // enforce minimum cost of transaction
       let msgCost = tx.tx.value.msg[0].value.amount[0].amount
 
-      if (msgRecipient === "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq" && msgCost === "2000") {
+      if (msgRecipient === "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq"
+          && msgCost === "2000") {
         console.log("valid memo", tx);
         writeToFirebase(tx);
       } else {
-        console.log('msg cost too low || recipient not Dither', msgCost, msgRecipient)
+        console.log('msg cost too low || recipient not Dither', msgCost)
       }
     }
   });
@@ -92,12 +92,16 @@ function writeToFirebase(tx) {
   let parsedMemo = destructureMemo(tx.tx.value.memo);
   txBody = { ...txBody, ...parsedMemo };
 
+  // create a memo
   db.collection("memos")
     .doc(tx.txhash)
     .set(txBody);
+
+  // increment memos count by one
   db.collection("accounts")
     .doc(txBody.address)
     .set({ memos: increment }, { merge: true });
+
   if (parsedMemo.type === "comment") {
     db.collection("memos")
       .doc(parsedMemo.parent)
@@ -112,6 +116,24 @@ function writeToFirebase(tx) {
     db.collection("memos")
       .doc(parsedMemo.parent)
       .set({ likes: increment }, { merge: true });
+  }
+  if (parsedMemo.type === "follow") {
+    console.log(txBody.address, 'follows', parsedMemo.parent)
+    db.collection("accounts").doc(txBody.address).update({
+      following: admin.firestore.FieldValue.arrayUnion(parsedMemo.parent)
+    })
+    db.collection("accounts").doc(parsedMemo.parent).update({
+      followers: admin.firestore.FieldValue.arrayUnion(txBody.address)
+    })
+  }
+  if (parsedMemo.type === "unfollow") {
+    console.log(txBody.address, 'unfollows', parsedMemo.parent)
+    db.collection("accounts").doc(txBody.address).update({
+      following: admin.firestore.FieldValue.arrayRemove(parsedMemo.parent)
+    })
+    db.collection("accounts").doc(parsedMemo.parent).update({
+      followers: admin.firestore.FieldValue.arrayUnion(txBody.address)
+    })
   }
 }
 
