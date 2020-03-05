@@ -24,6 +24,15 @@ export default {
   computed: {
     ...mapGetters(["blockchain", "accounts", "settings", "following"])
   },
+  methods: {
+    fetchMemosFromAddress(address) {
+      this.$store.dispatch("memos/fetchAndAdd", {
+        limit: 10,
+        orderBy: ["timestamp", "desc"],
+        where: [["address", "==", address]]
+      });
+    }
+  },
   async mounted() {
     // log in the user if they exist
     Firebase.auth().onAuthStateChanged(user => {
@@ -55,34 +64,35 @@ export default {
   },
   watch: {
     async "settings.data.wallet"() {
-      let following = [];
-      let accountRef = Firebase.firestore()
+      let userAddress = this.settings.data.wallet.address;
+      let userFollowing = [];
+      let userAccountRef = Firebase.firestore()
         .collection("accounts")
-        .doc(this.settings.data.wallet.address);
+        .doc(userAddress);
 
-      await accountRef
+      // load the user's following
+      await userAccountRef
         .get()
         .then(doc => {
           if (!doc.exists) {
             console.log("No such document!");
           } else {
             // console.log("Document data:", doc.data());
-            following = doc.data().following;
+            userFollowing = doc.data().following;
           }
         })
         .catch(err => {
           console.log("Error getting document", err);
         });
 
-      this.$store.commit("setFollowing", following);
+      // add user's own address to following
+      userFollowing.push(userAddress);
 
-      this.following.map(address => {
-        this.$store.dispatch("memos/fetchAndAdd", {
-          limit: 10,
-          orderBy: ["timestamp", "desc"],
-          where: [["address", "==", address]]
-        });
-      });
+      // set user following
+      this.$store.commit("setFollowing", userFollowing);
+
+      // load memos from user's following
+      this.following.map(address => this.fetchMemosFromAddress(address));
     }
   }
 };
