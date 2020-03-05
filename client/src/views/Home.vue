@@ -34,13 +34,33 @@ export default {
     InfiniteFeed
   },
   computed: {
+    ...mapGetters([
+      "memos",
+      "userSignedIn",
+      "queuedMemos",
+      "blockchain",
+      "following"
+    ]),
     posts() {
+      let value = [];
+
       if (this.memos) {
-        let value = pickBy(
+        // remove likes and comments
+        value = pickBy(
           this.memos,
-          m => m.type !== "like" && m.type !== "comment"
+          m =>
+            m.type !== "like" &&
+            m.type !== "comment" &&
+            m.type !== "follow" &&
+            m.type !== "unfollow"
         );
         value = orderBy(value, m => parseInt(m.height), "desc");
+
+        // filter by users following
+        value = value.filter(v => {
+          return this.following.includes(v.address);
+        });
+
         return value;
       }
       return [];
@@ -55,8 +75,7 @@ export default {
         return value;
       }
       return [];
-    },
-    ...mapGetters(["memos", "userSignedIn", "queuedMemos", "blockchain"])
+    }
   }
 };
 </script>

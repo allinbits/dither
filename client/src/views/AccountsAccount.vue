@@ -5,9 +5,15 @@
   .page-header
     .cover
     .avatar: img-avatar(:address="this.$route.params.address" size="96")
-    .title {{ shortAddress }}
-    a.subtitle(:href="`https://www.mintscan.io/account/${this.$route.params.address}`" rel="noopener noreferrer" target="_blank") {{ this.$route.params.address }}
-    .subtitle {{ account.memos }} memos
+    a.account-address(:href="`https://www.mintscan.io/account/${this.$route.params.address}`" rel="noopener noreferrer" target="_blank") {{ shortAddress }}
+
+    .account-stats
+      router-link.account-stat(:to="{ name: 'following' }")
+        | #[strong {{ following }}] following
+      router-link.account-stat(:to="{ name: 'followers' }")
+        | #[strong {{ followers }}] followers
+
+    // .account-stat {{ account.memos }} memos
 
   infinite-feed(:memos="posts" :queued="queuedPosts" :account="this.$route.params.address")
   app-footer
@@ -50,6 +56,18 @@ export default {
           memos: 0
         };
       }
+    },
+    following() {
+      if (this.account.following) {
+        return this.account.following.length;
+      }
+      return 0;
+    },
+    followers() {
+      if (this.account.followers) {
+        return this.account.followers.length;
+      }
+      return 0;
     },
     posts() {
       if (this.memos) {
@@ -101,15 +119,28 @@ export default {
 .page-header
   text-align center
   padding-bottom 1.5rem
+
   .cover
     background var(--txt)
     height 5rem
+
   .avatar
     margin -3rem auto 0
     margin-bottom 0.75rem
-  .title
-    font-size 1.5rem
+
+  .account-address
+    font-size 1.75rem
     font-weight bold
-  .subtitle
-    font-size 0.75rem
+    display block
+    color var(--txt)
+
+  .account-stats
+    display flex
+    justify-content center
+
+  .account-stat
+    padding 0 1rem
+    color var(--txt)
+    &:hover
+      text-decoration underline
 </style>

@@ -74,6 +74,7 @@ export default {
     ...mapGetters(["memos", "queuedMemos", "userSignedIn"])
   },
   mounted() {
+    this.$store.dispatch("memos/fetchById", this.$route.params.memo);
     this.$store.dispatch("memos/fetchAndAdd", {
       orderBy: ["height", "desc"],
       where: [["parent", "==", this.$route.params.memo]]

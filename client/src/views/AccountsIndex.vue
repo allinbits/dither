@@ -4,11 +4,7 @@
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
   template(v-if="Object.keys(accounts).length > 0")
-    router-link.card-account(v-for="account in orderedAccounts" :key="account.id" :to="{ name: 'account', params: { address: account.id } }")
-      .avatar: img-avatar(:address="account.id" size="48")
-      .text
-        .title {{ shortAddress(account.id) }}
-        .subtitle {{ account.memos }} memos
+    card-account(v-for="account in orderedAccounts" :key="account.id" :id="account.id" :account="account")
     btn-load-more
   card-loading(v-else)
   app-footer
@@ -21,6 +17,7 @@ import { mapGetters } from "vuex";
 import h from "../scripts/helpers.js";
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
+import CardAccount from "@/components/CardAccount";
 import CardLoading from "@/components/CardLoading";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
@@ -33,17 +30,22 @@ export default {
     AppFooter,
     BtnIcon,
     BtnLoadMore,
+    CardAccount,
     CardLoading,
     ImgAvatar
   },
   computed: {
+    ...mapGetters(["accounts", "userSignedIn", "settings"]),
     orderedAccounts() {
+      let value = [];
       if (this.accounts) {
-        return orderBy(this.accounts, ["id", "asc"]);
+        value = orderBy(this.accounts, ["followers", "desc"]);
       }
-      return [];
-    },
-    ...mapGetters(["accounts", "userSignedIn"])
+      if (this.settings && this.settings.data && this.settings.data.wallet) {
+        value = value.filter(v => v.id !== this.settings.data.wallet.address);
+      }
+      return value;
+    }
   },
   methods: {
     shortAddress(address) {

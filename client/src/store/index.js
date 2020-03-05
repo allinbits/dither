@@ -30,6 +30,12 @@ const storeData = {
     chainId: state => {
       return state.blockchain.chainId;
     },
+    defaultAccounts: state => {
+      return state.defaultAccounts.data;
+    },
+    following: state => {
+      return state.following;
+    },
     memos: state => {
       return state.memos.data;
     },
@@ -53,8 +59,8 @@ const storeData = {
       toAddress: "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq",
       defaultGas: "100000",
       height: 0,
-      // assuming 7 seconds per block, load the last x hours of memos
-      blockRange: (4 * 60 * 60) / 7
+      // load the last x days of memos (at 7s per block)
+      blockRange: (7 * 24 * 60 * 60) / 7
     },
     userSignedIn: false,
     user: {
@@ -67,6 +73,7 @@ const storeData = {
         }
       ]
     },
+    following: [],
     queuedMemos: {},
     queuedTxSends: {}
   },
@@ -76,6 +83,17 @@ const storeData = {
         state.blockchain.height = height;
         // console.log("set blockchain height to", state.blockchain.height);
       }
+    },
+    setFollowing(state, following) {
+      state.following = following;
+    },
+    addFollow(state, address) {
+      state.following.push(address);
+    },
+    rmFollow(state, address) {
+      state.following = state.following.filter(
+        followingAddress => followingAddress !== address
+      );
     },
     addQueuedMemo(state, memo) {
       Vue.set(state.queuedMemos, memo.id, memo);

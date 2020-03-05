@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import defaultFollowing from "./store/defaultFollowing.json";
 import { Firebase } from "./store/firebase.js";
 import { mapGetters } from "vuex";
 export default {
@@ -22,7 +23,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["blockchain", "memos"])
+    ...mapGetters(["blockchain", "accounts", "settings", "following"])
+  },
+  methods: {
+    fetchMemosFromAddress(address) {
+      this.$store.dispatch("memos/fetchAndAdd", {
+        limit: 50,
+        orderBy: ["timestamp", "desc"],
+        where: [["address", "==", address]]
+      });
+    }
   },
   async mounted() {
     // log in the user if they exist
@@ -30,36 +40,67 @@ export default {
       if (user) {
         this.$store.commit("signInUser", user);
         this.$store.dispatch("settings/openDBChannel").catch(console.error);
+      } else {
+        // if user doesnt exist, create a default following
+        this.$store.commit("setFollowing", defaultFollowing);
+        // load memos
+        this.following.map(address => this.fetchMemosFromAddress(address));
       }
     });
 
-    // fetch the current block, and then get some recent memos
+    // fetch the current block
     let response = await fetch(`${this.blockchain.lcd}/blocks/latest`);
     let data = await response.json();
-    // let height = data.block_meta.header.height;
     this.$store.commit("setHeight", data.block_meta.header.height);
 
     // continuouly fetch the latest blocks
     this.$store.dispatch("memos/openDBChannel", {
       orderBy: ["height", "desc"],
-      where: [
-        ["height", ">=", this.blockchain.height - this.blockchain.blockRange]
-      ]
+      where: [["height", ">=", this.blockchain.height - 256]]
     });
 
-    // make sure to fetch at least 50 memos
-    this.$store.dispatch("memos/fetchAndAdd", {
-      limit: 50,
-      orderBy: ["timestamp", "desc"]
-    });
-
-    // disable service workers for now
+    // wipe out service workers (for now)
     if (window.navigator && navigator.serviceWorker) {
       navigator.serviceWorker.getRegistrations().then(function(registrations) {
         for (let registration of registrations) {
           registration.unregister();
         }
       });
+    }
+  },
+  watch: {
+    async "settings.data.wallet"() {
+      let userAddress = this.settings.data.wallet.address;
+      let userFollowing = [];
+      let userAccountRef = Firebase.firestore()
+        .collection("accounts")
+        .doc(userAddress);
+
+      // load the user's following
+      await userAccountRef
+        .get()
+        .then(doc => {
+          // if user doesn't have default following
+          if (!doc.exists) {
+            console.log("no following exists, setting default");
+            userFollowing = defaultFollowing;
+          } else {
+            // console.log("user following exists, loading it")
+            userFollowing = doc.data().following;
+          }
+        })
+        .catch(err => {
+          console.log("Error getting document", err);
+        });
+
+      // add user's own address to following
+      userFollowing.push(userAddress);
+
+      // set user following
+      this.$store.commit("setFollowing", userFollowing);
+
+      // load memos from user's following
+      this.following.map(address => this.fetchMemosFromAddress(address));
     }
   }
 };
