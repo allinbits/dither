@@ -68,7 +68,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("memos/fetchAndAdd", {
-      limit: 200,
+      limit: 100,
       orderBy: ["timestamp", "desc"]
     });
   }

@@ -8,10 +8,16 @@
     a.account-address(:href="`https://www.mintscan.io/account/${this.$route.params.address}`" rel="noopener noreferrer" target="_blank") {{ shortAddress }}
 
     .account-stats
-      router-link.account-stat(:to="{ name: 'following' }")
+      // router-link.account-stat(:to="{ name: 'following' }")
         | #[strong {{ following }}] following
-      router-link.account-stat(:to="{ name: 'followers' }")
+      // router-link.account-stat(:to="{ name: 'followers' }")
         | #[strong {{ followers }}] followers
+      .account-stat
+        | #[strong {{ following }}] following
+      .account-stat
+        | #[strong {{ followers }}] followers
+
+    account-actions(:account="account")
 
     // .account-stat {{ account.memos }} memos
 
@@ -25,6 +31,7 @@ import { orderBy, pickBy } from "lodash";
 import { mapGetters } from "vuex";
 import h from "../scripts/helpers.js";
 
+import AccountActions from "@/components/AccountActions";
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
@@ -35,6 +42,7 @@ import InfiniteFeed from "@/components/InfiniteFeed";
 export default {
   name: "page-accounts-account",
   components: {
+    AccountActions,
     AppHeader,
     AppFooter,
     BtnIcon,
@@ -143,4 +151,7 @@ export default {
     color var(--txt)
     &:hover
       text-decoration underline
+
+  .account-actions
+    margin-top 0.5rem
 </style>
