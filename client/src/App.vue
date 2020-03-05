@@ -28,7 +28,7 @@ export default {
   methods: {
     fetchMemosFromAddress(address) {
       this.$store.dispatch("memos/fetchAndAdd", {
-        limit: 10,
+        limit: 50,
         orderBy: ["timestamp", "desc"],
         where: [["address", "==", address]]
       });
