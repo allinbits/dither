@@ -12,9 +12,9 @@
     div(slot="section-title") Your wallet
 
     template(v-if="tokens")
-      p You currently have enough ATOM to post messages on Dither.
+      p You currently have enough ATOM to interact with Dither.
     template(v-else)
-      p You need ATOM to post messages on Dither, but you don't have any! You should send some ATOM (0.5 is enough) to the address below. You can get a small amount by messaging #[a(:href="tweetUrl" target="_blank" rel="noopener noreferrer") @VirgoUDV].
+      p You need ATOM to interact with Dither, but you don't have any. Interaction include creating messages, liking messages, and following accounts. You should send ATOM (0.1 is enough) to your address below.
 
     p
       .break-address This is your wallet address:

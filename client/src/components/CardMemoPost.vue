@@ -36,11 +36,6 @@
         v-else
         slot="btn-left" size="small" icon="heart" :value="memoLikes"
         @click.native.stop="actionLike")
-
-      // share button
-      // btn-icon(
-        slot="btn-left" size="small" icon="share"
-        @click.native.stop="actionShare")
 </template>
 
 <script>
@@ -162,6 +157,11 @@ export default {
     async actionRepost() {
       if (!this.userSignedIn) {
         this.$router.push({ name: "login" });
+        return;
+      }
+      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+        this.$router.push({ name: "wallet" });
+        return;
       }
       let queuedMemo = await tx.sendTx({
         from: this.fromAddress,
@@ -175,6 +175,11 @@ export default {
     async actionLike() {
       if (!this.userSignedIn) {
         this.$router.push({ name: "login" });
+        return;
+      }
+      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+        this.$router.push({ name: "wallet" });
+        return;
       }
       let queuedMemo = await tx.sendTx({
         from: this.fromAddress,
@@ -184,9 +189,6 @@ export default {
         })
       });
       this.$store.commit("addQueuedMemo", queuedMemo);
-    },
-    actionShare() {
-      alert("WIP: share");
     },
     checkForUserInteractions() {
       if (this.memo.likes || this.memo.reposts) {

@@ -80,10 +80,12 @@ export default {
       await userAccountRef
         .get()
         .then(doc => {
+          // if user doesn't have default following
           if (!doc.exists) {
-            console.log("No such document!");
+            console.log("no following exists, setting default");
+            userFollowing = defaultFollowing;
           } else {
-            // console.log("Document data:", doc.data());
+            // console.log("user following exists, loading it")
             userFollowing = doc.data().following;
           }
         })

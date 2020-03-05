@@ -53,6 +53,11 @@ export default {
     follow() {
       if (!this.userSignedIn) {
         this.$router.push({ name: "login" });
+        return;
+      }
+      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+        this.$router.push({ name: "wallet" });
+        return;
       }
       this.$store.commit("addFollow", this.account.id);
       tx.sendTx({
@@ -66,6 +71,11 @@ export default {
     unfollow() {
       if (!this.userSignedIn) {
         this.$router.push({ name: "login" });
+        return;
+      }
+      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+        this.$router.push({ name: "wallet" });
+        return;
       }
       this.$store.commit("rmFollow", this.account.id);
       tx.sendTx({
@@ -111,6 +121,7 @@ export default {
     align-items center
     padding 0 0.5rem
   .action
+    cursor pointer
     font-size 0.875rem
     line-height 1.5rem
     color var(--txt)
