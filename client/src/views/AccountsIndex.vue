@@ -35,13 +35,13 @@ export default {
     ImgAvatar
   },
   computed: {
+    ...mapGetters(["accounts", "userSignedIn"]),
     orderedAccounts() {
       if (this.accounts) {
         return orderBy(this.accounts, ["followers", "desc"]);
       }
       return [];
-    },
-    ...mapGetters(["accounts", "userSignedIn"])
+    }
   },
   methods: {
     shortAddress(address) {

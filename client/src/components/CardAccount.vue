@@ -1,12 +1,17 @@
 <template lang="pug">
-router-link.card-account(:to="{ name: 'account', params: { address: account.id } }")
-  .avatar: img-avatar(:address="account.id" size="48")
-  .text
+.card-account
+  router-link.avatar(:to="{ name: 'account', params: { address: account.id } }")
+    img-avatar(:address="account.id" size="48")
+  router-link.text(:to="{ name: 'account', params: { address: account.id } }")
     .title {{ shortAddress(account.id) }}
-    .subtitle {{ following }} following / {{ followers }} followers
+    .subtitle {{ followingCount }} following / {{ followersCount }} followers
+  .actions(@click.self="navToAccount")
+    .action.action--unfollow(v-if="currentUserIsFollowing" @click.stop="unfollow") Unfollow
+    .action.action--follow(v-else @click.stop="follow") Follow
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import h from "../scripts/helpers.js";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
@@ -20,13 +25,20 @@ export default {
     ImgAvatar
   },
   computed: {
-    following() {
+    ...mapGetters(["following"]),
+    currentUserIsFollowing() {
+      if (this.following) {
+        return this.following.includes(this.account.id);
+      }
+      return false;
+    },
+    followingCount() {
       if (this.account.following) {
         return this.account.following.length;
       }
       return 0;
     },
-    followers() {
+    followersCount() {
       if (this.account.followers) {
         return this.account.followers.length;
       }
@@ -34,6 +46,18 @@ export default {
     }
   },
   methods: {
+    follow() {
+      console.log("following", this.account.id);
+    },
+    unfollow() {
+      console.log("unfollowing", this.account.id);
+    },
+    navToAccount() {
+      this.$router.push({
+        name: "account",
+        params: { address: this.account.id }
+      });
+    },
     shortAddress(address) {
       return h.truncAddress(address);
     }
@@ -50,6 +74,7 @@ export default {
   .avatar
     padding 0.5rem
   .text
+    flex 1
     padding 0.5rem 0.5rem 0.5rem 0
     color var(--txt)
   .title
@@ -57,4 +82,19 @@ export default {
   .subtitle
     font-size 0.75rem
     color var(--dim)
+  .actions
+    display flex
+    align-items center
+    padding 0 0.5rem
+  .action
+    font-size 0.875rem
+    line-height 1.5rem
+    color var(--txt)
+
+    padding 0 0.5rem
+    border 1px solid var(--bc)
+
+    &.action--unfollow
+      background hsl(0,100%,97%)
+      color hsl(0,100%,30%)
 </style>

@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import { Firebase } from "../store/firebase.js";
-
 import { orderBy, pickBy } from "lodash";
 import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
@@ -36,6 +34,13 @@ export default {
     InfiniteFeed
   },
   computed: {
+    ...mapGetters([
+      "memos",
+      "userSignedIn",
+      "queuedMemos",
+      "blockchain",
+      "following"
+    ]),
     posts() {
       let value = [];
 
@@ -66,21 +71,7 @@ export default {
         return value;
       }
       return [];
-    },
-    ...mapGetters([
-      "memos",
-      "userSignedIn",
-      "queuedMemos",
-      "blockchain",
-      "following"
-    ])
-  },
-  mounted() {
-    Firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log("user is logged in", user);
-      }
-    });
+    }
   }
 };
 </script>

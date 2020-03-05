@@ -73,6 +73,7 @@ const storeData = {
         }
       ]
     },
+    following: [],
     queuedMemos: {},
     queuedTxSends: {}
   },
