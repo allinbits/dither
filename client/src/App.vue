@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import defaultFollowing from "./store/defaultFollowing.json";
 import { Firebase } from "./store/firebase.js";
 import { mapGetters } from "vuex";
 export default {
@@ -39,6 +40,11 @@ export default {
       if (user) {
         this.$store.commit("signInUser", user);
         this.$store.dispatch("settings/openDBChannel").catch(console.error);
+      } else {
+        // if user doesnt exist, create a default following
+        this.$store.commit("setFollowing", defaultFollowing);
+        // load memos
+        this.following.map(address => this.fetchMemosFromAddress(address));
       }
     });
 

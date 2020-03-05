@@ -5,7 +5,7 @@
   router-link.text(:to="{ name: 'account', params: { address: account.id } }")
     .title {{ shortAddress(account.id) }}
     .subtitle {{ followingCount }} following / {{ followersCount }} followers
-  .actions(@click.self="navToAccount")
+  .actions(@click.self="navToAccount" v-if="userSignedIn")
     .action.action--unfollow(v-if="currentUserIsFollowing" @click.stop="unfollow") Unfollow
     .action.action--follow(v-else @click.stop="follow") Follow
 </template>

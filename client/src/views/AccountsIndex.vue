@@ -35,12 +35,16 @@ export default {
     ImgAvatar
   },
   computed: {
-    ...mapGetters(["accounts", "userSignedIn"]),
+    ...mapGetters(["accounts", "userSignedIn", "settings"]),
     orderedAccounts() {
+      let value = [];
       if (this.accounts) {
-        return orderBy(this.accounts, ["followers", "desc"]);
+        value = orderBy(this.accounts, ["followers", "desc"]);
       }
-      return [];
+      if (this.settings && this.settings.data && this.settings.data.wallet) {
+        value = value.filter(v => v.id !== this.settings.data.wallet.address);
+      }
+      return value;
     }
   },
   methods: {
