@@ -13,6 +13,7 @@
 <script>
 import { mapGetters } from "vuex";
 import h from "../scripts/helpers.js";
+import tx from "../scripts/tx.js";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
 import ImgAvatar from "@/components/ImgAvatar";
@@ -25,7 +26,7 @@ export default {
     ImgAvatar
   },
   computed: {
-    ...mapGetters(["following"]),
+    ...mapGetters(["following", "userSignedIn", "settings"]),
     currentUserIsFollowing() {
       if (this.following) {
         return this.following.includes(this.account.id);
@@ -43,14 +44,37 @@ export default {
         return this.account.followers.length;
       }
       return 0;
+    },
+    fromAddress() {
+      return this.settings.data.wallet.address;
     }
   },
   methods: {
     follow() {
-      console.log("following", this.account.id);
+      if (!this.userSignedIn) {
+        this.$router.push({ name: "login" });
+      }
+      this.$store.commit("addFollow", this.account.id);
+      tx.sendTx({
+        from: this.fromAddress,
+        memo: JSON.stringify({
+          type: "follow",
+          parent: this.account.id
+        })
+      });
     },
     unfollow() {
-      console.log("unfollowing", this.account.id);
+      if (!this.userSignedIn) {
+        this.$router.push({ name: "login" });
+      }
+      this.$store.commit("rmFollow", this.account.id);
+      tx.sendTx({
+        from: this.fromAddress,
+        memo: JSON.stringify({
+          type: "unfollow",
+          parent: this.account.id
+        })
+      });
     },
     navToAccount() {
       this.$router.push({

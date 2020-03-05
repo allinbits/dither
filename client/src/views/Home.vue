@@ -48,7 +48,11 @@ export default {
         // remove likes and comments
         value = pickBy(
           this.memos,
-          m => m.type !== "like" && m.type !== "comment"
+          m =>
+            m.type !== "like" &&
+            m.type !== "comment" &&
+            m.type !== "follow" &&
+            m.type !== "unfollow"
         );
         value = orderBy(value, m => parseInt(m.height), "desc");
 

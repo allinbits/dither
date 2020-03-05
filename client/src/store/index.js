@@ -87,6 +87,14 @@ const storeData = {
     setFollowing(state, following) {
       state.following = following;
     },
+    addFollow(state, address) {
+      state.following.push(address);
+    },
+    rmFollow(state, address) {
+      state.following = state.following.filter(
+        followingAddress => followingAddress !== address
+      );
+    },
     addQueuedMemo(state, memo) {
       Vue.set(state.queuedMemos, memo.id, memo);
       console.log("adding to queue:", state.queuedMemos[memo.id]);
