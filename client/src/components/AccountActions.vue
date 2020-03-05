@@ -1,30 +1,14 @@
 <template lang="pug">
-.card-account
-  router-link.avatar(:to="{ name: 'account', params: { address: account.id } }")
-    img-avatar(:address="account.id" size="48")
-  router-link.text(:to="{ name: 'account', params: { address: account.id } }")
-    .title {{ shortAddress(account.id) }}
-    .subtitle {{ followingCount }} following / {{ followersCount }} followers
-  account-actions(@click.self="navToAccount" v-if="userSignedIn" :account="account")
+.account-actions(v-if="userSignedIn")
+  .action.action--unfollow(v-if="currentUserIsFollowing" @click.stop="unfollow") Unfollow
+  .action.action--follow(v-else @click.stop="follow") Follow
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import h from "../scripts/helpers.js";
 import tx from "../scripts/tx.js";
-import AccountActions from "@/components/AccountActions";
-import BtnIcon from "@/components/BtnIcon";
-import BtnLoadMore from "@/components/BtnLoadMore";
-import ImgAvatar from "@/components/ImgAvatar";
 export default {
-  name: "page-accounts-index",
-  metaInfo: { title: "Community" },
-  components: {
-    AccountActions,
-    BtnIcon,
-    BtnLoadMore,
-    ImgAvatar
-  },
+  name: "account-actions",
   computed: {
     ...mapGetters(["following", "userSignedIn", "settings"]),
     currentUserIsFollowing() {
@@ -85,15 +69,6 @@ export default {
           parent: this.account.id
         })
       });
-    },
-    navToAccount() {
-      this.$router.push({
-        name: "account",
-        params: { address: this.account.id }
-      });
-    },
-    shortAddress(address) {
-      return h.truncAddress(address);
     }
   },
   props: ["account"]
@@ -101,35 +76,22 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-.card-account
-  border-bottom 1px solid var(--bc)
+.account-actions
   display flex
+  align-items center
+  justify-content center
+  padding 0 0.5rem
 
-  .avatar
-    padding 0.5rem
-  .text
-    flex 1
-    padding 0.5rem 0.5rem 0.5rem 0
-    color var(--txt)
-  .title
-    font-weight bold
-  .subtitle
-    font-size 0.75rem
-    color var(--dim)
-  .account-actions
-    display flex
-    align-items center
-    padding 0 0.5rem
-  .action
-    cursor pointer
-    font-size 0.875rem
-    line-height 1.5rem
-    color var(--txt)
+.action
+  cursor pointer
+  font-size 0.875rem
+  line-height 1.5rem
+  color var(--txt)
 
-    padding 0 0.5rem
-    border 1px solid var(--bc)
+  padding 0 0.5rem
+  border 1px solid var(--bc)
 
-    &.action--unfollow
-      background hsl(0,100%,97%)
-      color hsl(0,100%,30%)
+  &.action--unfollow
+    background hsl(0,100%,97%)
+    color hsl(0,100%,30%)
 </style>
