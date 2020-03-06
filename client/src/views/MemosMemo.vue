@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { pickBy, orderBy } from "lodash";
+import { pickBy } from "lodash";
 
 import { mapGetters } from "vuex";
 import AppHeader from "@/components/AppHeader";
@@ -55,24 +55,20 @@ export default {
     },
     comments() {
       if (this.memos) {
-        let comments = pickBy(
+        return pickBy(
           this.memos,
           m => m.parent === this.$route.params.memo && m.type === "comment"
         );
-        comments = orderBy(comments, ["height"], ["desc"]);
-        return comments;
       } else {
         return {};
       }
     },
     queuedComments() {
       if (this.queuedMemos) {
-        let comments = pickBy(
+        return pickBy(
           this.queuedMemos,
           m => m.parent === this.$route.params.memo && m.type === "comment"
         );
-        comments = orderBy(comments, ["height"], ["desc"]);
-        return comments;
       } else {
         return {};
       }

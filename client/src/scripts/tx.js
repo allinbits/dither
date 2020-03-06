@@ -89,7 +89,7 @@ async function sendTx(params) {
   });
   let txResponseJson = await txResponse.json();
 
-  console.log("tx params", params);
+  // console.log("tx params", params);
 
   if (params.amount === "2000") {
     let queuedMemo = {

@@ -4,7 +4,7 @@
     template(v-if="userSignedIn")
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
 
-  infinite-feed(v-if="posts" :memos="memos" :queued="queuedMemos")
+  infinite-feed(v-if="memos" :memos="memos" :queued="queuedMemos")
   card-loading(v-else)
 
   app-footer
