@@ -25,6 +25,7 @@ export default {
   computed: {
     filteredMemos() {
       let memos = [];
+
       if (this.memos) {
         memos = this.memos;
 
@@ -33,7 +34,7 @@ export default {
           memos = pickBy(this.memos, m => this.following.includes(m.address));
         }
 
-        memos = pickBy(this.memos, m => this.memoTypes.includes(m.type));
+        memos = this.filterByMemoType(memos);
         memos = this.combineMemos(memos);
         memos = orderBy(memos, m => parseInt(m.height), "desc");
       }
@@ -43,7 +44,7 @@ export default {
       let memos = [];
       if (this.queued) {
         memos = this.queued;
-        memos = pickBy(this.memos, m => this.memoTypes.includes(m.type));
+        memos = this.filterByMemoType(memos);
         memos = orderBy(memos, m => parseInt(m.height), "desc");
       }
       return memos;
@@ -51,12 +52,32 @@ export default {
   },
   data: () => ({
     memoTypes: ["post", "repost"],
-    excludedMemoTypes: ["like", "comment", "follow", "unfollow"]
+    memoTypesComment: ["post", "repost", "comment"]
   }),
   methods: {
+    filterByMemoType(memos) {
+      let filteredMemos;
+      if (this.type === "comment") {
+        filteredMemos = pickBy(memos, m =>
+          this.memoTypesComment.includes(m.type)
+        );
+      } else {
+        filteredMemos = pickBy(memos, m => this.memoTypes.includes(m.type));
+      }
+      return filteredMemos;
+    },
     combineMemos(memos) {
       let reposts = pickBy(memos, memo => memo.type === "repost");
-      let posts = pickBy(memos, memo => memo.type === "post");
+      let posts;
+
+      if (this.type === "comment") {
+        posts = pickBy(
+          memos,
+          memo => memo.type === "post" || memo.type === "comment"
+        );
+      } else {
+        posts = pickBy(memos, memo => memo.type === "post");
+      }
 
       let hashesOfRepostedMemos = uniq(map(reposts, memo => memo.parent));
       /*
@@ -77,7 +98,7 @@ export default {
       return combinedMemos;
     }
   },
-  props: ["memos", "queued", "account", "following"]
+  props: ["memos", "queued", "account", "following", "type"]
 };
 </script>
 

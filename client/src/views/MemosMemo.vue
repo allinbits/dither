@@ -8,7 +8,7 @@
     card-memo(:memo="memo")
     section-default(v-if="userSignedIn")
       form-send-memo(type="comment" :parent-address="memo.id")
-    infinite-feed(:memos="comments" :queued="queuedComments")
+    infinite-feed(:memos="comments" :queued="queuedComments" type="comment")
   template(v-else)
     card-loading
   app-footer
@@ -40,6 +40,7 @@ export default {
     SectionDefault
   },
   computed: {
+    ...mapGetters(["memos", "queuedMemos", "userSignedIn"]),
     memo() {
       let value = {};
       if (this.memos) {
@@ -59,9 +60,8 @@ export default {
           this.memos,
           m => m.parent === this.$route.params.memo && m.type === "comment"
         );
-      } else {
-        return {};
       }
+      return {};
     },
     queuedComments() {
       if (this.queuedMemos) {
@@ -69,11 +69,9 @@ export default {
           this.queuedMemos,
           m => m.parent === this.$route.params.memo && m.type === "comment"
         );
-      } else {
-        return {};
       }
-    },
-    ...mapGetters(["memos", "queuedMemos", "userSignedIn"])
+      return {};
+    }
   },
   mounted() {
     this.$store.dispatch("memos/fetchById", this.$route.params.memo);
