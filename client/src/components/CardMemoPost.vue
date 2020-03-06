@@ -1,41 +1,50 @@
 <template lang="pug">
 .card-memo-post
-  corner-error(v-if="memo.height === 0 && memo.response.code")
-  corner-spinner(v-else-if="memo.height === 0")
-  .container-avatar(@click.self="navToMemo")
-    router-link.avatar(
-      :to="{ name: 'account', params: {address: memo.address}}")
-      img-avatar(:address="memo.address")
-  .container-text(@click.self="navToMemo")
-    .meta(@click.self="navToMemo")
-      router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
-        | {{ shortAddress }}
-      router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
-        | {{ timeAgo(memo.timestamp) }}
-    memo-body(:memo="memo")
-    .actions(@click.self="navToMemo")
-      btn-icon(
-        slot="btn-left" size="small" icon="message-circle" :value="memoComments"
-        @click.native.stop="navToMemo")
+  .card-memo-post__timeline(v-if="memo.timeline")
+    .icon: img(src="@/assets/feather/repeat.svg")
+    router-link.reposter(
+      v-for="repostMemo in memo.timeline"
+      :to="{ name: 'account', params: { address: repostMemo.address }}"
+      :key="repostMemo.id")
+      | {{ shortAddress(repostMemo.address) }}
+    | reposted
+  .card-memo-post__main
+    corner-error(v-if="memo.height === 0 && memo.response.code")
+    corner-spinner(v-else-if="memo.height === 0")
+    .container-avatar(@click.self="navToMemo")
+      router-link.avatar(
+        :to="{ name: 'account', params: {address: memo.address}}")
+        img-avatar(:address="memo.address")
+    .container-text(@click.self="navToMemo")
+      .meta(@click.self="navToMemo")
+        router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
+          | {{ shortAddress(memo.address) }}
+        router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
+          | {{ timeAgo(memo.timestamp) }}
+      memo-body(:memo="memo")
+      .actions(@click.self="navToMemo")
+        btn-icon(
+          slot="btn-left" size="small" icon="message-circle" :value="memoComments"
+          @click.native.stop="navToMemo")
 
-      // repost button
-      btn-icon.btn-repost.btn-repost--active(
-        v-if="userReposted"
-        slot="btn-left" size="small" icon="repeat" color="green" :value="memoReposts")
-      btn-icon.btn-repost(
-        v-else
-        :class="btnRepostStyle"
-        slot="btn-left" size="small" icon="repeat" :value="memoReposts"
-        @click.native.stop="actionRepost")
+        // repost button
+        btn-icon.btn-repost.btn-repost--active(
+          v-if="userReposted"
+          slot="btn-left" size="small" icon="repeat" color="green" :value="memoReposts")
+        btn-icon.btn-repost(
+          v-else
+          :class="btnRepostStyle"
+          slot="btn-left" size="small" icon="repeat" :value="memoReposts"
+          @click.native.stop="actionRepost")
 
-      // like button
-      btn-icon.btn-like.btn-like--active(
-        v-if="userLiked"
-        slot="btn-left" size="small" icon="heart" color="red" :value="memoLikes")
-      btn-icon.btn-like(
-        v-else
-        slot="btn-left" size="small" icon="heart" :value="memoLikes"
-        @click.native.stop="actionLike")
+        // like button
+        btn-icon.btn-like.btn-like--active(
+          v-if="userLiked"
+          slot="btn-left" size="small" icon="heart" color="red" :value="memoLikes")
+        btn-icon.btn-like(
+          v-else
+          slot="btn-left" size="small" icon="heart" :value="memoLikes"
+          @click.native.stop="actionLike")
 </template>
 
 <script>
@@ -67,9 +76,6 @@ export default {
   },
   computed: {
     ...mapGetters(["memos", "settings", "userSignedIn"]),
-    shortAddress() {
-      return h.truncAddress(this.memo.address);
-    },
     fromAddress() {
       if (this.settings && this.settings.data && this.settings.data.wallet) {
         return this.settings.data.wallet.address;
@@ -145,6 +151,9 @@ export default {
     }
   },
   methods: {
+    shortAddress(address) {
+      return h.truncAddress(address);
+    },
     timeAgo(date) {
       if (date) {
         return formatDistance(new Date(date), new Date());
@@ -212,7 +221,30 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-.card-memo-post
+.card-memo-post__timeline
+  display flex
+  align-items center
+
+  height 1.5rem
+  padding 0.5rem 0.5rem 0
+
+  font-size 0.875rem
+  color var(--dim)
+  .icon
+    width 4rem
+    margin-right 0.5rem
+    display flex
+    justify-content flex-end
+    img
+      width 0.75rem
+      height 0.75rem
+  .reposter
+    margin-right 0.3rem
+    color var(--txt)
+    &:hover
+      text-decoration underline
+
+.card-memo-post__main
   border-bottom 1px solid var(--bc)
   display flex
   color var(--txt)
