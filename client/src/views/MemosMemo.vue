@@ -41,11 +41,17 @@ export default {
   },
   computed: {
     memo() {
+      let value = {};
       if (this.memos) {
-        return this.memos[this.$route.params.memo];
-      } else {
-        return {};
+        value = this.memos[this.$route.params.memo];
+        if (value) {
+          value.timeline = pickBy(
+            this.memos,
+            m => m.parent === this.$route.params.memo && m.type === "repost"
+          );
+        }
       }
+      return value;
     },
     comments() {
       if (this.memos) {

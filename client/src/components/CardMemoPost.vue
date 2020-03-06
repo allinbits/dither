@@ -1,6 +1,7 @@
 <template lang="pug">
 .card-memo-post
-  .card-memo-post__timeline(v-if="memo.timeline")
+  .card-memo-post__timeline(
+    v-if="memo.timeline && Object.keys(memo.timeline).length > 0")
     .icon: img(src="@/assets/feather/repeat.svg")
     router-link.reposter(
       v-for="repostMemo in memo.timeline"
