@@ -39,7 +39,7 @@ export default {
       }
       return memos;
     },
-    fiilteredQueued() {
+    filteredQueued() {
       let memos = [];
       if (this.queued) {
         memos = this.queued;
