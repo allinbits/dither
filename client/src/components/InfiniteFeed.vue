@@ -34,8 +34,8 @@ export default {
           memos = pickBy(this.memos, m => this.following.includes(m.address));
         }
 
-        memos = this.filterByMemoType(memos);
-        memos = this.combineMemos(memos);
+        memos = this.filterMemoTypes(memos);
+        memos = this.combineMemoReposts(memos);
         memos = orderBy(memos, m => parseInt(m.height), "desc");
       }
       return memos;
@@ -44,7 +44,7 @@ export default {
       let memos = [];
       if (this.queued) {
         memos = this.queued;
-        memos = this.filterByMemoType(memos);
+        memos = this.filterMemoTypes(memos);
         memos = orderBy(memos, m => parseInt(m.height), "desc");
       }
       return memos;
@@ -55,7 +55,7 @@ export default {
     memoTypesComment: ["post", "repost", "comment"]
   }),
   methods: {
-    filterByMemoType(memos) {
+    filterMemoTypes(memos) {
       let filteredMemos;
       if (this.type === "comment") {
         filteredMemos = pickBy(memos, m =>
@@ -66,7 +66,7 @@ export default {
       }
       return filteredMemos;
     },
-    combineMemos(memos) {
+    combineMemoReposts(memos) {
       let reposts = pickBy(memos, memo => memo.type === "repost");
       let posts;
 
@@ -82,7 +82,7 @@ export default {
       let hashesOfRepostedMemos = uniq(map(reposts, memo => memo.parent));
       /*
       console.log(
-        "combineMemos() hashesOfRepostedMemos",
+        "combineMemoReposts() hashesOfRepostedMemos",
         hashesOfRepostedMemos
       );
       */
