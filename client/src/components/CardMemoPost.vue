@@ -19,9 +19,10 @@
     .container-text(@click.self="navToMemo")
       .meta(@click.self="navToMemo")
         router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
-          | {{ shortAddress(memo.address) }}
+          strong {{ fromDisplayName }}
+          | @{{ shortAddress(memo.address) }}
         router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
-          | {{ timeAgo(memo.timestamp) }}
+          | · {{ timeAgo(memo.timestamp) }} ago
       memo-body(:memo="memo")
       .actions(@click.self="navToMemo")
         btn-icon(
@@ -76,7 +77,17 @@ export default {
     MemoBody
   },
   computed: {
-    ...mapGetters(["memos", "settings", "userSignedIn"]),
+    ...mapGetters(["memos", "settings", "userSignedIn", "accounts"]),
+    fromDisplayName() {
+      if (
+        this.accounts &&
+        this.accounts[this.memo.address] &&
+        this.accounts[this.memo.address].displayname
+      ) {
+        return this.accounts[this.memo.address].displayname;
+      }
+      return "Anonymous";
+    },
     fromAddress() {
       if (this.settings && this.settings.data && this.settings.data.wallet) {
         return this.settings.data.wallet.address;
@@ -215,6 +226,7 @@ export default {
     }
   },
   mounted() {
+    this.$store.dispatch("accounts/fetchById", this.memo.address);
     this.checkForUserInteractions();
   },
   props: ["memo"]
@@ -272,11 +284,14 @@ export default {
     margin-right 0.25rem
 
   .sender
-    font-weight bold
-    color var(--txt)
-    margin-right 0.5rem
-    &:hover
-      text-decoration underline
+    margin-right 0.3rem
+    color var(--dim)
+    strong
+      font-weight bold
+      color var(--txt)
+      margin-right 0.3rem
+      &:hover
+        text-decoration underline
   .time
     color var(--dim)
   .block
