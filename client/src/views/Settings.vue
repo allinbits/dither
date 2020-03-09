@@ -49,7 +49,10 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["user", "userSignedIn"])
+    ...mapGetters(["user", "userSignedIn"]),
+    devMode() {
+      return process.env.NODE_ENV === "development";
+    }
   },
   methods: {
     signOut() {
