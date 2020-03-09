@@ -123,7 +123,7 @@ function writeToFirebase(tx) {
       following: admin.firestore.FieldValue.arrayUnion(parsedMemo.parent)
     })
     db.collection("accounts").doc(parsedMemo.parent).update({
-      followers: admin.firestore.FieldValue.arrayUnion(txBody.address)
+      following: admin.firestore.FieldValue.arrayUnion(txBody.address)
     })
   }
   if (parsedMemo.type === "unfollow") {
@@ -134,6 +134,11 @@ function writeToFirebase(tx) {
     db.collection("accounts").doc(parsedMemo.parent).update({
       followers: admin.firestore.FieldValue.arrayUnion(txBody.address)
     })
+  }
+  if (parsedMemo.type === "set-displayname") {
+    db.collection("accounts")
+      .doc(txBody.address)
+      .set({ displayname: parsedMemo.memo.body }, { merge: true });
   }
 }
 
