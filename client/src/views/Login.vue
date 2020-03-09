@@ -33,7 +33,8 @@ export default {
       signInSuccessUrl: "/",
       signInOptions: [
         Firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        Firebase.auth.GithubAuthProvider.PROVIDER_ID
+        Firebase.auth.GithubAuthProvider.PROVIDER_ID,
+        Firebase.auth.TwitterAuthProvider.PROVIDER_ID
       ]
     };
     ui.start("#firebaseui-auth-container", uiConfig);

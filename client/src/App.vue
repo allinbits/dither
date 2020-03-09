@@ -69,6 +69,15 @@ export default {
     }
   },
   watch: {
+    async "settings.data"() {
+      if (!this.settings.data.wallet) {
+        // set user following
+        this.$store.commit("setFollowing", defaultFollowing);
+
+        // load memos from user's following
+        this.following.map(address => this.fetchMemosFromAddress(address));
+      }
+    },
     async "settings.data.wallet"() {
       let userAddress = this.settings.data.wallet.address;
       let userFollowing = [];
