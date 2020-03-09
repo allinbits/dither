@@ -10,8 +10,11 @@
 
   section-default
     div(slot="section-title") Notice
-    p(v-for="provider in user.providerData")
-      | {{ user.displayName}}, you're logged in via {{ provider.providerId }}
+
+    template(v-if="devMode")
+      p(v-for="provider in user.providerData")
+        | {{ user.displayName}}, you're logged in via {{ provider.providerId }}
+
     p If you wish to view your balance or send tokens, go to #[router-link(:to="{ name: 'wallet'}") your wallet].
     p Dither is an #[a(href="https://github.com/virgo-project/dither" rel="noopener noreferrer" target="_blank") open source project] built on the #[a(href="https://cosmos.network" rel="noopener noreferrer" target="_blank") Cosmos Hub]. We are funded by #[a(href="https://virgo.org" target="_blank" rel="noopener noreferrer") Virgo].
 
