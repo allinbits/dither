@@ -135,6 +135,11 @@ function writeToFirebase(tx) {
       followers: admin.firestore.FieldValue.arrayUnion(txBody.address)
     })
   }
+  if (parsedMemo.type === "set-displayname") {
+    db.collection("accounts")
+      .doc(txBody.address)
+      .set({ displayname: parsedMemo.memo.body }, { merge: true });
+  }
 }
 
 // helper functions
