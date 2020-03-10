@@ -67,7 +67,7 @@ function processTxs(txs) {
       let msgCost = tx.tx.value.msg[0].value.amount[0].amount
 
       if (msgRecipient === "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq"
-          && msgCost === "2000") {
+          && msgCost === "200") {
         console.log("valid memo", tx);
         writeToFirebase(tx);
       } else {
