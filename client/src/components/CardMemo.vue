@@ -261,7 +261,6 @@ export default {
   font-size 0.875rem
   color var(--dim)
 
-
   .icon
     flex 0 0 4rem
     margin-right 0.5rem
@@ -318,7 +317,6 @@ export default {
 
   .sender
     margin-right 0.2rem
-    flex 1
 
     text-overflow ellipsis
     overflow hidden
@@ -341,6 +339,7 @@ export default {
 
   .time
     color var(--dim)
+    white-space nowrap
 
   .block
     color var(--faint)
