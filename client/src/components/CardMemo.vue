@@ -8,7 +8,7 @@
         v-for="repostMemo in memo.timeline"
         :to="{ name: 'account', params: { address: repostMemo.address }}"
         :key="repostMemo.id")
-        | {{ shortAddress(repostMemo.address) }}
+        | {{ reposterDisplayName(repostMemo.address) }}
     .label reposted
   .card-memo-post__main
     corner-error(v-if="memo.height === 0 && memo.response.code")
@@ -237,6 +237,9 @@ export default {
       } else {
         // console.log("no interactions, skipping...");
       }
+    },
+    reposterDisplayName(address) {
+      return h.getDisplayName(this.accounts, address);
     }
   },
   mounted() {
@@ -278,6 +281,8 @@ export default {
     display inline
     color var(--txt)
     padding-right 0.2rem
+    &:not(:last-child):after
+      content ','
     &:hover
       text-decoration underline
 
