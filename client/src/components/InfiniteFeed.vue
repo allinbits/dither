@@ -1,10 +1,10 @@
 <template lang="pug">
 .infinite-feed
   template(v-if="Object.keys(queued).length > 0")
-    card-memo-post(v-for="memo in filteredQueued" :memo="memo" :key="memo.id")
+    card-memo(v-for="memo in filteredQueued" :memo="memo" :key="memo.id")
 
   template(v-if="Object.keys(memos).length > 0")
-    card-memo-post(v-for="memo in filteredMemos" :memo="memo" :key="memo.id")
+    card-memo(v-for="memo in filteredMemos" :memo="memo" :key="memo.id")
     btn-load-more(:account="account")
 
   card-loading(v-else)
@@ -14,13 +14,13 @@
 import { orderBy, pickBy, map, uniq } from "lodash";
 import BtnLoadMore from "./BtnLoadMore";
 import CardLoading from "./CardLoading";
-import CardMemoPost from "./CardMemoPost";
+import CardMemo from "./CardMemo";
 export default {
   name: "infinite-feed",
   components: {
     BtnLoadMore,
     CardLoading,
-    CardMemoPost
+    CardMemo
   },
   computed: {
     filteredMemos() {
