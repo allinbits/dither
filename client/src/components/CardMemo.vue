@@ -3,12 +3,13 @@
   .card-memo-post__timeline(
     v-if="memo.timeline && Object.keys(memo.timeline).length > 0")
     .icon: img(src="@/assets/feather/repeat.svg")
-    router-link.reposter(
-      v-for="repostMemo in memo.timeline"
-      :to="{ name: 'account', params: { address: repostMemo.address }}"
-      :key="repostMemo.id")
-      | {{ shortAddress(repostMemo.address) }}
-    | reposted
+    .reposters
+      router-link.reposter(
+        v-for="repostMemo in memo.timeline"
+        :to="{ name: 'account', params: { address: repostMemo.address }}"
+        :key="repostMemo.id")
+        | {{ shortAddress(repostMemo.address) }}
+    .label reposted
   .card-memo-post__main
     corner-error(v-if="memo.height === 0 && memo.response.code")
     corner-spinner(v-else-if="memo.height === 0")
@@ -17,13 +18,16 @@
         :to="{ name: 'account', params: {address: memo.address}}")
         img-avatar(:address="memo.address")
     .container-text(@click.self="navToMemo")
+
       .meta(@click.self="navToMemo")
         router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
-          strong {{ displayName }}
-          | @{{ shortAddress(memo.address) }}
+          .displayname {{ displayName }}
+          .address @{{ shortAddress(memo.address) }}
         router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
           | · {{ timeAgo }}
+
       memo-body(:memo="memo")
+
       .actions(@click.self="navToMemo")
         btn-icon(
           slot="btn-left" size="small" icon="message-circle" :value="memoComments"
@@ -253,19 +257,30 @@ export default {
 
   font-size 0.875rem
   color var(--dim)
+
+
   .icon
-    width 4rem
+    flex 0 0 4rem
     margin-right 0.5rem
     display flex
     justify-content flex-end
     img
       width 0.75rem
       height 0.75rem
+
+  .reposters
+    text-overflow ellipsis
+    overflow hidden
+    white-space nowrap
+    min-width 0
+
   .reposter
-    margin-right 0.3rem
+    display inline
     color var(--txt)
     &:hover
       text-decoration underline
+  .label
+    padding-left 0.2rem
 
 .card-memo-post__main
   border-bottom 1px solid var(--bc)
@@ -281,6 +296,12 @@ export default {
 .container-avatar
   padding 0.5rem
 
+.container-text
+  padding 0.5rem 0.5rem 0.5rem 0
+  display flex
+  flex-flow column nowrap
+  flex 1
+
 .avatar
   display flex
   align-items center
@@ -290,26 +311,35 @@ export default {
   display flex
   align-items center
   margin-bottom 0.125rem
-  > div
-    margin-right 0.2rem
 
   .sender
     margin-right 0.2rem
-    color var(--dim)
-    strong
+    flex 1
+
+    text-overflow ellipsis
+    overflow hidden
+    white-space nowrap
+    min-width 0
+
+    .displayname, .address
+      display inline
+
+    .displayname
       font-weight bold
       color var(--txt)
       margin-right 0.2rem
       &:hover
         text-decoration underline
+
+    .address
+      color var(--dim)
+
+
   .time
     color var(--dim)
+
   .block
     color var(--faint)
-
-.container-text
-  padding 0.5rem 0.5rem 0.5rem 0
-  width 100%
 
 .body
   line-height 1.25
