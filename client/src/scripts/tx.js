@@ -40,10 +40,10 @@ async function sendTx(params) {
   let accountJson = await account.json();
   // console.log("account info", accountJson.result);
 
-  // if this tx doesn't send tokens, send one uatom to this address
+  // if this tx doesn't send tokens, send uatom to this address
   if (!params.amount) {
     params.to = store.state.blockchain.toAddress;
-    params.amount = "2000";
+    params.amount = "200";
   }
 
   let tx = defaultTx(
@@ -91,7 +91,7 @@ async function sendTx(params) {
 
   // console.log("tx params", params);
 
-  if (params.amount === "2000") {
+  if (params.amount === "200") {
     let queuedMemo = {
       id: txResponseJson.txhash,
       address: params.from,
