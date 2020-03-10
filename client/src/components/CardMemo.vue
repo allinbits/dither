@@ -277,10 +277,9 @@ export default {
   .reposter
     display inline
     color var(--txt)
+    padding-right 0.2rem
     &:hover
       text-decoration underline
-  .label
-    padding-left 0.2rem
 
 .card-memo-post__main
   border-bottom 1px solid var(--bc)
