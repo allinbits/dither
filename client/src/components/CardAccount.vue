@@ -3,9 +3,11 @@
   router-link.avatar(:to="{ name: 'account', params: { address: account.id } }")
     img-avatar(:address="account.id" size="48")
   router-link.text(:to="{ name: 'account', params: { address: account.id } }")
-    .title {{ shortAddress(account.id) }}
+    .title
+      .displayname {{ displayName}}
+      .address @{{ shortAddress(account.id) }}
     .subtitle {{ followingCount }} following / {{ followersCount }} followers
-  account-actions(@click.self="navToAccount" v-if="userSignedIn" :account="account")
+  account-actions(@click.self="navToAccount" v-if="actionsVisible" :account="account")
 </template>
 
 <script>
@@ -26,7 +28,10 @@ export default {
     ImgAvatar
   },
   computed: {
-    ...mapGetters(["following", "userSignedIn", "settings"]),
+    ...mapGetters(["following", "userSignedIn", "settings", "accounts"]),
+    displayName() {
+      return h.getDisplayName(this.accounts, this.account.id);
+    },
     currentUserIsFollowing() {
       if (this.following) {
         return this.following.includes(this.account.id);
@@ -47,6 +52,15 @@ export default {
     },
     fromAddress() {
       return this.settings.data.wallet.address;
+    },
+    actionsVisible() {
+      if (this.settings && this.settings.data && this.settings.data.wallet) {
+        return this.account.id !== this.settings.data.wallet.address;
+      }
+      if (this.userSignedIn) {
+        return true;
+      }
+      return false;
     }
   },
   methods: {
@@ -112,7 +126,12 @@ export default {
     padding 0.5rem 0.5rem 0.5rem 0
     color var(--txt)
   .title
-    font-weight bold
+    display flex
+    .displayname
+      font-weight bold
+      margin-right 0.5rem
+    .address
+      color var(--dim)
   .subtitle
     font-size 0.75rem
     color var(--dim)

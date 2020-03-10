@@ -1,20 +1,356 @@
 <template lang="pug">
-.card-memo
-  card-memo-repost(v-if="memo.type === 'repost'" :memo="memo")
-  card-memo-post(v-else :memo="memo")
+.card-memo-post
+  .card-memo-post__timeline(
+    v-if="memo.timeline && Object.keys(memo.timeline).length > 0")
+    .icon: img(src="@/assets/feather/repeat.svg")
+    .reposters
+      router-link.reposter(
+        v-for="repostMemo in memo.timeline"
+        :to="{ name: 'account', params: { address: repostMemo.address }}"
+        :key="repostMemo.id")
+        | {{ reposterDisplayName(repostMemo.address) }}
+    .label reposted
+  .card-memo-post__main
+    corner-error(v-if="memo.height === 0 && memo.response.code")
+    corner-spinner(v-else-if="memo.height === 0")
+    .container-avatar(@click.self="navToMemo")
+      router-link.avatar(
+        :to="{ name: 'account', params: {address: memo.address}}")
+        img-avatar(:address="memo.address")
+    .container-text(@click.self="navToMemo")
+
+      .meta(@click.self="navToMemo")
+        router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
+          .displayname {{ displayName }}
+          .address @{{ shortAddress(memo.address) }}
+        router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
+          | · {{ timeAgo }}
+
+      memo-body(:memo="memo")
+
+      .actions(@click.self="navToMemo")
+        btn-icon(
+          slot="btn-left" size="small" icon="message-circle" :value="memoComments"
+          @click.native.stop="navToMemo")
+
+        // repost button
+        btn-icon.btn-repost.btn-repost--active(
+          v-if="userReposted"
+          slot="btn-left" size="small" icon="repeat" color="green" :value="memoReposts")
+        btn-icon.btn-repost(
+          v-else
+          :class="btnRepostStyle"
+          slot="btn-left" size="small" icon="repeat" :value="memoReposts"
+          @click.native.stop="actionRepost")
+
+        // like button
+        btn-icon.btn-like.btn-like--active(
+          v-if="userLiked"
+          slot="btn-left" size="small" icon="heart" color="red" :value="memoLikes")
+        btn-icon.btn-like(
+          v-else
+          slot="btn-left" size="small" icon="heart" :value="memoLikes"
+          @click.native.stop="actionLike")
 </template>
 
 <script>
-import CardMemoPost from "./CardMemoPost";
-import CardMemoRepost from "./CardMemoRepost";
+import { formatDistanceStrict } from "date-fns";
+import { find } from "lodash";
+
+// linkify
+import * as linkify from "linkifyjs";
+import linkifyHtml from "linkifyjs/html";
+import hashtag from "linkifyjs/plugins/hashtag"; // optional
+hashtag(linkify);
+
+import h from "../scripts/helpers";
+import tx from "../scripts/tx";
+import { mapGetters } from "vuex";
+import BtnIcon from "./BtnIcon";
+import CornerError from "./CornerError";
+import CornerSpinner from "./CornerSpinner";
+import ImgAvatar from "./ImgAvatar";
+import MemoBody from "./MemoBody";
 export default {
-  name: "card-memo",
+  name: "card-memo-post",
   components: {
-    CardMemoPost,
-    CardMemoRepost
+    BtnIcon,
+    CornerError,
+    CornerSpinner,
+    ImgAvatar,
+    MemoBody
+  },
+  computed: {
+    ...mapGetters(["memos", "settings", "userSignedIn", "accounts"]),
+    displayName() {
+      return h.getDisplayName(this.accounts, this.memo.address);
+    },
+    fromAddress() {
+      if (this.settings && this.settings.data && this.settings.data.wallet) {
+        return this.settings.data.wallet.address;
+      }
+      return "";
+    },
+    memoBody() {
+      let text = this.memo.memo;
+      if (text) {
+        text = text.split(" ");
+        text.shift();
+        if (this.memo.type === "post") {
+          text = text.join(" ");
+          return linkifyHtml(text);
+        }
+        if (this.memo.type === "comment") {
+          text.shift();
+          text = text.join(" ");
+          return linkifyHtml(text);
+        }
+      }
+      return "";
+    },
+    memoComments() {
+      if (this.memo && this.memo.comments) {
+        return this.memo.comments;
+      }
+      return 0;
+    },
+    memoReposts() {
+      if (this.memo && this.memo.reposts) {
+        return this.memo.reposts;
+      }
+      return 0;
+    },
+    memoLikes() {
+      if (this.memo && this.memo.likes) {
+        return this.memo.likes;
+      }
+      return 0;
+    },
+    btnLikeStyle() {
+      if (this.userLiked) return "btn-like--active";
+      return "btn-like--default";
+    },
+    btnRepostStyle() {
+      if (this.userReposted) return "btn-repost--active";
+      return "btn-repost--default";
+    },
+    userLiked() {
+      if (this.memos && this.fromAddress) {
+        return find(
+          this.memos,
+          m =>
+            m.parent === this.memo.id &&
+            m.address === this.fromAddress &&
+            m.type === "like"
+        );
+      }
+      return false;
+    },
+    userReposted() {
+      if (this.memos && this.fromAddress) {
+        return find(
+          this.memos,
+          m =>
+            m.parent === this.memo.id &&
+            m.address === this.fromAddress &&
+            m.type === "repost"
+        );
+      }
+      return false;
+    },
+    timeAgo() {
+      let value = "";
+      if (this.memo.timestamp) {
+        value = formatDistanceStrict(new Date(this.memo.timestamp), new Date());
+        // an ugly hack to replace longer strings with the short form
+        value = value.replace(" seconds", "s");
+        value = value.replace(" second", "s");
+        value = value.replace(" minutes", "m");
+        value = value.replace(" minute", "m");
+        value = value.replace(" hours", "h");
+        value = value.replace(" hour", "h");
+        value = value.replace(" days", "d");
+        value = value.replace(" day", "d");
+        value = value.replace(" weeks", "w");
+        value = value.replace(" week", "w");
+        value = value.replace(" months", "m");
+        value = value.replace(" month", "m");
+        value = value.replace(" years", "y");
+        value = value.replace(" year", "y");
+        return value;
+      }
+      return "";
+    }
+  },
+  methods: {
+    shortAddress(address) {
+      return h.truncAddress(address);
+    },
+    navToMemo() {
+      this.$router.push({ name: "memo", params: { memo: this.memo.id } });
+    },
+    async actionRepost() {
+      if (!this.userSignedIn) {
+        this.$router.push({ name: "login" });
+        return;
+      }
+      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+        this.$router.push({ name: "wallet" });
+        return;
+      }
+      let queuedMemo = await tx.sendTx({
+        from: this.fromAddress,
+        memo: JSON.stringify({
+          type: "repost",
+          parent: this.memo.id
+        })
+      });
+      this.$store.commit("addQueuedMemo", queuedMemo);
+    },
+    async actionLike() {
+      if (!this.userSignedIn) {
+        this.$router.push({ name: "login" });
+        return;
+      }
+      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+        this.$router.push({ name: "wallet" });
+        return;
+      }
+      let queuedMemo = await tx.sendTx({
+        from: this.fromAddress,
+        memo: JSON.stringify({
+          type: "like",
+          parent: this.memo.id
+        })
+      });
+      this.$store.commit("addQueuedMemo", queuedMemo);
+    },
+    checkForUserInteractions() {
+      if (this.memo.likes || this.memo.reposts) {
+        // console.log("checking...");
+        this.$store.dispatch("memos/fetchAndAdd", {
+          where: [
+            ["parent", "==", this.memo.id],
+            ["address", "==", this.fromAddress]
+          ]
+        });
+      } else {
+        // console.log("no interactions, skipping...");
+      }
+    },
+    reposterDisplayName(address) {
+      return h.getDisplayName(this.accounts, address);
+    }
+  },
+  mounted() {
+    this.$store.dispatch("accounts/fetchById", this.memo.address);
+    this.checkForUserInteractions();
   },
   props: ["memo"]
 };
 </script>
 
-<style scoped lang="stylus"></style>
+<style scoped lang="stylus">
+.card-memo-post__timeline
+  display flex
+  align-items center
+
+  height 1.5rem
+  padding 0.5rem 0.5rem 0
+
+  font-size 0.875rem
+  color var(--dim)
+
+  .icon
+    flex 0 0 4rem
+    margin-right 0.5rem
+    display flex
+    justify-content flex-end
+    img
+      width 0.75rem
+      height 0.75rem
+
+  .reposters
+    text-overflow ellipsis
+    overflow hidden
+    white-space nowrap
+    min-width 0
+
+  .reposter
+    display inline
+    color var(--txt)
+    padding-right 0.2rem
+    &:not(:last-child):after
+      content ','
+    &:hover
+      text-decoration underline
+
+.card-memo-post__main
+  border-bottom 1px solid var(--bc)
+  display flex
+  color var(--txt)
+  cursor pointer
+
+  position relative
+
+  &:hover
+    background var(--hover-bg)
+
+.container-avatar
+  padding 0.5rem
+
+.container-text
+  padding 0.5rem 0.5rem 0.5rem 0
+  display flex
+  flex-flow column nowrap
+  flex 1
+
+.avatar
+  display flex
+  align-items center
+  justify-content center
+
+.meta
+  display flex
+  align-items center
+  margin-bottom 0.125rem
+
+  .sender
+    margin-right 0.2rem
+
+    text-overflow ellipsis
+    overflow hidden
+    white-space nowrap
+    min-width 0
+
+    .displayname, .address
+      display inline
+
+    .displayname
+      font-weight bold
+      color var(--txt)
+      margin-right 0.2rem
+      &:hover
+        text-decoration underline
+
+    .address
+      color var(--dim)
+
+
+  .time
+    color var(--dim)
+    white-space nowrap
+
+  .block
+    color var(--faint)
+
+.body
+  line-height 1.25
+  margin-bottom 0.25rem
+
+.actions
+  display flex
+  justify-content space-between
+  width 100%
+  max-width 15rem
+</style>
