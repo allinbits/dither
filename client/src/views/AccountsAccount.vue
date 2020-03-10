@@ -1,11 +1,13 @@
 <template lang="pug">
 .page-accounts-account
-  app-header(:page-title="shortAddress")
+  app-header(:page-title="displayName")
     btn-icon(slot="btn-left" icon="arrow-left" @click.native="back")
   .page-header
     .cover
     .avatar: img-avatar(:address="this.$route.params.address" size="96")
-    a.account-address(:href="`https://www.mintscan.io/account/${this.$route.params.address}`" rel="noopener noreferrer" target="_blank") {{ shortAddress }}
+
+    .account-displayname {{ displayName }}
+    a.account-address(:href="`https://www.mintscan.io/account/${this.$route.params.address}`" rel="noopener noreferrer" target="_blank") @{{ shortAddress }}
 
     .account-stats
       // router-link.account-stat(:to="{ name: 'following' }")
@@ -52,6 +54,10 @@ export default {
     InfiniteFeed
   },
   computed: {
+    ...mapGetters(["memos", "queuedMemos", "accounts"]),
+    displayName() {
+      return h.getDisplayName(this.accounts, this.$route.params.address);
+    },
     shortAddress() {
       return h.truncAddress(this.$route.params.address);
     },
@@ -104,8 +110,7 @@ export default {
         return value;
       }
       return [];
-    },
-    ...mapGetters(["memos", "queuedMemos", "accounts"])
+    }
   },
   methods: {
     back() {
@@ -136,11 +141,15 @@ export default {
     margin -3rem auto 0
     margin-bottom 0.75rem
 
-  .account-address
+  .account-displayname
     font-size 1.75rem
     font-weight bold
     display block
     color var(--txt)
+  .account-address
+    color var(--dim)
+    &:hover
+      text-decoration underline
 
   .account-stats
     display flex

@@ -41,9 +41,6 @@ export default {
       if (this.accounts) {
         value = orderBy(this.accounts, ["followers", "desc"]);
       }
-      if (this.settings && this.settings.data && this.settings.data.wallet) {
-        value = value.filter(v => v.id !== this.settings.data.wallet.address);
-      }
       return value;
     }
   },

@@ -1,3 +1,10 @@
+function getDisplayName(accounts, address) {
+  if (accounts && accounts[address] && accounts[address].displayname) {
+    return accounts[address].displayname;
+  }
+  return "Anonymous";
+}
+
 function getMemoPrefix(type, parentAddress) {
   switch (type) {
     case "comment":
@@ -33,4 +40,4 @@ function truncAddress(addr) {
   }
 }
 
-export default { getMemoPrefix, getTxSender, truncAddress };
+export default { getDisplayName, getMemoPrefix, getTxSender, truncAddress };

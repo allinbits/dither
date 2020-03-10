@@ -19,7 +19,7 @@
     .container-text(@click.self="navToMemo")
       .meta(@click.self="navToMemo")
         router-link.sender(:to="{ name: 'account', params: {address: memo.address}}")
-          strong {{ fromDisplayName }}
+          strong {{ displayName }}
           | @{{ shortAddress(memo.address) }}
         router-link.time(:to="{ name: 'memo', params: { memo: this.memo.id } }")
           | · {{ timeAgo(memo.timestamp) }} ago
@@ -78,15 +78,8 @@ export default {
   },
   computed: {
     ...mapGetters(["memos", "settings", "userSignedIn", "accounts"]),
-    fromDisplayName() {
-      if (
-        this.accounts &&
-        this.accounts[this.memo.address] &&
-        this.accounts[this.memo.address].displayname
-      ) {
-        return this.accounts[this.memo.address].displayname;
-      }
-      return "Anonymous";
+    displayName() {
+      return h.getDisplayName(this.accounts, this.memo.address);
     },
     fromAddress() {
       if (this.settings && this.settings.data && this.settings.data.wallet) {
