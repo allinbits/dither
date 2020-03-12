@@ -8,15 +8,19 @@ import router from "../router/index.js";
 import { Firebase, initFirebase } from "./firebase.js";
 
 // import vuex-firestore modules
-import memos from "./modules/memos.js";
 import accounts from "./modules/accounts.js";
+import blockchains from "./modules/blockchains.js";
+import memos from "./modules/memos.js";
 import settings from "./modules/settings.js";
 
 // connect vuex-firestore modules to firestore
-const easyFirestore = VuexEasyFirestore([memos, accounts, settings], {
-  logging: true,
-  FirebaseDependency: Firebase
-});
+const easyFirestore = VuexEasyFirestore(
+  [accounts, blockchains, memos, settings],
+  {
+    logging: true,
+    FirebaseDependency: Firebase
+  }
+);
 
 const storeData = {
   plugins: [easyFirestore],
@@ -26,6 +30,9 @@ const storeData = {
     },
     blockchain: state => {
       return state.blockchain;
+    },
+    blockchains: state => {
+      return state.blockchains.data;
     },
     chainId: state => {
       return state.blockchain.chainId;

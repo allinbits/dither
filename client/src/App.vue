@@ -48,16 +48,8 @@ export default {
       }
     });
 
-    // fetch the current block
-    let response = await fetch(`${this.blockchain.lcd}/blocks/latest`);
-    let data = await response.json();
-    this.$store.commit("setHeight", data.block_meta.header.height);
-
-    // continuouly fetch the latest blocks
-    this.$store.dispatch("memos/openDBChannel", {
-      orderBy: ["height", "desc"],
-      where: [["height", ">=", this.blockchain.height - 256]]
-    });
+    // continuouly update blockchain data
+    this.$store.dispatch("blockchains/openDBChannel");
 
     // wipe out service workers (for now)
     if (window.navigator && navigator.serviceWorker) {

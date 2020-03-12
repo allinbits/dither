@@ -20,7 +20,7 @@
       .break-address This is your wallet address:
       a.break-address(:href="`https://www.mintscan.io/account/${settings.data.wallet.address}`" rel="noopener noreferrer" target="_blank") {{ settings.data.wallet.address }}
 
-    p You have #[strong {{ tokens }} ATOM]
+    p You have #[strong {{ tokens }} ATOM] on block \#{{ blockchains["cosmoshub-3"].header.height }}
 
     p(v-if="devMode")
       a.delete-wallet(@click="deleteWallet") Delete wallet
@@ -61,7 +61,14 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["user", "userSignedIn", "settings", "blockchain"]),
+    ...mapGetters([
+      "user",
+      "userSignedIn",
+      "settings",
+      "blockchain",
+      "blockchains",
+      "currentChain"
+    ]),
     devMode() {
       return process.env.NODE_ENV === "development";
     },
@@ -125,14 +132,17 @@ export default {
     });
   },
   watch: {
-    async "settings.data.wallet"() {
-      let response = await fetch(
-        `${this.blockchain.lcd}/bank/balances/${this.settings.data.wallet.address}`
-      );
-      let balance = await response.json();
-      let amount = balance.result[0].amount;
-      // console.log("balance amount", amount);
-      this.$store.dispatch("settings/set", { uatom: amount });
+    blockchains: {
+      handler: async function() {
+        let response = await fetch(
+          `${this.blockchain.lcd}/bank/balances/${this.settings.data.wallet.address}`
+        );
+        let balance = await response.json();
+        let amount = balance.result[0].amount;
+        // console.log("new balance:", amount, "uatom");
+        this.$store.dispatch("settings/set", { uatom: amount });
+      },
+      deep: true
     }
   }
 };
