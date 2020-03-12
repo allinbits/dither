@@ -40,7 +40,7 @@ ws.onmessage = function(msg) {
   if (msgData.result.data && msgData.result.data.value) {
     let event = msgData.result.data.value;
     // console.log(event);
-    console.log(event.block.header.height);
+    setBlockchainHeader(event.block.header)
     state.block = event.block;
     getTxs(event.block.header.height);
   }
@@ -165,4 +165,11 @@ function destructureMemo(memoJson) {
     data.parent = memo.parent
   }
   return data
+}
+
+function setBlockchainHeader(header) {
+  console.log(header.height);
+  db.collection("blockchains")
+    .doc("cosmoshub-3")
+    .set({ header: header }, { merge: true });
 }
