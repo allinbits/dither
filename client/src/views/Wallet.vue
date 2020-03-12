@@ -91,7 +91,7 @@ export default {
         return (
           "https://twitter.com/intent/tweet?via=VirgoUDV&text=I%20want%20to%20try%20out%20https%3A//dither.chat.%20Please%20send%20ATOM%20to%20" +
           address +
-          "&hashtags=dither"
+          "&hashtags=ditherchat"
         );
       } else {
         return "https://twitter.com/VirgoUDV";
