@@ -336,7 +336,6 @@ export default {
     .address
       color var(--dim)
 
-
   .time
     color var(--dim)
     white-space nowrap
