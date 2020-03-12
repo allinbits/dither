@@ -14,7 +14,7 @@
     template(v-if="tokens")
       p You currently have enough ATOM to interact with Dither.
     template(v-else)
-      p You need ATOM to interact with Dither, but you don't have any. Interaction include creating messages, liking messages, and following accounts. You should send ATOM (0.1 is enough) to your address below.
+      p You need ATOM tokens to interact with Dither. You can buy ATOM from #[a(href="https://www.coinbase.com/price/cosmos" rel="noopener noreferrer" target="_blank") Coinbase] or #[a(href="https://www.binance.com/en/trade/ATOM_BTC" rel="noopener noreferrer" target="_blank") Binance]. Once purchased, please send ATOM (0.1 is enough) to the address below. Alternatively, you can #[a(:href="tweetUrl" rel="noopener noreferrer" target="_blank") ask the Dither community] to send you some ATOM.
 
     p
       .break-address This is your wallet address:
