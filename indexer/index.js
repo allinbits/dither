@@ -107,39 +107,45 @@ function writeToFirebase(tx) {
       .doc(parsedMemo.parent)
       .set({ comments: increment }, { merge: true });
   }
+
   if (parsedMemo.type === "repost") {
     db.collection("memos")
       .doc(parsedMemo.parent)
       .set({ reposts: increment }, { merge: true });
   }
+
   if (parsedMemo.type === "like") {
     db.collection("memos")
       .doc(parsedMemo.parent)
       .set({ likes: increment }, { merge: true });
   }
+
   if (parsedMemo.type === "follow") {
     console.log(txBody.address, 'follows', parsedMemo.parent)
     db.collection("accounts").doc(txBody.address).update({
       following: admin.firestore.FieldValue.arrayUnion(parsedMemo.parent)
     })
     db.collection("accounts").doc(parsedMemo.parent).update({
-      following: admin.firestore.FieldValue.arrayUnion(txBody.address)
+      followers: admin.firestore.FieldValue.arrayUnion(txBody.address)
     })
   }
+
   if (parsedMemo.type === "unfollow") {
     console.log(txBody.address, 'unfollows', parsedMemo.parent)
     db.collection("accounts").doc(txBody.address).update({
       following: admin.firestore.FieldValue.arrayRemove(parsedMemo.parent)
     })
     db.collection("accounts").doc(parsedMemo.parent).update({
-      followers: admin.firestore.FieldValue.arrayUnion(txBody.address)
+      followers: admin.firestore.FieldValue.arrayRemove(txBody.address)
     })
   }
+
   if (parsedMemo.type === "set-displayname") {
     db.collection("accounts")
       .doc(txBody.address)
       .set({ displayname: parsedMemo.memo.body }, { merge: true });
   }
+
 }
 
 // helper functions
