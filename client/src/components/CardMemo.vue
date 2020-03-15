@@ -81,7 +81,7 @@ export default {
     MemoBody
   },
   computed: {
-    ...mapGetters(["memos", "settings", "userSignedIn", "accounts"]),
+    ...mapGetters(["memos", "settings", "userSignedIn", "accounts", "queuedMemos"]),
     displayName() {
       return h.getDisplayName(this.accounts, this.memo.address);
     },
@@ -121,10 +121,19 @@ export default {
       return 0;
     },
     memoLikes() {
+      let likesCount = 0;
       if (this.memo && this.memo.likes) {
-        return this.memo.likes;
+        likesCount = this.memo.likes;
       }
-      return 0;
+      if (this.queuedMemos) {
+        for (let key in this.queuedMemos) {
+          const memo = this.queuedMemos[key]
+          if (memo.type === "like" && memo.parent === this.memo.id) {
+            likesCount++
+          }
+        }
+      }
+      return likesCount;
     },
     btnLikeStyle() {
       if (this.userLiked) return "btn-like--active";
@@ -135,9 +144,10 @@ export default {
       return "btn-repost--default";
     },
     userLiked() {
-      if (this.memos && this.fromAddress) {
+      const memos = {...this.memos, ...this.queuedMemos}
+      if (memos && this.fromAddress) {
         return find(
-          this.memos,
+          memos,
           m =>
             m.parent === this.memo.id &&
             m.address === this.fromAddress &&
