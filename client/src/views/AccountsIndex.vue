@@ -21,7 +21,6 @@ import CardAccount from "@/components/CardAccount";
 import CardLoading from "@/components/CardLoading";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
-import ImgAvatar from "@/components/ImgAvatar";
 export default {
   name: "page-accounts-index",
   metaInfo: { title: "Community" },
@@ -31,8 +30,7 @@ export default {
     BtnIcon,
     BtnLoadMore,
     CardAccount,
-    CardLoading,
-    ImgAvatar
+    CardLoading
   },
   computed: {
     ...mapGetters(["accounts", "userSignedIn", "settings"]),

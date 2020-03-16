@@ -22,6 +22,9 @@ const easyFirestore = VuexEasyFirestore(
   }
 );
 
+// import channels
+import channels from "../../../channels.json";
+
 const storeData = {
   plugins: [easyFirestore],
   getters: {
@@ -36,6 +39,9 @@ const storeData = {
     },
     chainId: state => {
       return state.blockchain.chainId;
+    },
+    channels: state => {
+      return state.channels;
     },
     defaultAccounts: state => {
       return state.defaultAccounts.data;
@@ -69,6 +75,7 @@ const storeData = {
       // load the last x days of memos (at 7s per block)
       blockRange: (7 * 24 * 60 * 60) / 7
     },
+    channels: channels,
     userSignedIn: false,
     user: {
       displayName: "Loading",

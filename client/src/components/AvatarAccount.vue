@@ -1,5 +1,5 @@
 <template lang="pug">
-.img-avatar(v-html="avatar")
+.avatar-account(v-html="avatar")
 </template>
 
 <script>
@@ -7,7 +7,7 @@ import identicon from "identicon.js";
 import createHash from "create-hash";
 
 export default {
-  name: "img-avatar",
+  name: "avatar-account",
   computed: {
     avatar() {
       let data;
@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-.img-avatar
+.avatar-account
   display flex
   align-items center
   justify-content center

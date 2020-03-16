@@ -95,6 +95,7 @@ async function sendTx(params) {
     let queuedMemo = {
       id: txResponseJson.txhash,
       address: params.from,
+      channel: JSON.parse(params.memo).channel,
       height: 0,
       memo: JSON.parse(tx.memo),
       parent: JSON.parse(params.memo).parent,

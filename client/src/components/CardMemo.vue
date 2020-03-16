@@ -16,7 +16,7 @@
     .container-avatar(@click.self="navToMemo")
       router-link.avatar(
         :to="{ name: 'account', params: {address: memo.address}}")
-        img-avatar(:address="memo.address")
+        avatar-account(:address="memo.address")
     .container-text(@click.self="navToMemo")
 
       .meta(@click.self="navToMemo")
@@ -59,7 +59,6 @@ import { find } from "lodash";
 
 // linkify
 import * as linkify from "linkifyjs";
-import linkifyHtml from "linkifyjs/html";
 import hashtag from "linkifyjs/plugins/hashtag"; // optional
 hashtag(linkify);
 
@@ -69,7 +68,7 @@ import { mapGetters } from "vuex";
 import BtnIcon from "./BtnIcon";
 import CornerError from "./CornerError";
 import CornerSpinner from "./CornerSpinner";
-import ImgAvatar from "./ImgAvatar";
+import AvatarAccount from "./AvatarAccount";
 import MemoBody from "./MemoBody";
 export default {
   name: "card-memo-post",
@@ -77,34 +76,23 @@ export default {
     BtnIcon,
     CornerError,
     CornerSpinner,
-    ImgAvatar,
+    AvatarAccount,
     MemoBody
   },
   computed: {
-    ...mapGetters(["memos", "settings", "userSignedIn", "accounts", "queuedMemos"]),
+    ...mapGetters([
+      "memos",
+      "settings",
+      "userSignedIn",
+      "accounts",
+      "queuedMemos"
+    ]),
     displayName() {
       return h.getDisplayName(this.accounts, this.memo.address);
     },
     fromAddress() {
       if (this.settings && this.settings.data && this.settings.data.wallet) {
         return this.settings.data.wallet.address;
-      }
-      return "";
-    },
-    memoBody() {
-      let text = this.memo.memo;
-      if (text) {
-        text = text.split(" ");
-        text.shift();
-        if (this.memo.type === "post") {
-          text = text.join(" ");
-          return linkifyHtml(text);
-        }
-        if (this.memo.type === "comment") {
-          text.shift();
-          text = text.join(" ");
-          return linkifyHtml(text);
-        }
       }
       return "";
     },
@@ -127,9 +115,9 @@ export default {
       }
       if (this.queuedMemos) {
         for (let key in this.queuedMemos) {
-          const memo = this.queuedMemos[key]
+          const memo = this.queuedMemos[key];
           if (memo.type === "like" && memo.parent === this.memo.id) {
-            likesCount++
+            likesCount++;
           }
         }
       }
@@ -144,7 +132,7 @@ export default {
       return "btn-repost--default";
     },
     userLiked() {
-      const memos = {...this.memos, ...this.queuedMemos}
+      const memos = { ...this.memos, ...this.queuedMemos };
       if (memos && this.fromAddress) {
         return find(
           memos,

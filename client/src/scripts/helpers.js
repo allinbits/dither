@@ -1,3 +1,5 @@
+import linkifyHtml from "linkifyjs/html";
+
 function getDisplayName(accounts, address) {
   if (accounts && accounts[address] && accounts[address].displayname) {
     return accounts[address].displayname;
@@ -31,6 +33,19 @@ function getTxSender(tx) {
   }
   return sender;
 }
+
+function linkifyMemo(text) {
+  return linkifyHtml(text, {
+    formatHref: (href, type) => {
+      if (type === "hashtag") {
+        href = "https://dither.chat/channels/" + href.substring(1);
+      }
+      return href;
+    },
+    ignoreTags: ["script", "style"]
+  });
+}
+
 function truncAddress(addr) {
   if (addr) {
     let value = addr.slice(7, addr.length);
@@ -40,4 +55,10 @@ function truncAddress(addr) {
   }
 }
 
-export default { getDisplayName, getMemoPrefix, getTxSender, truncAddress };
+export default {
+  getDisplayName,
+  getMemoPrefix,
+  getTxSender,
+  linkifyMemo,
+  truncAddress
+};

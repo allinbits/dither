@@ -1,7 +1,7 @@
 <template lang="pug">
 .card-account
   router-link.avatar(:to="{ name: 'account', params: { address: account.id } }")
-    img-avatar(:address="account.id" size="48")
+    avatar-account(:address="account.id" size="48")
   router-link.text(:to="{ name: 'account', params: { address: account.id } }")
     .title
       .displayname {{ displayName}}
@@ -17,7 +17,7 @@ import tx from "../scripts/tx.js";
 import AccountActions from "@/components/AccountActions";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
-import ImgAvatar from "@/components/ImgAvatar";
+import AvatarAccount from "@/components/AvatarAccount";
 export default {
   name: "page-accounts-index",
   metaInfo: { title: "Community" },
@@ -25,7 +25,7 @@ export default {
     AccountActions,
     BtnIcon,
     BtnLoadMore,
-    ImgAvatar
+    AvatarAccount
   },
   computed: {
     ...mapGetters(["following", "userSignedIn", "settings", "accounts"]),
@@ -133,7 +133,7 @@ export default {
     .address
       color var(--dim)
   .subtitle
-    font-size 0.75rem
+    font-size 0.875rem
     color var(--dim)
   .account-actions
     display flex

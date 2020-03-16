@@ -44,6 +44,29 @@ export default new Router({
       ]
     },
     {
+      path: "/channels",
+      component: () =>
+        import(/* webpackChunkName: "channels" */ "@/views/Channels.vue"),
+      children: [
+        {
+          path: "/",
+          name: "channels",
+          component: () =>
+            import(
+              /* webpackChunkName: "channels-index" */ "@/views/ChannelsIndex.vue"
+            )
+        },
+        {
+          path: ":channel",
+          name: "channel",
+          component: () =>
+            import(
+              /* webpackChunkName: "channel" */ "@/views/ChannelsChannel.vue"
+            )
+        }
+      ]
+    },
+    {
       path: "/login",
       name: "login",
       component: () =>

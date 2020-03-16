@@ -69,14 +69,16 @@ export default {
         memo: JSON.stringify({
           type: this.type,
           parent: this.parentAddress,
-          body: this.memo
+          body: this.memo,
+          channel: this.channel
         })
       });
       this.$store.commit("addQueuedMemo", queuedMemo);
 
       this.memo = "";
 
-      if (this.type === "post") {
+      console.log("this.$route", this.$route);
+      if (this.$route.path === "/memos/new") {
         this.$router.push({ name: "home" });
       }
     }
@@ -84,7 +86,7 @@ export default {
   mounted() {
     this.$el.querySelector("#memo-body").focus();
   },
-  props: ["type", "parent-address"]
+  props: ["type", "parent-address", "channel"]
 };
 </script>
 

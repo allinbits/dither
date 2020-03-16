@@ -4,7 +4,7 @@
     btn-icon(slot="btn-left" icon="arrow-left" @click.native="back")
   .page-header
     .cover
-    .avatar: img-avatar(:address="this.$route.params.address" size="96")
+    .avatar: avatar-account(:address="this.$route.params.address" size="96")
 
     .account-displayname {{ displayName }}
     a.account-address(:href="`https://www.mintscan.io/account/${this.$route.params.address}`" rel="noopener noreferrer" target="_blank") @{{ shortAddress }}
@@ -39,7 +39,7 @@ import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
 import CardLoading from "@/components/CardLoading";
-import ImgAvatar from "@/components/ImgAvatar";
+import AvatarAccount from "@/components/AvatarAccount";
 import InfiniteFeed from "@/components/InfiniteFeed";
 export default {
   name: "page-accounts-account",
@@ -50,7 +50,7 @@ export default {
     BtnIcon,
     BtnLoadMore,
     CardLoading,
-    ImgAvatar,
+    AvatarAccount,
     InfiniteFeed
   },
   computed: {

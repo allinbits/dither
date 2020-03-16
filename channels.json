@@ -1,0 +1,19 @@
+{
+  "all": {
+    "title": "all",
+    "avatar": "",
+    "description": "This is an uncensored feed of all Dither messages.",
+    "whitelist": []
+  },
+  "wikirona": {
+    "title": "wikirona",
+    "avatar": "wikirona.jpg",
+    "description": "A COVID-19 response repository built by the people, for the people. https://github.com/wikirona/wikirona",
+    "whitelist": [
+      "cosmos1lp73mdganczan8dfhkskhemwaty9vtjrv2frzq",
+      "cosmos1gh4trmptgtdudxvdcvyjuluyf8lk0xhur02p57",
+      "cosmos1utv5x494jd8g402sj55lx5qc05ryuzx7wwtysg",
+      "cosmos1gtm9uwx0xsjwwva2kk933y7tmfw5pcfvwmwujn"
+    ]
+  }
+}

@@ -4,7 +4,7 @@
 
 <script>
 import * as linkify from "linkifyjs";
-import linkifyHtml from "linkifyjs/html";
+import h from "../scripts/helpers";
 import hashtag from "linkifyjs/plugins/hashtag"; // optional
 hashtag(linkify);
 
@@ -15,7 +15,7 @@ export default {
       let text = this.memo.memo;
       // handle JSON based memos
       if (typeof text === "object") {
-        return this.linkifyMemo(text.body);
+        return h.linkifyMemo(text.body);
       }
       // handle historical slash based memos
       if (text) {
@@ -23,29 +23,18 @@ export default {
         text.shift();
         if (this.memo.type === "post") {
           text = text.join(" ");
-          return this.linkifyMemo(text);
+          return h.linkifyMemo(text);
         }
         if (this.memo.type === "comment") {
           text.shift();
           text = text.join(" ");
-          return this.linkifyMemo(text);
+          return h.linkifyMemo(text);
         }
       }
       return "";
     }
   },
   methods: {
-    linkifyMemo(text) {
-      return linkifyHtml(text, {
-        formatHref: (href, type) => {
-          if (type === "hashtag") {
-            href = "https://dither.chat/hashtag/" + href.substring(1);
-          }
-          return href;
-        },
-        ignoreTags: ["script", "style"]
-      });
-    },
     navToMemo() {
       this.$router.push({ name: "memo", params: { memo: this.memo.id } });
     }
