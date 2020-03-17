@@ -32,11 +32,15 @@ export default {
       return "Post";
     },
     bytesLeft() {
-      if (this.type === "post") {
-        return 512 - 103 - byteLength(this.memo);
-      } else {
-        return 512 - 106 - byteLength(this.memo);
+      let bytes = 512;
+      bytes -= byteLength(`"{"type":"${this.type}","body":"${this.memo}"}"`);
+      if (this.channel) {
+        bytes -= byteLength(`,"channel":"${this.channel}"`);
       }
+      if (this.parentAddress) {
+        bytes -= byteLength(`,"parent":"${this.parentAddress}"`);
+      }
+      return bytes;
     },
     fromAddress() {
       return this.settings.data.wallet.address;
