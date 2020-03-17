@@ -59,11 +59,9 @@ export default {
     width 1rem
     height 1rem
 
-
 .dc-btn--size-default
   height 2rem
   padding 0 1rem
-
 
 .dc-btn--size-large
   height 3rem
