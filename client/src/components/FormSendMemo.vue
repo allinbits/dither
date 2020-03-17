@@ -77,7 +77,6 @@ export default {
 
       this.memo = "";
 
-      console.log("this.$route", this.$route);
       if (this.$route.path === "/memos/new") {
         this.$router.push({ name: "home" });
       }

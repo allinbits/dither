@@ -81,44 +81,35 @@ export default {
       }
     },
     posts() {
-      let value = [];
-      if (this.memos) {
-        value = pickBy(
-          this.memos,
-          m => m.type !== "like" && m.type !== "comment"
-        );
-        if (this.channel.title !== "all") {
-          value = pickBy(value, m => m.channel === this.$route.params.channel);
-        }
-        value = orderBy(value, m => parseInt(m.height), "desc");
-      }
-      return value;
+      return this.filterMemos(this.memos);
     },
     queuedPosts() {
-      let value = [];
-      if (this.queuedMemos) {
-        value = pickBy(
-          this.queuedMemos,
-          m => m.type !== "like" && m.type !== "comment"
-        );
-        if (this.channel.title !== "all") {
-          value = pickBy(value, m => m.channel === this.$route.params.channel);
-        }
-        value = orderBy(value, m => parseInt(m.height), "desc");
-      }
-      return value;
+      return this.filterMemos(this.queuedMemos);
     }
   },
   data: () => ({
     h: h
   }),
   methods: {
+    filterMemos(memos) {
+      let value = [];
+      if (memos) {
+        value = pickBy(memos, m => m.type !== "like" && m.type !== "comment");
+        if (this.channel.title === "general") {
+          value = pickBy(value, m => !m.channel);
+        } else {
+          value = pickBy(value, m => m.channel === this.$route.params.channel);
+        }
+        value = orderBy(value, m => parseInt(m.height), "desc");
+      }
+      return value;
+    },
     back() {
       this.$router.go(-1);
     }
   },
   mounted() {
-    if (this.channel.title === "all") {
+    if (this.channel.title === "general") {
       this.$store.dispatch("memos/fetchAndAdd", {
         limit: 50,
         orderBy: ["timestamp", "desc"]

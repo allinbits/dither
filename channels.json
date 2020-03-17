@@ -1,8 +1,8 @@
 {
-  "all": {
-    "title": "all",
+  "general": {
+    "title": "general",
     "avatar": "",
-    "description": "This is an uncensored feed of all Dither messages.",
+    "description": "This is an uncensored feed of general Dither messages.",
     "whitelist": []
   },
   "wikirona": {
