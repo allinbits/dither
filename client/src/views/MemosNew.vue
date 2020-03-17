@@ -3,17 +3,14 @@
   app-header(page-title="New Memo")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="x")
     btn-icon(slot="btn-right" icon="send" @click.native="broadcastTx")
-  section-default(v-if="settings && settings.data && settings.data.wallet")
+  section-default
     form-send-memo(type="post")
-  section-default(v-else)
-    | You can't send memos without any ATOM.
-    = ' '
-    router-link(:to="{ name: 'wallet' }") Create a wallet &raquo;
   app-footer
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
@@ -30,7 +27,17 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["settings"])
+    ...mapGetters(["settings", "userSignedIn"])
+  },
+  mounted() {
+    if (!this.userSignedIn) {
+      this.$router.push({ name: "login" });
+      return;
+    }
+    if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+      this.$router.push({ name: "wallet" });
+      return;
+    }
   }
 };
 </script>

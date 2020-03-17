@@ -1,5 +1,5 @@
 <template lang="pug">
-form.form-set-display-name(@submit.prevent.default="validateAndSend")
+form.form-set-display-name(@submit.prevent.default="validateAndSend" v-if="walletExists")
   .form-group(:class="{ 'form-group--error': $v.displayName.$error }")
     label Display Name
     input#display-name(type="text" v-model="displayName" placeholder="Anonymous")
@@ -8,6 +8,11 @@ form.form-set-display-name(@submit.prevent.default="validateAndSend")
       | Display names must be between {{$v.displayName.$params.minLength.min }} and {{$v.displayName.$params.maxLength.max }} characters
   .form-group
     dc-btn(type="submit") Set Display Name
+form.form-set-display-name(v-else)
+  .form-group.form-group--error
+    label Display Name
+    input(type="text" v-model="displayName" disabled placeholder="Anonymous")
+    .error You must #[router-link(:to="{ name: 'wallet' }") create a wallet] and add tokens before you can set a display name
 </template>
 
 <script>
@@ -22,6 +27,15 @@ export default {
   },
   computed: {
     ...mapGetters(["user", "userSignedIn", "settings"]),
+    walletExists() {
+      return (
+        this.settings &&
+        this.settings.data &&
+        this.settings.data.wallet &&
+        this.settings.data.wallet.address &&
+        this.settings.data.uatom
+      );
+    },
     fromAddress() {
       return this.settings.data.wallet.address;
     }
@@ -47,9 +61,6 @@ export default {
       this.$store.commit("addQueuedTxSends", queuedTxSend);
       this.$v.$reset();
     }
-  },
-  mounted() {
-    this.$el.querySelector("#display-name").focus();
   },
   validations: {
     displayName: {

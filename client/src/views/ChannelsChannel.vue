@@ -2,9 +2,7 @@
 .page-channels-channel
   app-header(:page-title="`#${this.$route.params.channel}`")
     btn-icon(slot="btn-left" icon="arrow-left" @click.native="back")
-    template(v-if="userSignedIn")
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
-    template(v-else)
+    template(v-if="!userSignedIn")
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
   .page-header
     .page-header__text
@@ -12,7 +10,7 @@
       .page-header__subtitle(v-html="h.linkifyMemo(channel.description)")
     .page-header__avatar: avatar-channel(:avatar="channel.avatar")
 
-  section-default(v-if="userSignedIn")
+  section-default(v-if="userSignedIn && userWhitelisted")
     form-send-memo(type="post" :channel="this.$route.params.channel")
 
   infinite-feed(:memos="posts" :queued="queuedPosts")
@@ -44,7 +42,32 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["memos", "queuedMemos", "channels", "userSignedIn"]),
+    ...mapGetters([
+      "memos",
+      "queuedMemos",
+      "channels",
+      "userSignedIn",
+      "settings"
+    ]),
+    userWhitelisted() {
+      let whitelist = this.channel.whitelist;
+      let walletExists =
+        this.settings &&
+        this.settings.data &&
+        this.settings.data.wallet &&
+        this.settings.data.wallet.address &&
+        this.settings.data.uatom;
+      if (!walletExists) {
+        return false;
+      }
+      if (whitelist.length > 0) {
+        // console.log("whitelist exists");
+        return whitelist.includes(this.settings.data.wallet.address);
+      } else {
+        // console.log("whitelist doesnt exist");
+        return true;
+      }
+    },
     avatarUrl() {
       return require(`../assets/channels/${this.channel.avatar}`);
     },
