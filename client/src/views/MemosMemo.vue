@@ -1,6 +1,6 @@
 <template lang="pug">
 .page-memos-memo
-  app-header(page-title="View Memo")
+  app-header(:page-title="this.pageTitle")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
     template(v-if="!userSignedIn")
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
@@ -41,6 +41,14 @@ export default {
   },
   computed: {
     ...mapGetters(["memos", "queuedMemos", "userSignedIn"]),
+    pageTitle() {
+      let value = "Memo in #";
+      if (this.memo && this.memo.channel) {
+        return value + this.memo.channel;
+      } else {
+        return value + "general";
+      }
+    },
     memo() {
       let value = {};
       if (this.memos) {
