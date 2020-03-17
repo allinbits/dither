@@ -7,7 +7,7 @@
   template(v-if="memo")
     card-memo(:memo="memo")
     section-default(v-if="userSignedIn")
-      form-send-memo(type="comment" :parent-address="memo.id")
+      form-send-memo(type="comment" :parent-address="memo.id" :channel="this.memo.channel")
     infinite-feed(:memos="comments" :queued="queuedComments" type="comment")
   template(v-else)
     card-loading
