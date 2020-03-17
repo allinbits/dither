@@ -34,7 +34,7 @@ export default {
     bytesLeft() {
       let bytes = 512;
       bytes -= byteLength(`"{"type":"${this.type}","body":"${this.memo}"}"`);
-      if (this.channel) {
+      if (this.channel && this.channel !== "general") {
         bytes -= byteLength(`,"channel":"${this.channel}"`);
       }
       if (this.parentAddress) {
