@@ -5,6 +5,18 @@
     "description": "This is an uncensored feed of general Dither messages.",
     "whitelist": []
   },
+  "cosmos": {
+    "title": "cosmos",
+    "avatar": "",
+    "description": "Cosmos is a network of blockchains that interoperate to create the foundation for a new token economy. Dither is built on Cosmos. https://cosmos.network",
+    "whitelist": []
+  },
+  "virgo": {
+    "title": "virgo",
+    "avatar": "",
+    "description": "The Virgo vision is to provide the world with the best open collaboration technology. Dither is a project of Virgo. https://virgo.org",
+    "whitelist": []
+  },
   "wikirona": {
     "title": "wikirona",
     "avatar": "wikirona.jpg",
@@ -15,5 +27,11 @@
       "cosmos1utv5x494jd8g402sj55lx5qc05ryuzx7wwtysg",
       "cosmos1gtm9uwx0xsjwwva2kk933y7tmfw5pcfvwmwujn"
     ]
+  },
+  "meta": {
+    "title": "meta",
+    "avatar": "",
+    "description": "Ran into a bug with Dither? Have comments or suggestion for future features? Please post here! Source code: https://github.com/virgo-project/dither",
+    "whitelist": []
   }
 }
