@@ -1,4 +1,5 @@
 const isJson = require('is-json')
+const channels = require("../channels.json")
 
 // setup firebase
 const admin = require("firebase-admin");
@@ -60,14 +61,26 @@ function processTxs(txs) {
     let txLogMsgZero = tx.logs.find(l => l.msg_index == 0);
     if (txLogMsgZero.success && isJson(tx.tx.value.memo)) {
 
-      // enforce recipient is Dither
-      let msgRecipient = tx.tx.value.msg[0].value.to_address
+      // enforce recipient is dither's wallet
+      let validTxRecipient = tx.tx.value.msg[0].value.to_address === "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq"
 
       // enforce minimum cost of transaction
-      let msgCost = tx.tx.value.msg[0].value.amount[0].amount
+      let validTxCost = tx.tx.value.msg[0].value.amount[0].amount === "200"
 
-      if (msgRecipient === "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq"
-          && msgCost === "200") {
+      // enforce whitelist for memos posted in channels
+      let validTxSender = true
+      let sender = getSender(tx)
+      let parsedMemo = destructureMemo(tx.tx.value.memo);
+      let channelName = parsedMemo.channel
+      if (channelName) {
+        let channel = channels[channelName]
+        // console.log('memo is part of a channel:', channel)
+        validTxSender = channel.whitelist.includes(sender)
+        // console.log('is the tx sender within the whitelist?', validTxSender)
+        // console.log('whitelist', channel.whitelist, 'sender', sender)
+      }
+
+      if (validTxRecipient && validTxCost && validTxSender) {
         console.log("valid memo", tx);
         writeToFirebase(tx);
       } else {
@@ -165,7 +178,10 @@ function destructureMemo(memoJson) {
   let memo = JSON.parse(memoJson)
   let data = {
     memo: memo,
-    type: memo.type
+    type: memo.type,
+  }
+  if (memo.channel) {
+    data.channel = memo.channel
   }
   if (memo.parent) {
     data.parent = memo.parent
