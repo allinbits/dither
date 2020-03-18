@@ -96,7 +96,7 @@ const storeData = {
     queuedTxSends: {}
   },
   actions: {
-    addToMemoQueue({ commit, state }, memo) {
+    addToMemoQueue({ commit }, memo) {
       commit("addQueuedMemo", memo);
       commit("incrementQueuedSequence");
       // console.log("add to queue:", state.queuedMemos[memo.id]);
