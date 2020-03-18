@@ -58,6 +58,9 @@ const storeData = {
     queuedMemos: state => {
       return state.queuedMemos;
     },
+    queuedSequence: state => {
+      return state.queuedSequence;
+    },
     user: state => {
       return state.user;
     },
@@ -72,6 +75,7 @@ const storeData = {
       toAddress: "cosmos1lfq5rmxmlp8eean0cvr5lk49zglcm5aqyz7mgq",
       defaultGas: "100000",
       height: 0,
+      queuedSequence: 0,
       // load the last x days of memos (at 7s per block)
       blockRange: (7 * 24 * 60 * 60) / 7
     },
@@ -90,6 +94,20 @@ const storeData = {
     following: [],
     queuedMemos: {},
     queuedTxSends: {}
+  },
+  actions: {
+    addToMemoQueue({ commit, state }, memo) {
+      commit("addQueuedMemo", memo);
+      commit("incrementQueuedSequence");
+      console.log("add to queue:", state.queuedMemos[memo.id]);
+    },
+    rmFromMemoQueue({ commit, state }, id) {
+      if (state.queuedMemos[id]) {
+        commit("rmQueuedMemo");
+        commit("decrementQueuedSequence");
+        console.log("rm from queue:", state.queuedMemos[id]);
+      }
+    }
   },
   mutations: {
     setHeight(state, height) {
@@ -111,17 +129,21 @@ const storeData = {
     },
     addQueuedMemo(state, memo) {
       Vue.set(state.queuedMemos, memo.id, memo);
-      console.log("adding to queue:", state.queuedMemos[memo.id]);
+    },
+    rmQueuedMemo(state, id) {
+      Vue.delete(state.queuedMemos, id);
     },
     addQueuedTxSends(state, txSend) {
       Vue.set(state.queuedTxSends, txSend.id, txSend);
       console.log("adding to queue:", state.queuedTxSends[txSend.id]);
     },
-    rmQueuedMemo(state, id) {
-      if (state.queuedMemos[id]) {
-        // console.log("removing from queue", state.queuedMemos[id]);
-        Vue.delete(state.queuedMemos, id);
-      }
+    incrementQueuedSequence(state) {
+      state.blockchain.queuedSequence += 1;
+      // console.log("queuedSequence + 1", state.blockchain.queuedSequence);
+    },
+    decrementQueuedSequence(state) {
+      state.blockchain.queuedSequence -= 1;
+      // console.log("queuedSequence - 1", state.blockchain.queuedSequence);
     },
     signInUser(state, user) {
       state.user = user;

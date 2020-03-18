@@ -77,7 +77,7 @@ export default {
           channel: this.channel
         })
       });
-      this.$store.commit("addQueuedMemo", queuedMemo);
+      this.$store.dispatch("addToMemoQueue", queuedMemo);
 
       this.memo = "";
 

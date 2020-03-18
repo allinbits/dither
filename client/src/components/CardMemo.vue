@@ -203,7 +203,7 @@ export default {
           parent: this.memo.id
         })
       });
-      this.$store.commit("addQueuedMemo", queuedMemo);
+      this.$store.dispatch("addToMemoQueue", queuedMemo);
     },
     async actionLike() {
       if (!this.userSignedIn) {
@@ -221,7 +221,7 @@ export default {
           parent: this.memo.id
         })
       });
-      this.$store.commit("addQueuedMemo", queuedMemo);
+      this.$store.dispatch("addToMemoQueue", queuedMemo);
     },
     checkForUserInteractions() {
       if (this.memo.likes || this.memo.reposts) {

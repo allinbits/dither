@@ -55,18 +55,18 @@ async function sendTx(params) {
   );
 
   // set the sequence to be the current account sequence plus any queued memos
-  let accountSequence = accountJson.result.value.sequence;
-  let queuedMemosLength = Object.keys(store.state.queuedMemos).length;
-  let currentSequence = parseInt(accountSequence) + parseInt(queuedMemosLength);
-  currentSequence = currentSequence.toString();
-  // console.log("queuedMemosLength", queuedMemosLength);
-  // console.log("accountSequence", accountSequence);
-  // console.log("currentSequence", currentSequence);
+  let newSequence = (
+    parseInt(accountJson.result.value.sequence) +
+    store.state.blockchain.queuedSequence
+  ).toString();
+
+  // console.log("sequence", accountJson.result.value.sequence);
+  // console.log("newSequence", newSequence);
 
   let signMeta = {
     account_number: accountJson.result.value.account_number,
     chain_id: store.state.blockchain.chainId,
-    sequence: currentSequence
+    sequence: newSequence
   };
 
   let wallet = {
