@@ -23,7 +23,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["blockchain", "accounts", "settings", "following"])
+    ...mapGetters([
+      "blockchain",
+      "blockchains",
+      "accounts",
+      "settings",
+      "following"
+    ])
   },
   methods: {
     fetchMemosFromAddress(address) {
@@ -35,6 +41,15 @@ export default {
     }
   },
   async mounted() {
+    // wipe out service workers (for now)
+    if (window.navigator && navigator.serviceWorker) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      });
+    }
+
     // log in the user if they exist
     Firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -49,16 +64,19 @@ export default {
     });
 
     // continuouly update blockchain data
-    this.$store.dispatch("blockchains/openDBChannel");
+    await this.$store.dispatch("blockchains/openDBChannel");
 
-    // wipe out service workers (for now)
-    if (window.navigator && navigator.serviceWorker) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        for (let registration of registrations) {
-          registration.unregister();
-        }
-      });
-    }
+    // calculate the oldest block
+    let oldestBlock = Math.round(
+      this.blockchains["cosmoshub-3"].header.height - this.blockchain.blockRange
+    );
+    // console.log("oldest block", oldestBlock);
+
+    // continuouly get the memos from the latest blocks
+    this.$store.dispatch("memos/openDBChannel", {
+      orderBy: ["height", "desc"],
+      where: [["height", ">=", oldestBlock]]
+    });
   },
   watch: {
     async "settings.data"() {

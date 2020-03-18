@@ -77,7 +77,7 @@ const storeData = {
       height: 0,
       queuedSequence: 0,
       // load the last x days of memos (at 7s per block)
-      blockRange: (7 * 24 * 60 * 60) / 7
+      blockRange: (1 * 24 * 60 * 60) / 7
     },
     channels: channels,
     userSignedIn: false,
@@ -99,13 +99,13 @@ const storeData = {
     addToMemoQueue({ commit, state }, memo) {
       commit("addQueuedMemo", memo);
       commit("incrementQueuedSequence");
-      console.log("add to queue:", state.queuedMemos[memo.id]);
+      // console.log("add to queue:", state.queuedMemos[memo.id]);
     },
     rmFromMemoQueue({ commit, state }, id) {
       if (state.queuedMemos[id]) {
-        commit("rmQueuedMemo");
+        // console.log("rm from queue:", state.queuedMemos[id]);
+        commit("rmQueuedMemo", id);
         commit("decrementQueuedSequence");
-        console.log("rm from queue:", state.queuedMemos[id]);
       }
     }
   },
