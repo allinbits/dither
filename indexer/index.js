@@ -94,7 +94,8 @@ function processTxs(txs) {
 const increment = admin.firestore.FieldValue.increment(1);
 
 function writeTx(tx) {
-  let txBody = {
+  let txId = tx.txhash
+  let txData = {
     height: parseInt(tx.height),
     timestamp: tx.timestamp,
     address: getSender(tx),
@@ -102,82 +103,66 @@ function writeTx(tx) {
     comments: 0,
     reposts: 0
   };
-  txBody = { ...txBody, ...destructureMemo(tx.tx.value.memo) };
+  txData = { ...txData, ...destructureMemo(tx.tx.value.memo) };
 
   // create a memo
   db.collection("memos")
-    .doc(tx.txhash)
-    .set(txBody);
+    .doc(txId)
+    .set(txData);
 
   // increment memos count by one
   db.collection("accounts")
-    .doc(txBody.address)
+    .doc(txData.address)
     .set({ memos: increment }, { merge: true });
 
-  if (txBody.type === "comment") {
+  if (txData.type === "comment") {
     db.collection("memos")
-      .doc(txBody.parent)
+      .doc(txData.parent)
       .set({ comments: increment }, { merge: true });
   }
 
-  if (txBody.type === "repost") {
+  if (txData.type === "repost") {
     db.collection("memos")
-      .doc(txBody.parent)
+      .doc(txData.parent)
       .set({ reposts: increment }, { merge: true });
   }
 
-  if (txBody.type === "like") {
-    // add a like to the memo
-    db.collection("memos").doc(txBody.parent)
-      .collection("likes").doc(tx.txhash).set(txBody)
+  if (txData.type === "like") {
+    // add like to memo
+    db.collection("memos").doc(txData.parent)
+      .collection("likes").doc(txId).set(txData)
 
-    // add a like to the user's account
-    db.collection("accounts").doc(txBody.address)
-      .collection("likes").doc(tx.txhash).set(txBody)
+    // add like to account
+    db.collection("accounts").doc(txData.address)
+      .collection("likes").doc(txId).set(txData)
 
-    // notify memo's author that their memo has been liked
-    let parentMemoRef = db.collection("memos").doc(txBody.parent)
-    parentMemoRef.get()
-      .then(doc => {
-        if (!doc.exists) {
-          console.log('No such document!');
-        } else {
-          let parentMemo = doc.data()
-          let txBodyNotification = JSON.parse(JSON.stringify(txBody))
-          txBodyNotification.read = false
-          db.collection("accounts").doc(parentMemo.address)
-            .collection("notifications").doc(tx.txhash).set(txBodyNotification)
-        }
-      })
-      .catch(err => {
-        console.log('Error getting document', err);
-      });
+    notifyAccount(txId, txData)
   }
 
-  if (txBody.type === "follow") {
-    console.log(txBody.address, 'follows', txBody.parent)
-    db.collection("accounts").doc(txBody.address).update({
-      following: admin.firestore.FieldValue.arrayUnion(txBody.parent)
+  if (txData.type === "follow") {
+    console.log(txData.address, 'follows', txData.parent)
+    db.collection("accounts").doc(txData.address).update({
+      following: admin.firestore.FieldValue.arrayUnion(txData.parent)
     })
-    db.collection("accounts").doc(txBody.parent).update({
-      followers: admin.firestore.FieldValue.arrayUnion(txBody.address)
+    db.collection("accounts").doc(txData.parent).update({
+      followers: admin.firestore.FieldValue.arrayUnion(txData.address)
     })
   }
 
-  if (txBody.type === "unfollow") {
-    console.log(txBody.address, 'unfollows', txBody.parent)
-    db.collection("accounts").doc(txBody.address).update({
-      following: admin.firestore.FieldValue.arrayRemove(txBody.parent)
+  if (txData.type === "unfollow") {
+    console.log(txData.address, 'unfollows', txData.parent)
+    db.collection("accounts").doc(txData.address).update({
+      following: admin.firestore.FieldValue.arrayRemove(txData.parent)
     })
-    db.collection("accounts").doc(txBody.parent).update({
-      followers: admin.firestore.FieldValue.arrayRemove(txBody.address)
+    db.collection("accounts").doc(txData.parent).update({
+      followers: admin.firestore.FieldValue.arrayRemove(txData.address)
     })
   }
 
-  if (txBody.type === "set-displayname") {
+  if (txData.type === "set-displayname") {
     db.collection("accounts")
-      .doc(txBody.address)
-      .set({ displayname: txBody.memo.body }, { merge: true });
+      .doc(txData.address)
+      .set({ displayname: txData.memo.body }, { merge: true });
   }
 
 }
@@ -215,4 +200,24 @@ function setBlockchainHeader(header) {
   db.collection("blockchains")
     .doc("cosmoshub-3")
     .set({ header: header }, { merge: true });
+}
+
+// notify memo account holder
+function notifyAccount(txId, txData) {
+  let parentMemoRef = db.collection("memos").doc(txData.parent)
+  parentMemoRef.get()
+    .then(doc => {
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {
+        let parentMemo = doc.data()
+        let txDataNotification = JSON.parse(JSON.stringify(txData))
+        txDataNotification.read = false
+        db.collection("accounts").doc(parentMemo.address)
+          .collection("notifications").doc(txId).set(txDataNotification)
+      }
+    })
+    .catch(err => {
+      console.log('Error getting document', err);
+    });
 }
