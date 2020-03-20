@@ -48,7 +48,8 @@ ws.onmessage = function(msg) {
 };
 
 async function getTxs(height) {
-  let url = `${state.lcd}/txs?tx.height=${height - 1}`;
+  // let url = `${state.lcd}/txs?tx.height=${height - 1}`;
+  let url = `${state.lcd}/txs?tx.height=${height}`;
   let transactions = await axios.get(url);
   processTxs(transactions.data);
   return Promise.resolve();
@@ -82,7 +83,7 @@ function processTxs(txs) {
 
       if (validTxRecipient && validTxCost && validTxSender) {
         console.log("valid memo", tx);
-        writeToFirebase(tx);
+        writeTx(tx);
       } else {
         console.log('msg cost too low || recipient not Dither', msgCost)
       }
@@ -92,18 +93,16 @@ function processTxs(txs) {
 
 const increment = admin.firestore.FieldValue.increment(1);
 
-function writeToFirebase(tx) {
+function writeTx(tx) {
   let txBody = {
     height: parseInt(tx.height),
     timestamp: tx.timestamp,
     address: getSender(tx),
     tx: tx,
     comments: 0,
-    reposts: 0,
-    likes: 0
+    reposts: 0
   };
-  let parsedMemo = destructureMemo(tx.tx.value.memo);
-  txBody = { ...txBody, ...parsedMemo };
+  txBody = { ...txBody, ...destructureMemo(tx.tx.value.memo) };
 
   // create a memo
   db.collection("memos")
@@ -115,48 +114,70 @@ function writeToFirebase(tx) {
     .doc(txBody.address)
     .set({ memos: increment }, { merge: true });
 
-  if (parsedMemo.type === "comment") {
+  if (txBody.type === "comment") {
     db.collection("memos")
-      .doc(parsedMemo.parent)
+      .doc(txBody.parent)
       .set({ comments: increment }, { merge: true });
   }
 
-  if (parsedMemo.type === "repost") {
+  if (txBody.type === "repost") {
     db.collection("memos")
-      .doc(parsedMemo.parent)
+      .doc(txBody.parent)
       .set({ reposts: increment }, { merge: true });
   }
 
-  if (parsedMemo.type === "like") {
-    db.collection("memos")
-      .doc(parsedMemo.parent)
-      .set({ likes: increment }, { merge: true });
+  if (txBody.type === "like") {
+    // add a like to the memo
+    db.collection("memos").doc(txBody.parent)
+      .collection("likes").doc(tx.txhash).set(txBody)
+
+    // add a like to the user's account
+    db.collection("accounts").doc(txBody.address)
+      .collection("likes").doc(tx.txhash).set(txBody)
+
+    // notify memo's author that their memo has been liked
+    let parentMemoRef = db.collection("memos").doc(txBody.parent)
+    parentMemoRef.get()
+      .then(doc => {
+        if (!doc.exists) {
+          console.log('No such document!');
+        } else {
+          let parentMemo = doc.data()
+          let txBodyNotification = JSON.parse(JSON.stringify(txBody))
+          txBodyNotification.read = false
+          db.collection("accounts").doc(parentMemo.address)
+            .collection("notifications").doc(tx.txhash).set(txBodyNotification)
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+      });
   }
 
-  if (parsedMemo.type === "follow") {
-    console.log(txBody.address, 'follows', parsedMemo.parent)
+  if (txBody.type === "follow") {
+    console.log(txBody.address, 'follows', txBody.parent)
     db.collection("accounts").doc(txBody.address).update({
-      following: admin.firestore.FieldValue.arrayUnion(parsedMemo.parent)
+      following: admin.firestore.FieldValue.arrayUnion(txBody.parent)
     })
-    db.collection("accounts").doc(parsedMemo.parent).update({
+    db.collection("accounts").doc(txBody.parent).update({
       followers: admin.firestore.FieldValue.arrayUnion(txBody.address)
     })
   }
 
-  if (parsedMemo.type === "unfollow") {
-    console.log(txBody.address, 'unfollows', parsedMemo.parent)
+  if (txBody.type === "unfollow") {
+    console.log(txBody.address, 'unfollows', txBody.parent)
     db.collection("accounts").doc(txBody.address).update({
-      following: admin.firestore.FieldValue.arrayRemove(parsedMemo.parent)
+      following: admin.firestore.FieldValue.arrayRemove(txBody.parent)
     })
-    db.collection("accounts").doc(parsedMemo.parent).update({
+    db.collection("accounts").doc(txBody.parent).update({
       followers: admin.firestore.FieldValue.arrayRemove(txBody.address)
     })
   }
 
-  if (parsedMemo.type === "set-displayname") {
+  if (txBody.type === "set-displayname") {
     db.collection("accounts")
       .doc(txBody.address)
-      .set({ displayname: parsedMemo.memo.body }, { merge: true });
+      .set({ displayname: txBody.memo.body }, { merge: true });
   }
 
 }
