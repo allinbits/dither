@@ -15,10 +15,10 @@ export default {
       let text = this.memo.memo;
       // handle JSON based memos
       if (typeof text === "object") {
-        if (text.type ==="post" && text.body) {
+        if (text.type === "post" && text.body) {
           return h.linkifyMemo(text.body);
         } else if (text.type === "repost" && !text.body) {
-          return ""
+          return "";
         }
       }
       // handle historical slash based memos
