@@ -103,10 +103,19 @@ export default {
       return 0;
     },
     memoReposts() {
+      let repostsCount = 0;
       if (this.memo && this.memo.reposts) {
-        return this.memo.reposts;
+        repostsCount = this.memo.reposts;
       }
-      return 0;
+      if (this.queuedMemos) {
+        for (let key in this.queuedMemos) {
+          const memo = this.queuedMemos[key];
+          if (memo.type === "repost" && memo.parent === this.memo.id) {
+            repostsCount++;
+          }
+        }
+      }
+      return repostsCount;
     },
     memoLikes() {
       let likesCount = 0;
@@ -145,9 +154,10 @@ export default {
       return false;
     },
     userReposted() {
-      if (this.memos && this.fromAddress) {
+      const memos = { ...this.memos, ...this.queuedMemos };
+      if (memos && this.fromAddress) {
         return find(
-          this.memos,
+          memos,
           m =>
             m.parent === this.memo.id &&
             m.address === this.fromAddress &&

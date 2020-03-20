@@ -1,10 +1,10 @@
 <template lang="pug">
 .infinite-feed
   template(v-if="Object.keys(queued).length > 0")
-    card-memo(v-for="memo in filteredQueued" :memo="memo" :key="memo.id")
+    card-memo(v-for="memo in filteredQueued" v-if="memo.memo && memo.memo.body" :memo="memo" :key="memo.id")
 
   template(v-if="Object.keys(memos).length > 0")
-    card-memo(v-for="memo in filteredMemos" :memo="memo" :key="memo.id")
+    card-memo(v-for="memo in filteredMemos" v-if="memo.memo && memo.memo.body" :memo="memo" :key="memo.id")
     btn-load-more(:account="account")
 
   card-loading(v-else)
