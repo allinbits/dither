@@ -121,7 +121,10 @@ export default {
     this.$store.dispatch("memos/fetchAndAdd", {
       limit: 10,
       orderBy: ["timestamp", "desc"],
-      where: [["address", "==", this.$route.params.address]]
+      where: [
+        ["address", "==", this.$route.params.address],
+        ["type", "==", "post"]
+      ]
     });
     this.$store.dispatch("accounts/fetchById", this.$route.params.address);
   }
