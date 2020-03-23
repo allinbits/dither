@@ -13,9 +13,10 @@ export default {
   computed: {
     memoBody() {
       let text = this.memo.memo;
+      let validTypes = ["post", "comment"];
       // handle JSON based memos
       if (typeof text === "object") {
-        if (text.type === "post" && text.body) {
+        if (validTypes.includes(text.type) && text.body) {
           return h.linkifyMemo(text.body);
         } else if (text.type === "repost" && !text.body) {
           return "";
