@@ -6,8 +6,9 @@ The Dither Web Client serves as a way for end-users to view messages, post messa
 
 ## Requirements
 
-- **Security considerations** - 
+- **Transaction type parity with Dither Indexer** - The Dither Web Client must support all of the transaction types built in the [Dither Indexer](./roadmap-01-spec). This includes support for identity, social, messsages, message interactions, tokens, and offchain transactions. The client also need to support viewing these transactions in table and list based views.
+- **Security considerations** - The web client heavily involves the use of Cosmos Hub wallets. We need to research and figure out a solution that allows users to securely store their tokens while allowing frictionless Cosmos Hub transactions.
 
 ## Reach Goals
 
-- **Support for browser extensions** - There are upcoming browser extensions for Cosmos blockchains that function similarily to MetaMask. These are Lunie and Keplr. We should look into how difficult it would be to support these browser-based wallets.
+- **Browser extension-based wallet support** - There are upcoming browser extensions for Cosmos blockchains that function similarily to MetaMask for Ethereum-based blockchains. These are known as Lunie and Keplr. We should look into how difficult it would be to support these browser-based wallets.
