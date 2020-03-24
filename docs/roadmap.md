@@ -1,6 +1,6 @@
-# Dither Software Development Roadmap
+# Dither Roadmap
 
-This is the current software development roadmap for Dither. The first six months starts at Q2 2020, and the end date is Q2 2022.
+This is the current software development roadmap for Dither. We plan to start official development in Q2 2020, and the estimated end date is Q2 2022.
 
 ## FIRST SIX MONTHS
 
