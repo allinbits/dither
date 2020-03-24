@@ -54,7 +54,6 @@
 </template>
 
 <script>
-import { formatDistanceStrict } from "date-fns";
 import { find } from "lodash";
 
 // linkify
@@ -87,6 +86,9 @@ export default {
       "accounts",
       "queuedMemos"
     ]),
+    timeAgo() {
+      return h.timeAgo(this.memo.timestamp);
+    },
     displayName() {
       return h.getDisplayName(this.accounts, this.memo.address);
     },
@@ -165,29 +167,6 @@ export default {
         );
       }
       return false;
-    },
-    timeAgo() {
-      let value = "";
-      if (this.memo.timestamp) {
-        value = formatDistanceStrict(new Date(this.memo.timestamp), new Date());
-        // an ugly hack to replace longer strings with the short form
-        value = value.replace(" seconds", "s");
-        value = value.replace(" second", "s");
-        value = value.replace(" minutes", "m");
-        value = value.replace(" minute", "m");
-        value = value.replace(" hours", "h");
-        value = value.replace(" hour", "h");
-        value = value.replace(" days", "d");
-        value = value.replace(" day", "d");
-        value = value.replace(" weeks", "w");
-        value = value.replace(" week", "w");
-        value = value.replace(" months", "m");
-        value = value.replace(" month", "m");
-        value = value.replace(" years", "y");
-        value = value.replace(" year", "y");
-        return value;
-      }
-      return "";
     }
   },
   methods: {

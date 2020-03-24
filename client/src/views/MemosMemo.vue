@@ -6,6 +6,10 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
   template(v-if="memo")
     card-memo(:memo="memo")
+    .section-timeline
+      | Likes:
+      .card-like(v-for="like in memoLikes")
+        | {{ like.address }}
     section-default(v-if="userSignedIn")
       form-send-memo(type="comment" :parent-address="memo.id" :channel="this.memo.channel")
     infinite-feed(:memos="comments" :queued="queuedComments" type="comment")
@@ -40,7 +44,7 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["memos", "queuedMemos", "userSignedIn"]),
+    ...mapGetters(["memos", "queuedMemos", "userSignedIn", "memoLikes"]),
     pageTitle() {
       let value = "Memo in #";
       if (this.memo && this.memo.channel) {
@@ -87,6 +91,11 @@ export default {
       orderBy: ["height", "desc"],
       where: [["parent", "==", this.$route.params.memo]]
     });
+
+    this.$store.dispatch("memoLikes/fetchAndAdd", {
+      memoId: this.$route.params.memo
+    });
+    console.log("this.memoLikes", this.memoLikes);
   }
 };
 </script>
