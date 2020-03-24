@@ -18,7 +18,7 @@ This is the current software development roadmap for Dither. We plan to start of
 
 [**Dither Website**](./roadmap-06-website.md) - We will create a marketing website for Dither, aimed at two audiences. The application developer audience and the end-user audience.
 
-## After two years
+## Second year
 
 [**Dither iOS Client**](./roadmap-07-ios.md) - The second client to be built for Dither is an iOS mobile application with support for phones.
 
