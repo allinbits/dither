@@ -14,4 +14,8 @@ We need to research, design, and publish a messaging protocol for Dither, built 
 - **Token transactions** - Sending tokens is a primary feature of the Cosmos Hub. We need to make sure to maintain support for this.
 - **Offchain transactions** - Not all of the features need to be communicated to the Cosmos Hub. One example are user notifications - I don't think it makes sense to check "read" on a notification and make that transaction on the Hub. There are probably others.
 - **Security considerations** - As an uncensorable messaging protocol, there will be times when messages are unwanted by the general community. We need to make sure this protocol has defenses against spammers and malicious attackers.
-- **IBC support (reach goal)** - We need to understand the IBC spec and figure out if it's possible, and how, to conduct interblockchain messaging with Dither.
+
+## Reach Goals
+
+- **IBC support** - We need to understand the IBC spec and figure out if it's possible, and how, to conduct interblockchain messaging with Dither.
+- **More messaging transactions** - More types of message transactions, like polls, could be added.
