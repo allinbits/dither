@@ -22,8 +22,10 @@
     account-actions(:account="account")
 
     // .account-stat {{ account.memos }} memos
-
-  infinite-feed(:memos="posts" :queued="queuedPosts" :account="this.$route.params.address")
+  div(v-for="i in postVisibleCount")
+    dc-memo(v-if="posts[i-1]" :memo="{...posts[i-1], displayName}")
+  .btn-load-more(v-if="posts.length > postVisibleCount")
+    dc-btn(size="large" icon="refresh-cw" @click.native="postsFetchAndDisplay") Load more
   app-footer
 </template>
 
@@ -41,6 +43,9 @@ import BtnLoadMore from "@/components/BtnLoadMore";
 import CardLoading from "@/components/CardLoading";
 import AvatarAccount from "@/components/AvatarAccount";
 import InfiniteFeed from "@/components/InfiniteFeed";
+import DcMemo from "@/components/DcMemo";
+import DcBtn from "@/components/DcBtn";
+
 export default {
   name: "page-accounts-account",
   components: {
@@ -51,7 +56,9 @@ export default {
     BtnLoadMore,
     CardLoading,
     AvatarAccount,
-    InfiniteFeed
+    InfiniteFeed,
+    DcMemo,
+    DcBtn
   },
   computed: {
     ...mapGetters(["memos", "queuedMemos", "accounts"]),
@@ -88,8 +95,7 @@ export default {
         let value = pickBy(
           this.memos,
           m =>
-            m.type !== "like" &&
-            m.type !== "comment" &&
+            m.type === "post" &&
             m.address === this.$route.params.address
         );
         value = orderBy(value, m => parseInt(m.height), "desc");
@@ -115,18 +121,34 @@ export default {
   methods: {
     back() {
       this.$router.go(-1);
+    },
+    postsFetchAndDisplay() {
+      this.postVisibleCount += this.postVisibleStep
+      this.postsFetch()
+    },
+    postsFetch() {
+      this.$store.dispatch("memos/fetchAndAdd", {
+        limit: this.postVisibleCount + this.postVisibleStep,
+        orderBy: ["timestamp", "desc"],
+        where: [
+          ["address", "==", this.$route.params.address],
+          ["type", "==", "post"]
+        ]
+      });
     }
   },
   mounted() {
-    this.$store.dispatch("memos/fetchAndAdd", {
-      limit: 10,
-      orderBy: ["timestamp", "desc"],
-      where: [
-        ["address", "==", this.$route.params.address],
-        ["type", "==", "post"]
-      ]
-    });
+    this.postsFetch()
     this.$store.dispatch("accounts/fetchById", this.$route.params.address);
+    this.$store.dispatch("accounts/fetchAndAdd", {
+      limit: 50
+    });
+  },
+  data: function() {
+    return {
+      postVisibleStep: 3,
+      postVisibleCount: 3,
+    }
   }
 };
 </script>
@@ -166,4 +188,10 @@ export default {
 
   .account-actions
     margin-top 0.5rem
+
+.btn-load-more
+  height 5rem
+  display flex
+  align-items center
+  justify-content center
 </style>
