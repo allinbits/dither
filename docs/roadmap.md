@@ -12,16 +12,16 @@ This is the current software development roadmap for Dither. The first six month
 
 ## FIRST YEAR
 
-[**Dither API*](./roadmap-04-api.md) - We will design, publish, and support public API endpoints that allow developers to retrieve data that is indexed by the Dither protocol and display it to end-user clients. 
+[**Dither API**](./roadmap-04-api.md) - We will design, publish, and support public API endpoints that allow developers to retrieve data that is indexed by the Dither protocol and display it to end-user clients. 
 
-[**Dither Documentation Website*](./roadmap-05-docs.md)* - We will document the Dither protocol and write tutorials for application developers to implement Dither support in their own application.
+[**Dither Documentation Website**](./roadmap-05-docs.md)* - We will document the Dither protocol and write tutorials for application developers to implement Dither support in their own application.
 
-[**Dither Website*](./roadmap-06-website.md)* - We will create a marketing website for Dither, aimed at two audiences. The application developer audience and the end-user audience.
+[**Dither Website**](./roadmap-06-website.md)* - We will create a marketing website for Dither, aimed at two audiences. The application developer audience and the end-user audience.
 
 ## AFTER TWO YEARS 
 
-[**Dither iOS Client*](./roadmap-07-ios.md)* - The second client to be built for Dither is an iOS mobile application with support for phones.
+[**Dither iOS Client**](./roadmap-07-ios.md)* - The second client to be built for Dither is an iOS mobile application with support for phones.
 
-[**Dither Android Client*](./roadmap-08-android.md)* - The third client to be built for Dither is an Android  mobile application with support for phones.
+[**Dither Android Client**](./roadmap-08-android.md)* - The third client to be built for Dither is an Android  mobile application with support for phones.
 
-[**Dither Blockchain*](./roadmap-09-blockchain.md)* - If Dither is overloading the Cosmos Hub with transactions, we will look into turning Dither into a custom Cosmos SDK-based application.
+[**Dither Blockchain**](./roadmap-09-blockchain.md)* - If Dither is overloading the Cosmos Hub with transactions, we will look into turning Dither into a custom Cosmos SDK-based application.
