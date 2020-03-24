@@ -1,5 +1,7 @@
 # Dither Protocol Specification (beta)
 
+> This is milestone #1 of the [Dither Roadmap](./roadmap.md).
+
 We need to research, design, and publish a messaging protocol for Dither, built on top of the Cosmos Hub memo field. Once IBC is launched, we should try and update the protocol to support cross-chain communications.
 
 ## Requirements
