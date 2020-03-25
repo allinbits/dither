@@ -23,7 +23,7 @@
 
     // .account-stat {{ account.memos }} memos
   div(v-for="i in postVisibleCount")
-    dc-memo(v-if="posts[i-1]" :memo="{...posts[i-1], displayName}")
+    card-memo(v-if="posts[i-1]" :memo="{...posts[i-1], displayName}")
   .btn-load-more(v-if="posts.length > postVisibleCount")
     dc-btn(size="large" icon="refresh-cw" @click.native="postsFetchAndDisplay") Load more
   app-footer
@@ -43,8 +43,8 @@ import BtnLoadMore from "@/components/BtnLoadMore";
 import CardLoading from "@/components/CardLoading";
 import AvatarAccount from "@/components/AvatarAccount";
 import InfiniteFeed from "@/components/InfiniteFeed";
-import DcMemo from "@/components/DcMemo";
 import DcBtn from "@/components/DcBtn";
+import CardMemo from "@/components/CardMemo";
 
 export default {
   name: "page-accounts-account",
@@ -57,8 +57,8 @@ export default {
     CardLoading,
     AvatarAccount,
     InfiniteFeed,
-    DcMemo,
-    DcBtn
+    DcBtn,
+    CardMemo
   },
   computed: {
     ...mapGetters(["memos", "queuedMemos", "accounts"]),

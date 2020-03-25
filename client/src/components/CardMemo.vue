@@ -251,8 +251,8 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("accounts/fetchById", this.memo.address);
-    this.checkForUserInteractions();
+    // this.$store.dispatch("accounts/fetchById", this.memo.address);
+    // this.checkForUserInteractions();
   },
   props: ["memo"]
 };
