@@ -18,6 +18,8 @@ This is the current software development roadmap for Dither. We plan to start of
 
 [**Dither Website**](./roadmap-06-website.md) - We will create a marketing website for Dither, aimed at two audiences. The application developer audience and the end-user audience.
 
+[**Dither Web Client (1.0)**](./roadmap-03-webapp.md) -  We will continue to fix bugs and release feature updates to the Dither Indexer and Web Client, culminating in a 1.0 release of the Dither Web Client.
+
 ## Second year
 
 [**Dither iOS Client**](./roadmap-07-ios.md) - The second client to be built for Dither is an iOS mobile application with support for phones.
