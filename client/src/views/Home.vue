@@ -49,6 +49,11 @@ export default {
       }
       return value;
     }
+  },
+  mounted() {
+    this.$store.dispatch("accounts/fetchAndAdd", {
+      limit: 50
+    });
   }
 };
 </script>

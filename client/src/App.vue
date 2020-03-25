@@ -119,7 +119,7 @@ export default {
       this.$store.commit("setFollowing", userFollowing);
 
       // load memos from user's following
-      // this.following.map(address => this.fetchMemosFromAddress(address));
+      this.following.map(address => this.fetchMemosFromAddress(address));
     }
   }
 };

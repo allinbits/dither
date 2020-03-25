@@ -146,8 +146,8 @@ export default {
   },
   data: function() {
     return {
-      postVisibleStep: 3,
-      postVisibleCount: 3,
+      postVisibleStep: 10,
+      postVisibleCount: 10,
     }
   }
 };
