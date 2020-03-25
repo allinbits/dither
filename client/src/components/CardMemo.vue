@@ -1,18 +1,18 @@
 <template lang="pug">
 .card-memo-post
-  .card-memo-post__timeline(
-    v-if="memo.timeline && Object.keys(memo.timeline).length > 0")
-    .icon: img(src="@/assets/feather/repeat.svg")
-    .reposters
-      router-link.reposter(
-        v-for="repostMemo in memo.timeline"
-        :to="{ name: 'account', params: { address: repostMemo.address }}"
-        :key="repostMemo.id")
-        | {{ reposterDisplayName(repostMemo.address) }}
-    .label reposted
+  //- .card-memo-post__timeline(
+  //-   v-if="memo.timeline && Object.keys(memo.timeline).length > 0")
+  //-   .icon: img(src="@/assets/feather/repeat.svg")
+  //-   .reposters
+  //-     router-link.reposter(
+  //-       v-for="repostMemo in memo.timeline"
+  //-       :to="{ name: 'account', params: { address: repostMemo.address }}"
+  //-       :key="repostMemo.id")
+  //-       | {{ reposterDisplayName(repostMemo.address) }}
+  //-   .label reposted
   .card-memo-post__main
-    corner-error(v-if="memo.height === 0 && memo.response.code")
-    corner-spinner(v-else-if="memo.height === 0")
+    //- corner-error(v-if="memo.height === 0 && memo.response.code")
+    //- corner-spinner(v-else-if="memo.height === 0")
     .container-avatar(@click.self="navToMemo")
       router-link.avatar(
         :to="{ name: 'account', params: {address: memo.address}}")

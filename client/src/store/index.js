@@ -116,7 +116,7 @@ const storeData = {
             commit("signInUser", user)
             resolve(user)
           } else {
-            reject(false)
+            reject()
           }
         })
       })
@@ -127,8 +127,8 @@ const storeData = {
           dispatch("settings/fetchAndAdd").then(settings => {
             resolve(settings)
           })
-        }).catch(error => {
-          reject(error)
+        }).catch(() => {
+          reject()
         })
       })
     },
@@ -144,10 +144,10 @@ const storeData = {
         })
       })
     },
-    fetchTimeline({ dispatch }) {
+    fetchTimeline({ dispatch }, limit = 10) {
       dispatch("fetchFollowingList").then(following => {
         dispatch("memos/fetchAndAdd", {
-          limit: 50,
+          limit,
           orderBy: ["timestamp", "desc"],
           where: [
             ["address", "in", following],
@@ -155,7 +155,7 @@ const storeData = {
           ]
         });
       })
-    }
+    },
   },
   mutations: {
     setHeight(state, height) {

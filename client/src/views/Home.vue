@@ -7,11 +7,10 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
-
-  //- infinite-feed(v-if="posts" :memos="posts" :queued="queuedPosts" :following="following")
-  //- card-loading(v-else)
-  div(v-for="memo in memos")
-    card-memo(:memo="memo")
+  div(v-for="i in postVisibleCount" v-if="memosTimeline.length > 0")
+    card-memo(:memo="memosTimeline[i-1]")
+  .btn-load-more(v-if="memosTimeline.length > postVisibleCount")
+    dc-btn(size="large" icon="refresh-cw" @click.native="postsFetchAndDisplay") Load more
   app-footer
 </template>
 
@@ -25,6 +24,7 @@ import CardLoading from "@/components/CardLoading";
 import InfiniteFeed from "@/components/InfiniteFeed";
 import AppHeader from "@/components/AppHeader";
 import CardMemo from "@/components/CardMemo";
+import DcBtn from "@/components/DcBtn";
 
 export default {
   name: "page-index",
@@ -35,10 +35,20 @@ export default {
     BtnLoadMore,
     CardLoading,
     InfiniteFeed,
-    CardMemo
+    CardMemo,
+    DcBtn
+  },
+  data: function() {
+    return {
+      postVisibleStep: 10,
+      postVisibleCount: 10,
+    }
   },
   computed: {
     ...mapGetters(["memos", "userSignedIn", "queuedMemos", "following"]),
+    memosTimeline() {
+      return Object.values(this.memos)
+    },
     posts() {
       let value = [];
       if (this.memos) {
@@ -54,10 +64,23 @@ export default {
       return value;
     }
   },
+  methods: {
+    postsFetchAndDisplay() {
+      this.postVisibleCount += this.postVisibleStep
+      this.$store.dispatch("fetchTimeline", this.postVisibleCount + this.postVisibleStep)
+    },
+  },
   mounted() {
-    this.$store.dispatch("fetchTimeline")
+    this.$store.dispatch("accounts/fetchAndAdd");
+    this.$store.dispatch("fetchTimeline", this.postVisibleCount + this.postVisibleStep)
   }
 };
 </script>
 
-<style scoped lang="stylus"></style>
+<style scoped lang="stylus">
+.btn-load-more
+  height 5rem
+  display flex
+  align-items center
+  justify-content center
+</style>
