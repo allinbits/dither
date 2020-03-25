@@ -12,6 +12,7 @@ import accounts from "./modules/accounts.js";
 import blockchains from "./modules/blockchains.js";
 import memos from "./modules/memos.js";
 import settings from "./modules/settings.js";
+import defaultFollowing from "./defaultFollowing.json";
 
 // connect vuex-firestore modules to firestore
 const easyFirestore = VuexEasyFirestore(
@@ -109,19 +110,25 @@ const storeData = {
       }
     },
     authenticate({ commit }) {
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
         Firebase.auth().onAuthStateChanged(user => {
-          commit("signInUser", user)
-          resolve(user)
+          if (user) {
+            commit("signInUser", user)
+            resolve(user)
+          } else {
+            reject(false)
+          }
         })
       })
     },
     fetchSettings({ dispatch }) {
-      return new Promise((resolve) => {
+      return new Promise((resolve, reject) => {
         dispatch("authenticate").then(() => {
           dispatch("settings/fetchAndAdd").then(settings => {
             resolve(settings)
           })
+        }).catch(error => {
+          reject(error)
         })
       })
     },
@@ -132,6 +139,8 @@ const storeData = {
           Firebase.firestore().collection("accounts").doc(address).get().then(account => {
             resolve(account.data().following)
           })
+        }).catch(() => {
+          resolve(defaultFollowing)
         })
       })
     },
