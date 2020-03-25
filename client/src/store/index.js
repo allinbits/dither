@@ -126,13 +126,25 @@ const storeData = {
       })
     },
     fetchFollowingList({ dispatch }) {
-      dispatch("fetchSettings").then(settings => {
-        const address = settings.wallet.address;
-        Firebase.firestore().collection("accounts").doc(address).get().then(account => {
-          account.data().following.forEach(f => {
-            console.log(f)
+      return new Promise((resolve) => {
+        dispatch("fetchSettings").then(settings => {
+          const address = settings.wallet.address;
+          Firebase.firestore().collection("accounts").doc(address).get().then(account => {
+            resolve(account.data().following)
           })
         })
+      })
+    },
+    fetchTimeline({ dispatch }) {
+      dispatch("fetchFollowingList").then(following => {
+        dispatch("memos/fetchAndAdd", {
+          limit: 50,
+          orderBy: ["timestamp", "desc"],
+          where: [
+            ["address", "in", following],
+            ["type", "==", "post"]
+          ]
+        });
       })
     }
   },

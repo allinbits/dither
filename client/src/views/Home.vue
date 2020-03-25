@@ -8,9 +8,10 @@
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
 
-  infinite-feed(v-if="posts" :memos="posts" :queued="queuedPosts" :following="following")
-  card-loading(v-else)
-
+  //- infinite-feed(v-if="posts" :memos="posts" :queued="queuedPosts" :following="following")
+  //- card-loading(v-else)
+  div(v-for="memo in memos")
+    card-memo(:memo="memo")
   app-footer
 </template>
 
@@ -23,6 +24,8 @@ import BtnLoadMore from "@/components/BtnLoadMore";
 import CardLoading from "@/components/CardLoading";
 import InfiniteFeed from "@/components/InfiniteFeed";
 import AppHeader from "@/components/AppHeader";
+import CardMemo from "@/components/CardMemo";
+
 export default {
   name: "page-index",
   components: {
@@ -31,7 +34,8 @@ export default {
     BtnIcon,
     BtnLoadMore,
     CardLoading,
-    InfiniteFeed
+    InfiniteFeed,
+    CardMemo
   },
   computed: {
     ...mapGetters(["memos", "userSignedIn", "queuedMemos", "following"]),
@@ -51,21 +55,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("fetchFollowingList")
-    // this.$store.dispatch("fetchSettings")
-    // if (this.following) {
-    //   this.$store.dispatch("memos/fetchAndAdd", {
-    //     limit: 50,
-    //     orderBy: ["timestamp", "desc"],
-    //     where: [
-    //       ["address", "in", this.following],
-    //       ["type", "==", "post"]
-    //     ]
-    //   });
-    // }
-    // this.$store.dispatch("accounts/fetchAndAdd", {
-    //   limit: 50
-    // });
+    this.$store.dispatch("fetchTimeline")
   }
 };
 </script>
