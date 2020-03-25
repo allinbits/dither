@@ -23,7 +23,7 @@
 
     // .account-stat {{ account.memos }} memos
   div(v-for="i in postVisibleCount")
-    card-memo(v-if="posts[i-1]" :memo="{...posts[i-1], displayName}")
+    card-memo(v-if="posts[i-1]" :memo="posts[i-1]")
   .btn-load-more(v-if="posts.length > postVisibleCount")
     dc-btn(size="large" icon="refresh-cw" @click.native="postsFetchAndDisplay") Load more
   app-footer

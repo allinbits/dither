@@ -51,9 +51,21 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("accounts/fetchAndAdd", {
-      limit: 50
-    });
+    this.$store.dispatch("fetchFollowingList")
+    // this.$store.dispatch("fetchSettings")
+    // if (this.following) {
+    //   this.$store.dispatch("memos/fetchAndAdd", {
+    //     limit: 50,
+    //     orderBy: ["timestamp", "desc"],
+    //     where: [
+    //       ["address", "in", this.following],
+    //       ["type", "==", "post"]
+    //     ]
+    //   });
+    // }
+    // this.$store.dispatch("accounts/fetchAndAdd", {
+    //   limit: 50
+    // });
   }
 };
 </script>

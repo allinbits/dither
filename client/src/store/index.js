@@ -107,6 +107,33 @@ const storeData = {
         commit("rmQueuedMemo", id);
         commit("decrementQueuedSequence");
       }
+    },
+    authenticate({ commit }) {
+      return new Promise((resolve) => {
+        Firebase.auth().onAuthStateChanged(user => {
+          commit("signInUser", user)
+          resolve(user)
+        })
+      })
+    },
+    fetchSettings({ dispatch }) {
+      return new Promise((resolve) => {
+        dispatch("authenticate").then(() => {
+          dispatch("settings/fetchAndAdd").then(settings => {
+            resolve(settings)
+          })
+        })
+      })
+    },
+    fetchFollowingList({ dispatch }) {
+      dispatch("fetchSettings").then(settings => {
+        const address = settings.wallet.address;
+        Firebase.firestore().collection("accounts").doc(address).get().then(account => {
+          account.data().following.forEach(f => {
+            console.log(f)
+          })
+        })
+      })
     }
   },
   mutations: {
