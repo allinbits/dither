@@ -55,6 +55,7 @@ export default {
       if (user) {
         this.$store.commit("signInUser", user);
         this.$store.dispatch("settings/openDBChannel").catch(console.error);
+        this.$store.dispatch("notifications/openDBChannel");
       } else {
         // if user doesnt exist, create a default following
         this.$store.commit("setFollowing", defaultFollowing);
