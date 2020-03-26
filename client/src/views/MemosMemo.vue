@@ -6,10 +6,12 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
   template(v-if="memo")
     card-memo(:memo="memo")
-    .section-timeline
-      | Likes:
-      .card-like(v-for="like in memoLikes")
-        | {{ like.address }}
+    section-default
+      div(slot="section-title") Likes
+      router-link.card-like(
+        v-for="like in memoLikes"
+        :key="like.address"
+        :to="{ name: 'account', params: { address: like.address }}") {{ shortAddress(like.address) }}
     section-default(v-if="userSignedIn")
       form-send-memo(type="comment" :parent-address="memo.id" :channel="this.memo.channel")
     infinite-feed(:memos="comments" :queued="queuedComments" type="comment")
@@ -20,8 +22,8 @@
 
 <script>
 import { pickBy } from "lodash";
-
 import { mapGetters } from "vuex";
+import h from "../scripts/helpers";
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
@@ -44,7 +46,13 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["memos", "queuedMemos", "userSignedIn", "memoLikes"]),
+    ...mapGetters([
+      "memos",
+      "queuedMemos",
+      "userSignedIn",
+      "memoLikes",
+      "accounts"
+    ]),
     pageTitle() {
       let value = "Memo in #";
       if (this.memo && this.memo.channel) {
@@ -85,6 +93,11 @@ export default {
       return {};
     }
   },
+  methods: {
+    shortAddress(address) {
+      return h.truncAddress(address);
+    }
+  },
   mounted() {
     this.$store.dispatch("memos/fetchById", this.$route.params.memo);
     this.$store.dispatch("memos/fetchAndAdd", {
@@ -95,7 +108,6 @@ export default {
     this.$store.dispatch("memoLikes/fetchAndAdd", {
       memoId: this.$route.params.memo
     });
-    console.log("this.memoLikes", this.memoLikes);
   }
 };
 </script>
