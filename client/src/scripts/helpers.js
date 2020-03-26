@@ -1,3 +1,4 @@
+import { formatDistanceStrict } from "date-fns";
 import linkifyHtml from "linkifyjs/html";
 
 function getDisplayName(accounts, address) {
@@ -46,6 +47,30 @@ function linkifyMemo(text) {
   });
 }
 
+function timeAgo(timestamp) {
+  let value = "";
+  if (timestamp) {
+    value = formatDistanceStrict(new Date(timestamp), new Date());
+    // an ugly hack to replace longer strings with the short form
+    value = value.replace(" seconds", "s");
+    value = value.replace(" second", "s");
+    value = value.replace(" minutes", "m");
+    value = value.replace(" minute", "m");
+    value = value.replace(" hours", "h");
+    value = value.replace(" hour", "h");
+    value = value.replace(" days", "d");
+    value = value.replace(" day", "d");
+    value = value.replace(" weeks", "w");
+    value = value.replace(" week", "w");
+    value = value.replace(" months", "m");
+    value = value.replace(" month", "m");
+    value = value.replace(" years", "y");
+    value = value.replace(" year", "y");
+    return value;
+  }
+  return "";
+}
+
 function truncAddress(addr) {
   if (addr) {
     let value = addr.slice(7, addr.length);
@@ -60,5 +85,6 @@ export default {
   getMemoPrefix,
   getTxSender,
   linkifyMemo,
+  timeAgo,
   truncAddress
 };
