@@ -1,12 +1,14 @@
 <template lang="pug">
 .section-default
   .section-title(v-if="$slots['section-title']"): slot(name="section-title")
-  .section-body: slot
+  slot(v-if="flush")
+  .section-body(v-else): slot
 </template>
 
 <script>
 export default {
-  name: "section-default"
+  name: "section-default",
+  props: ["flush"]
 };
 </script>
 
