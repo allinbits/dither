@@ -6,7 +6,7 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
   template(v-if="memo")
     card-memo(:memo="memo")
-    section-default(flush="true")
+    section-default(flush="true" v-if="Object.keys(accountLikes).length > 0")
       div(slot="section-title") Liked by
       .card-likes
         card-account(
@@ -14,6 +14,7 @@
           :key="account.id"
           :account="account")
     section-default(v-if="userSignedIn")
+      div(slot="section-title") Leave a comment
       form-send-memo(type="comment" :parent-address="memo.id" :channel="this.memo.channel")
     infinite-feed(:memos="comments" :queued="queuedComments" type="comment")
   template(v-else)
