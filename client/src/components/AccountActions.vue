@@ -30,7 +30,7 @@ export default {
       return 0;
     },
     fromAddress() {
-      return this.settings.data.wallet.address;
+      return this.settings.wallet.address;
     }
   },
   methods: {
@@ -39,7 +39,7 @@ export default {
         this.$router.push({ name: "login" });
         return;
       }
-      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+      if (!this.settings.uatom || this.settings.uatom === 0) {
         this.$router.push({ name: "wallet" });
         return;
       }
@@ -57,7 +57,7 @@ export default {
         this.$router.push({ name: "login" });
         return;
       }
-      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+      if (!this.settings.uatom || this.settings.uatom === 0) {
         this.$router.push({ name: "wallet" });
         return;
       }

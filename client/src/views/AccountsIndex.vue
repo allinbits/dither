@@ -6,7 +6,7 @@
   template(v-if="Object.keys(accounts).length > 0")
     card-account(v-for="account in orderedAccounts" :key="account.id" :id="account.id" :account="account")
     btn-load-more
-  card-loading(v-else)
+  card-message(v-else)
   app-footer
 </template>
 
@@ -18,7 +18,7 @@ import h from "../scripts/helpers.js";
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import CardAccount from "@/components/CardAccount";
-import CardLoading from "@/components/CardLoading";
+import CardMessage from "@/components/CardMessage";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
 export default {
@@ -30,7 +30,7 @@ export default {
     BtnIcon,
     BtnLoadMore,
     CardAccount,
-    CardLoading
+    CardMessage
   },
   computed: {
     ...mapGetters(["accounts", "userSignedIn", "settings"]),

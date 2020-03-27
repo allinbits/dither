@@ -9,7 +9,7 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
 
   infinite-feed(v-if="posts" :memos="posts" :queued="queuedPosts" :following="following")
-  card-loading(v-else)
+  card-message(v-else)
 
   app-footer
 </template>
@@ -20,7 +20,7 @@ import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
-import CardLoading from "@/components/CardLoading";
+import CardMessage from "@/components/CardMessage";
 import InfiniteFeed from "@/components/InfiniteFeed";
 import AppHeader from "@/components/AppHeader";
 export default {
@@ -30,7 +30,7 @@ export default {
     AppFooter,
     BtnIcon,
     BtnLoadMore,
-    CardLoading,
+    CardMessage,
     InfiniteFeed
   },
   computed: {

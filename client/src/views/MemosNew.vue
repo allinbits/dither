@@ -34,7 +34,7 @@ export default {
       this.$router.push({ name: "login" });
       return;
     }
-    if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+    if (!this.settings.uatom || this.settings.uatom === 0) {
       this.$router.push({ name: "wallet" });
       return;
     }
