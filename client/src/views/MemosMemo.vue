@@ -16,7 +16,9 @@
     section-default(v-if="userSignedIn")
       div(slot="section-title") Leave a comment
       form-send-memo(type="comment" :parent-address="memo.id" :channel="this.memo.channel")
-    infinite-feed(:memos="comments" :queued="queuedComments" type="comment")
+    //- infinite-feed(:memos="comments" :queued="queuedComments" type="comment")
+    div(v-for="post in comments")
+      card-memo(:memo="post")
   template(v-else)
     card-loading
   app-footer
@@ -96,10 +98,12 @@ export default {
       return {};
     }
   },
-  data: () => ({
-    accountLikes: {}
-  }),
-  async mounted() {
+  data: function () {
+    return {
+      accountLikes: {}
+    }
+  },
+  mounted() {
     // fetch this memo
     this.$store.dispatch("memos/fetchById", this.$route.params.memo);
     // fetch children of this memo
@@ -109,17 +113,18 @@ export default {
     });
 
     // fetch information for memo likes
-    await this.$store.dispatch("memoLikes/fetchAndAdd", {
+    this.$store.dispatch("memoLikes/fetchAndAdd", {
       memoId: this.$route.params.memo
-    });
-    // fetch accounts for memo likes
-    Object.values(this.memoLikes).forEach(async like => {
-      let account = await this.$store.dispatch(
-        "accounts/fetchById",
-        like.address
-      );
-      this.$set(this.accountLikes, account.id, account);
-    });
+    }).then(() => {
+      // fetch accounts for memo likes
+      Object.values(this.memoLikes).forEach(async like => {
+        let account = await this.$store.dispatch(
+          "accounts/fetchById",
+          like.address
+        );
+        this.$set(this.accountLikes, account.id, account);
+      });
+    })
   }
 };
 </script>
