@@ -8,7 +8,7 @@
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
 
-  section-default(v-if="settings && settings.data && settings.data.wallet")
+  section-default(v-if="settings && settings.wallet")
     div(slot="section-title") Your wallet
 
     template(v-if="tokens")
@@ -18,7 +18,7 @@
 
     p
       .break-address This is your wallet address:
-      a.break-address(:href="`https://www.mintscan.io/account/${settings.data.wallet.address}`" rel="noopener noreferrer" target="_blank") {{ settings.data.wallet.address }}
+      a.break-address(:href="`https://www.mintscan.io/account/${settings.wallet.address}`" rel="noopener noreferrer" target="_blank") {{ settings.wallet.address }}
 
     p You have #[strong {{ tokens }} ATOM] on block \#{{ blockchains["cosmoshub-3"].header.height }}
 
@@ -30,7 +30,7 @@
     p Dither is an open source, uncensorable chat app that runs on the Cosmos Hub. To post messages, you need to have ATOM tokens. Create an ATOM wallet now:
     dc-btn(@click.native="createWallet") Create new wallet
 
-  section-default(v-if="settings && settings.data && settings.data.wallet")
+  section-default(v-if="settings && settings.wallet")
     div(slot="section-title") Send tokens
     form-send-tokens(:balance="tokens")
 
@@ -73,7 +73,7 @@ export default {
       return process.env.NODE_ENV === "development";
     },
     tokens() {
-      let atoms = this.settings.data.uatom;
+      let atoms = this.settings.uatom;
       if (atoms) {
         return atoms / 1000000;
       } else {
@@ -83,11 +83,10 @@ export default {
     tweetUrl() {
       if (
         this.settings &&
-        this.settings.data &&
-        this.settings.data.wallet &&
-        this.settings.data.wallet.address
+        this.settings.wallet &&
+        this.settings.wallet.address
       ) {
-        let address = this.settings.data.wallet.address;
+        let address = this.settings.wallet.address;
         return (
           "https://twitter.com/intent/tweet?via=VirgoUDV&text=I%20want%20to%20try%20out%20https%3A//dither.chat.%20Please%20send%20ATOM%20to%20" +
           address +
@@ -135,7 +134,7 @@ export default {
     blockchains: {
       handler: async function() {
         let response = await fetch(
-          `${this.blockchain.lcd}/bank/balances/${this.settings.data.wallet.address}`
+          `${this.blockchain.lcd}/bank/balances/${this.settings.wallet.address}`
         );
         let balance = await response.json();
         let amount = balance.result[0].amount;

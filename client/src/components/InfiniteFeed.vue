@@ -7,19 +7,19 @@
     card-memo(v-for="memo in filteredMemos" v-if="memo.memo && memo.memo.body" :memo="memo" :key="memo.id")
     btn-load-more(:account="account")
 
-  card-loading(v-else)
+  card-message(v-else)
 </template>
 
 <script>
 import { orderBy, pickBy, map, uniq } from "lodash";
 import BtnLoadMore from "./BtnLoadMore";
-import CardLoading from "./CardLoading";
+import CardMessage from "./CardMessage";
 import CardMemo from "./CardMemo";
 export default {
   name: "infinite-feed",
   components: {
     BtnLoadMore,
-    CardLoading,
+    CardMessage,
     CardMemo
   },
   computed: {

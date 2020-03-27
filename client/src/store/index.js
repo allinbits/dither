@@ -61,7 +61,7 @@ const storeData = {
       return state.notifications.data;
     },
     settings: state => {
-      return state.settings;
+      return state.settings.data;
     },
     queuedMemos: state => {
       return state.queuedMemos;

@@ -80,8 +80,8 @@ export default {
     });
   },
   watch: {
-    async "settings.data"() {
-      if (!this.settings.data.wallet) {
+    async settings() {
+      if (!this.settings.wallet) {
         // set user following
         this.$store.commit("setFollowing", defaultFollowing);
 
@@ -89,8 +89,8 @@ export default {
         this.following.map(address => this.fetchMemosFromAddress(address));
       }
     },
-    async "settings.data.wallet"() {
-      let userAddress = this.settings.data.wallet.address;
+    async "settings.wallet"() {
+      let userAddress = this.settings.wallet.address;
       let userFollowing = [];
       let userAccountRef = Firebase.firestore()
         .collection("accounts")

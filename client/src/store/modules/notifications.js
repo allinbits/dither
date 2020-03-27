@@ -1,5 +1,5 @@
 const notifications = {
-  firestorePath: "accounts/{userId}/notifications",
+  firestorePath: "accounts/{accountId}/notifications",
   firestoreRefType: "collection",
   moduleName: "notifications",
   statePropName: "data",
