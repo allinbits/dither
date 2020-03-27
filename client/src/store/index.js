@@ -150,7 +150,7 @@ const storeData = {
         })
       })
     },
-    fetchPosts({ dispatch }, address) {
+    startStreamingPosts({ dispatch }, address) {
       return new Promise((resolve) => {
         dispatch("fetchFollowingList").then(following => {
           const condition = address ? ["==", address] : ["in", following]
@@ -163,6 +163,9 @@ const storeData = {
         })
       })
     },
+    endStreamingPosts({ dispatch }) {
+      dispatch("memos/closeDBChannel")
+    }
   },
   mutations: {
     setHeight(state, height) {

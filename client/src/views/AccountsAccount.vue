@@ -137,25 +137,11 @@ export default {
   },
   mounted() {
     this.$store.dispatch("accounts/fetchById", this.$route.params.address);
-    this.$store.dispatch("fetchPosts", this.$route.params.address)
-    // this.$store.dispatch("memos/openDBChannel", {
-    //   where: [
-    //     ["address", "==", "cosmos1z9l4hmt29ejvqrxy4vpcwa2vf94aftgzlwfyg8"],
-    //     ["type", "==", "post"]
-    //   ]
-    // })
-    // this.postsFetch()
-    // this.$store.dispatch("accounts/fetchById", this.$route.params.address);
-    // this.$store.dispatch("accounts/fetchAndAdd", {
-    //   limit: 50
-    // });
+    this.$store.dispatch("startStreamingPosts", this.$route.params.address);
   },
-  // data: function() {
-  //   return {
-  //     postVisibleStep: 10,
-  //     postVisibleCount: 10,
-  //   }
-  // }
+  destroyed() {
+    this.$store.dispatch("endStreamingPosts")
+  }
 };
 </script>
 

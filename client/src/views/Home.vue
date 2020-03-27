@@ -7,8 +7,10 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
-  div(v-for="post in posts")
-    card-memo(:memo="post")
+  div(v-for="i in postsVisibleCount" v-if="Object.values(posts).length > 0")
+    card-memo(:memo="posts[i-1]")
+  .btn-load-more(v-if="Object.values(posts).length > 0 && Object.values(posts).length >= postsVisibleCount")
+    dc-btn(size="large" icon="refresh-cw" @click.native="postsVisibleCount += 10") Load more
   card-loading(v-if="fetchingInProgress")
   app-footer
 </template>
@@ -39,7 +41,8 @@ export default {
   },
   data: function() {
     return {
-      fetchingInProgress: false
+      fetchingInProgress: false,
+      postsVisibleCount: 10
     }
   },
   computed: {
@@ -62,14 +65,14 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch("fetchPosts")
+    this.$store.dispatch("startStreamingPosts")
     this.fetchingInProgress = true
     this.$store.dispatch("accounts/fetchAndAdd").then(() => {
       this.fetchingInProgress = false
     });
   },
   destroyed() {
-    this.$store.dispatch("memos/closeDBChannel")
+    this.$store.dispatch("endStreamingPosts")
   }
 };
 </script>
