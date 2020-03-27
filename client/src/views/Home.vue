@@ -7,16 +7,14 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
-  div(v-for="i in postVisibleCount" v-if="memosTimeline.length > 0")
-    card-memo(:memo="memosTimeline[i-1]")
+  div(v-for="post in posts")
+    card-memo(:memo="post")
   card-loading(v-if="fetchingInProgress")
-  .btn-load-more(v-else-if="memosTimeline.length > postVisibleCount && !fetchingInProgress")
-    dc-btn(size="large" icon="refresh-cw" @click.native="postsFetchAndDisplay") Load more
   app-footer
 </template>
 
 <script>
-import { pickBy } from "lodash";
+import { pickBy, orderBy } from "lodash";
 import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
@@ -41,8 +39,6 @@ export default {
   },
   data: function() {
     return {
-      postVisibleStep: 10,
-      postVisibleCount: 10,
       fetchingInProgress: false
     }
   },
@@ -57,23 +53,23 @@ export default {
         value = pickBy(this.queuedMemos, m => !m.channel);
       }
       return value;
-    }
-  },
-  methods: {
-    postsFetch() {
-      this.fetchingInProgress = true
-      this.$store.dispatch("fetchTimeline", this.postVisibleCount + this.postVisibleStep).then(() => {
-        this.fetchingInProgress = false
-      })
     },
-    postsFetchAndDisplay() {
-      this.postVisibleCount += this.postVisibleStep
-      this.postsFetch()
-    }
+    posts() {
+      const posts = Object.values(pickBy(this.memos, m => {
+        return this.following.includes(m.address)
+      }))
+      return orderBy(posts, ["timestamp"], ["desc"])
+    },
   },
   mounted() {
-    this.$store.dispatch("accounts/fetchAndAdd");
-    this.postsFetch()
+    this.$store.dispatch("fetchPosts")
+    this.fetchingInProgress = true
+    this.$store.dispatch("accounts/fetchAndAdd").then(() => {
+      this.fetchingInProgress = false
+    });
+  },
+  destroyed() {
+    this.$store.dispatch("memos/closeDBChannel")
   }
 };
 </script>

@@ -136,29 +136,30 @@ const storeData = {
         })
       })
     },
-    fetchFollowingList({ dispatch }) {
+    fetchFollowingList({ dispatch, commit }) {
       return new Promise((resolve) => {
         dispatch("fetchSettings").then(settings => {
           const address = settings.wallet.address;
           Firebase.firestore().collection("accounts").doc(address).get().then(account => {
+            commit("setFollowing", account.data().following)
             resolve(account.data().following)
           })
         }).catch(() => {
+          commit("setFollowing", defaultFollowing)
           resolve(defaultFollowing)
         })
       })
     },
-    fetchTimeline({ dispatch }, limit = 10) {
+    fetchPosts({ dispatch }, address) {
       return new Promise((resolve) => {
         dispatch("fetchFollowingList").then(following => {
-          dispatch("memos/fetchAndAdd", {
-            limit,
-            orderBy: ["timestamp", "desc"],
+          const condition = address ? ["==", address] : ["in", following]
+          dispatch("memos/openDBChannel", {
             where: [
-              ["address", "in", following],
+              ["address", ...condition],
               ["type", "==", "post"]
             ]
-          }).then(resolve());
+          }).then(() => resolve())
         })
       })
     },

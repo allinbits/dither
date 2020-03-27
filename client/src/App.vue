@@ -49,6 +49,7 @@ export default {
         }
       });
     }
+    this.$store.dispatch("authenticate")
 
     // log in the user if they exist
     // Firebase.auth().onAuthStateChanged(user => {

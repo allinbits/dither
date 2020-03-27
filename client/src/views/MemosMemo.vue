@@ -113,12 +113,12 @@ export default {
       memoId: this.$route.params.memo
     });
     // fetch accounts for memo likes
-    Object.values(this.memoLikes).map(async like => {
+    Object.values(this.memoLikes).forEach(async like => {
       let account = await this.$store.dispatch(
         "accounts/fetchById",
         like.address
       );
-      this.accountLikes[account.id] = account;
+      this.$set(this.accountLikes, account.id, account);
     });
   }
 };

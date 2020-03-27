@@ -22,10 +22,8 @@
     account-actions(:account="account")
 
     // .account-stat {{ account.memos }} memos
-  div(v-for="i in postVisibleCount")
-    card-memo(v-if="posts[i-1]" :memo="posts[i-1]")
-  .btn-load-more(v-if="posts.length > postVisibleCount")
-    dc-btn(size="large" icon="refresh-cw" @click.native="postsFetchAndDisplay") Load more
+  div(v-for="post in posts")
+    card-memo(:memo="post")
   app-footer
 </template>
 
@@ -138,18 +136,26 @@ export default {
     }
   },
   mounted() {
-    this.postsFetch()
     this.$store.dispatch("accounts/fetchById", this.$route.params.address);
-    this.$store.dispatch("accounts/fetchAndAdd", {
-      limit: 50
-    });
+    this.$store.dispatch("fetchPosts", this.$route.params.address)
+    // this.$store.dispatch("memos/openDBChannel", {
+    //   where: [
+    //     ["address", "==", "cosmos1z9l4hmt29ejvqrxy4vpcwa2vf94aftgzlwfyg8"],
+    //     ["type", "==", "post"]
+    //   ]
+    // })
+    // this.postsFetch()
+    // this.$store.dispatch("accounts/fetchById", this.$route.params.address);
+    // this.$store.dispatch("accounts/fetchAndAdd", {
+    //   limit: 50
+    // });
   },
-  data: function() {
-    return {
-      postVisibleStep: 10,
-      postVisibleCount: 10,
-    }
-  }
+  // data: function() {
+  //   return {
+  //     postVisibleStep: 10,
+  //     postVisibleCount: 10,
+  //   }
+  // }
 };
 </script>
 
