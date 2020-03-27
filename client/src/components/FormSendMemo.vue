@@ -43,7 +43,7 @@ export default {
       return bytes;
     },
     fromAddress() {
-      return this.settings.data.wallet.address;
+      return this.settings.wallet.address;
     }
   },
   data: () => ({
