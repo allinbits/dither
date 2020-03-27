@@ -40,7 +40,7 @@
 <script>
 import * as bip39 from "bip39";
 import { createWalletFromMnemonic } from "@tendermint/sig";
-import { Firebase } from "../store/firebase.js";
+// import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
@@ -123,27 +123,29 @@ export default {
     }
   },
   mounted() {
-    Firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log("user signed in");
-      } else {
-        this.$router.push("/login");
-      }
-    });
+    this.$store.dispatch("fetchSettings")
+    this.$store.dispatch("blockchains/fetchAndAdd")
+    // Firebase.auth().onAuthStateChanged(user => {
+    //   if (user) {
+    //     console.log("user signed in");
+    //   } else {
+    //     this.$router.push("/login");
+    //   }
+    // });
   },
   watch: {
-    blockchains: {
-      handler: async function() {
-        let response = await fetch(
-          `${this.blockchain.lcd}/bank/balances/${this.settings.data.wallet.address}`
-        );
-        let balance = await response.json();
-        let amount = balance.result[0].amount;
-        // console.log("new balance:", amount, "uatom");
-        this.$store.dispatch("settings/set", { uatom: amount });
-      },
-      deep: true
-    }
+    // blockchains: {
+    //   handler: async function() {
+    //     let response = await fetch(
+    //       `${this.blockchain.lcd}/bank/balances/${this.settings.data.wallet.address}`
+    //     );
+    //     let balance = await response.json();
+    //     let amount = balance.result[0].amount;
+    //     // console.log("new balance:", amount, "uatom");
+    //     this.$store.dispatch("settings/set", { uatom: amount });
+    //   },
+    //   deep: true
+    // }
   }
 };
 </script>

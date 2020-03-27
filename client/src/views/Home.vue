@@ -49,13 +49,6 @@ export default {
     memosTimeline() {
       return Object.values(this.memos)
     },
-    posts() {
-      let value = [];
-      if (this.memos) {
-        value = pickBy(this.memos, m => !m.channel);
-      }
-      return value;
-    },
     queuedPosts() {
       let value = [];
       if (this.queuedMemos) {
@@ -65,14 +58,17 @@ export default {
     }
   },
   methods: {
-    postsFetchAndDisplay() {
-      this.postVisibleCount += this.postVisibleStep
+    postsFetch() {
       this.$store.dispatch("fetchTimeline", this.postVisibleCount + this.postVisibleStep)
     },
+    postsFetchAndDisplay() {
+      this.postVisibleCount += this.postVisibleStep
+      this.postsFetch()
+    }
   },
   mounted() {
     this.$store.dispatch("accounts/fetchAndAdd");
-    this.$store.dispatch("fetchTimeline", this.postVisibleCount + this.postVisibleStep)
+    this.postsFetch()
   }
 };
 </script>
