@@ -11,12 +11,13 @@ import { Firebase, initFirebase } from "./firebase.js";
 import accounts from "./modules/accounts.js";
 import blockchains from "./modules/blockchains.js";
 import memos from "./modules/memos.js";
+import memoLikes from "./modules/memoLikes.js";
 import settings from "./modules/settings.js";
 import defaultFollowing from "./defaultFollowing.json";
 
 // connect vuex-firestore modules to firestore
 const easyFirestore = VuexEasyFirestore(
-  [accounts, blockchains, memos, settings],
+  [accounts, blockchains, memos, memoLikes, settings],
   {
     logging: true,
     FirebaseDependency: Firebase
@@ -52,6 +53,9 @@ const storeData = {
     },
     memos: state => {
       return state.memos.data;
+    },
+    memoLikes: state => {
+      return state.memoLikes.data;
     },
     settings: state => {
       return state.settings;

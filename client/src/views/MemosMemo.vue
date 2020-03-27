@@ -6,7 +6,15 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
   template(v-if="memo")
     card-memo(:memo="memo")
+    section-default(flush="true" v-if="Object.keys(accountLikes).length > 0")
+      div(slot="section-title") Liked by
+      .card-likes
+        card-account(
+          v-for="account in accountLikes"
+          :key="account.id"
+          :account="account")
     section-default(v-if="userSignedIn")
+      div(slot="section-title") Leave a comment
       form-send-memo(type="comment" :parent-address="memo.id" :channel="this.memo.channel")
     infinite-feed(:memos="comments" :queued="queuedComments" type="comment")
   template(v-else)
@@ -16,12 +24,12 @@
 
 <script>
 import { pickBy } from "lodash";
-
 import { mapGetters } from "vuex";
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
 import FormSendMemo from "@/components/FormSendMemo";
+import CardAccount from "@/components/CardAccount";
 import CardLoading from "@/components/CardLoading";
 import CardMemo from "@/components/CardMemo";
 import InfiniteFeed from "@/components/InfiniteFeed";
@@ -33,6 +41,7 @@ export default {
     AppHeader,
     AppFooter,
     BtnIcon,
+    CardAccount,
     CardLoading,
     CardMemo,
     FormSendMemo,
@@ -40,7 +49,13 @@ export default {
     SectionDefault
   },
   computed: {
-    ...mapGetters(["memos", "queuedMemos", "userSignedIn"]),
+    ...mapGetters([
+      "memos",
+      "queuedMemos",
+      "userSignedIn",
+      "memoLikes",
+      "accounts"
+    ]),
     pageTitle() {
       let value = "Memo in #";
       if (this.memo && this.memo.channel) {
@@ -81,11 +96,29 @@ export default {
       return {};
     }
   },
-  mounted() {
+  data: () => ({
+    accountLikes: {}
+  }),
+  async mounted() {
+    // fetch this memo
     this.$store.dispatch("memos/fetchById", this.$route.params.memo);
+    // fetch children of this memo
     this.$store.dispatch("memos/fetchAndAdd", {
       orderBy: ["height", "desc"],
       where: [["parent", "==", this.$route.params.memo]]
+    });
+
+    // fetch information for memo likes
+    await this.$store.dispatch("memoLikes/fetchAndAdd", {
+      memoId: this.$route.params.memo
+    });
+    // fetch accounts for memo likes
+    Object.values(this.memoLikes).map(async like => {
+      let account = await this.$store.dispatch(
+        "accounts/fetchById",
+        like.address
+      );
+      this.accountLikes[account.id] = account;
     });
   }
 };
