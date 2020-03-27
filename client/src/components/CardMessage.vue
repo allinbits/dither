@@ -2,8 +2,8 @@
 .card-message
   .inner
     slot(v-if="$slots.default")
-    template(v-else-if="body") {{ body }}
-    template(v-else="body") Page is loading&hellip;
+    template(v-else-if="message") {{ body }}
+    template(v-els) Page is loading&hellip;
 </template>
 
 <script>

@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { Firebase } from "../store/firebase.js";
 import { mapGetters } from "vuex";
 import { orderBy } from "lodash";
 import AppFooter from "@/components/AppFooter";
@@ -34,6 +35,13 @@ export default {
     }
   },
   mounted() {
+    Firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log("user signed in");
+      } else {
+        this.$router.push("/login");
+      }
+    });
     if (this.settings) {
       this.$store.dispatch("notifications/openDBChannel", {
         accountId: this.settings.wallet.address
