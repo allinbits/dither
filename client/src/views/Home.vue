@@ -9,7 +9,8 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
   div(v-for="i in postVisibleCount" v-if="memosTimeline.length > 0")
     card-memo(:memo="memosTimeline[i-1]")
-  .btn-load-more(v-if="memosTimeline.length > postVisibleCount")
+  card-loading(v-if="fetchingInProgress")
+  .btn-load-more(v-else-if="memosTimeline.length > postVisibleCount && !fetchingInProgress")
     dc-btn(size="large" icon="refresh-cw" @click.native="postsFetchAndDisplay") Load more
   app-footer
 </template>
@@ -42,6 +43,7 @@ export default {
     return {
       postVisibleStep: 10,
       postVisibleCount: 10,
+      fetchingInProgress: false
     }
   },
   computed: {
@@ -59,7 +61,10 @@ export default {
   },
   methods: {
     postsFetch() {
-      this.$store.dispatch("fetchTimeline", this.postVisibleCount + this.postVisibleStep)
+      this.fetchingInProgress = true
+      this.$store.dispatch("fetchTimeline", this.postVisibleCount + this.postVisibleStep).then(() => {
+        this.fetchingInProgress = false
+      })
     },
     postsFetchAndDisplay() {
       this.postVisibleCount += this.postVisibleStep

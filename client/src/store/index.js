@@ -149,15 +149,17 @@ const storeData = {
       })
     },
     fetchTimeline({ dispatch }, limit = 10) {
-      dispatch("fetchFollowingList").then(following => {
-        dispatch("memos/fetchAndAdd", {
-          limit,
-          orderBy: ["timestamp", "desc"],
-          where: [
-            ["address", "in", following],
-            ["type", "==", "post"]
-          ]
-        });
+      return new Promise((resolve) => {
+        dispatch("fetchFollowingList").then(following => {
+          dispatch("memos/fetchAndAdd", {
+            limit,
+            orderBy: ["timestamp", "desc"],
+            where: [
+              ["address", "in", following],
+              ["type", "==", "post"]
+            ]
+          }).then(resolve());
+        })
       })
     },
   },
