@@ -20,7 +20,7 @@
       .break-address This is your wallet address:
       a.break-address(:href="`https://www.mintscan.io/account/${settings.data.wallet.address}`" rel="noopener noreferrer" target="_blank") {{ settings.data.wallet.address }}
 
-    p You have #[strong {{ tokens }} ATOM] on block \#{{ blockchains["cosmoshub-3"].header.height }}
+    p(v-if="blockchains") You have #[strong {{ tokens }} ATOM] on block \#{{ blockchains["cosmoshub-3"].header.height }}
 
     p(v-if="devMode")
       a.delete-wallet(@click="deleteWallet") Delete wallet
