@@ -14,6 +14,7 @@ import memos from "./modules/memos.js";
 import memoLikes from "./modules/memoLikes.js";
 import notifications from "./modules/notifications.js";
 import settings from "./modules/settings.js";
+import defaultFollowing from "./defaultFollowing.json";
 
 // connect vuex-firestore modules to firestore
 const easyFirestore = VuexEasyFirestore(
@@ -115,6 +116,43 @@ const storeData = {
         commit("rmQueuedMemo", id);
         commit("decrementQueuedSequence");
       }
+    },
+    authenticate({ commit }) {
+      return new Promise((resolve, reject) => {
+        Firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            commit("signInUser", user)
+            resolve(user)
+          } else {
+            reject()
+          }
+        })
+      })
+    },
+    fetchSettings({ dispatch }) {
+      return new Promise((resolve, reject) => {
+        dispatch("authenticate").then(() => {
+          dispatch("settings/fetchAndAdd").then(settings => {
+            resolve(settings)
+          })
+        }).catch(() => {
+          reject()
+        })
+      })
+    },
+    fetchFollowingList({ dispatch, commit }) {
+      return new Promise((resolve) => {
+        dispatch("fetchSettings").then(settings => {
+          const address = settings.wallet.address;
+          Firebase.firestore().collection("accounts").doc(address).get().then(account => {
+            commit("setFollowing", account.data().following)
+            resolve(account.data().following)
+          })
+        }).catch(() => {
+          commit("setFollowing", defaultFollowing)
+          resolve(defaultFollowing)
+        })
+      })
     }
   },
   mutations: {

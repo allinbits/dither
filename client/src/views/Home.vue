@@ -49,6 +49,22 @@ export default {
       }
       return value;
     }
+  },
+  methods: {
+    memosStartStreaming() {
+      this.$store.dispatch("fetchFollowingList").then(following => {
+        console.log("!!!", following)
+      })
+    },
+    memosStopStreaming() {
+      this.$store.dispatch("memos/closeDBChannel")
+    }
+  },
+  mounted() {
+    this.memosStartStreaming()
+  },
+  destroyed() {
+    this.memosStopStreaming()
   }
 };
 </script>
