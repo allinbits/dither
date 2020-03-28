@@ -4,6 +4,8 @@ This is the current software development roadmap for Dither. We plan to start of
 
 ## First six months
 
+[**Dither Proof-of-Concept**](./roadmap-00-poc.md) - We will work on building a proof-of-concept version of Dither and deploy it publicly to the Cosmos community. The POC feature set is unstable and continues to change as we move quickly through iterations and feedback rounds. This  POC will inform us on the feasibility of a full-featured Dither, possible future scaling concerns, and also collect invaluable feedback from the community.
+
 [**Dither Protocol Specification (beta)**](./roadmap-01-spec.md) - We will research, design, and publish a messaging protocol for Dither, built on top of the Cosmos Hub memo field, with future support for IBC  in mind.
 
 [**Dither Indexer (beta)**](./roadmap-02-indexer.md) - The indexer will collect all Cosmos Hub memos that support the Dither protocol and allow for viewing, searching, and indexing, as well as user account features. We will publish an open source Dither Indexer on GitHub.

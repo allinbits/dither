@@ -20,7 +20,7 @@
     div(v-for="post in comments")
       card-memo(:memo="post")
   template(v-else)
-    card-loading
+    card-message
   app-footer
 </template>
 
@@ -32,8 +32,8 @@ import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
 import FormSendMemo from "@/components/FormSendMemo";
 import CardAccount from "@/components/CardAccount";
-import CardLoading from "@/components/CardLoading";
 import CardMemo from "@/components/CardMemo";
+import CardMessage from "@/components/CardMessage";
 import InfiniteFeed from "@/components/InfiniteFeed";
 import SectionDefault from "@/components/SectionDefault";
 export default {
@@ -44,8 +44,8 @@ export default {
     AppFooter,
     BtnIcon,
     CardAccount,
-    CardLoading,
     CardMemo,
+    CardMessage,
     FormSendMemo,
     InfiniteFeed,
     SectionDefault

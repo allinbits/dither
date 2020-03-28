@@ -28,7 +28,7 @@ export default {
   computed: {
     ...mapGetters(["user", "userSignedIn", "settings"]),
     fromAddress() {
-      return this.settings.data.wallet.address;
+      return this.settings.wallet.address;
     },
     sendAmountUatom() {
       return (this.sendAmount * 1000000).toString();

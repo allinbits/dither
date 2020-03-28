@@ -132,6 +132,10 @@ function writeTx(tx) {
     db.collection("memos").doc(txData.parent)
       .collection("likes").doc(txId).set(txData)
 
+    // increment like count
+    db.collection("memos").doc(txData.parent)
+      .set({ likes: increment }, { merge: true });
+
     // add like to account
     db.collection("accounts").doc(txData.address)
       .collection("likes").doc(txId).set(txData)

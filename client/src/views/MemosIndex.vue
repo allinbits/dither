@@ -5,7 +5,7 @@
       btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
 
   infinite-feed(v-if="memos" :memos="memos" :queued="queuedMemos")
-  card-loading(v-else)
+  card-message(v-else)
 
   app-footer
 </template>
@@ -15,7 +15,7 @@ import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import BtnIcon from "@/components/BtnIcon";
-import CardLoading from "@/components/CardLoading";
+import CardMessage from "@/components/CardMessage";
 import InfiniteFeed from "@/components/InfiniteFeed";
 export default {
   name: "page-memos-index",
@@ -24,7 +24,7 @@ export default {
     AppHeader,
     AppFooter,
     BtnIcon,
-    CardLoading,
+    CardMessage,
     InfiniteFeed
   },
   computed: {

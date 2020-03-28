@@ -53,16 +53,15 @@ export default {
       let whitelist = this.channel.whitelist;
       let walletExists =
         this.settings &&
-        this.settings.data &&
-        this.settings.data.wallet &&
-        this.settings.data.wallet.address &&
-        this.settings.data.uatom;
+        this.settings.wallet &&
+        this.settings.wallet.address &&
+        this.settings.uatom;
       if (!walletExists) {
         return false;
       }
       if (whitelist.length > 0) {
         // console.log("whitelist exists");
-        return whitelist.includes(this.settings.data.wallet.address);
+        return whitelist.includes(this.settings.wallet.address);
       } else {
         // console.log("whitelist doesnt exist");
         return true;

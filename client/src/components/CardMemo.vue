@@ -93,8 +93,8 @@ export default {
       return h.getDisplayName(this.accounts, this.memo.address);
     },
     fromAddress() {
-      if (this.settings && this.settings.data && this.settings.data.wallet) {
-        return this.settings.data.wallet.address;
+      if (this.settings && this.settings.wallet) {
+        return this.settings.wallet.address;
       }
       return "";
     },
@@ -181,7 +181,7 @@ export default {
         this.$router.push({ name: "login" });
         return;
       }
-      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+      if (!this.settings.uatom || this.settings.uatom === 0) {
         this.$router.push({ name: "wallet" });
         return;
       }
@@ -199,7 +199,7 @@ export default {
         this.$router.push({ name: "login" });
         return;
       }
-      if (!this.settings.data.uatom || this.settings.data.uatom === 0) {
+      if (!this.settings.uatom || this.settings.uatom === 0) {
         this.$router.push({ name: "wallet" });
         return;
       }

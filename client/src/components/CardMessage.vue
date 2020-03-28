@@ -1,17 +1,22 @@
 <template lang="pug">
-.card-loading
-  .inner Loading&hellip;
+.card-message
+  .inner
+    slot(v-if="$slots.default")
+    template(v-else-if="message") {{ body }}
+    template(v-els) Page is loading&hellip;
 </template>
 
 <script>
 export default {
-  name: "card-loading"
+  name: "card-message",
+  props: ["message"]
 };
 </script>
 
 <style scoped lang="stylus">
-.card-loading
+.card-message
   padding 1rem
+
 .inner
   background var(--bc)
   line-height 3rem

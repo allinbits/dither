@@ -38,7 +38,6 @@ import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
-import CardLoading from "@/components/CardLoading";
 import AvatarAccount from "@/components/AvatarAccount";
 import InfiniteFeed from "@/components/InfiniteFeed";
 import DcBtn from "@/components/DcBtn";
@@ -52,7 +51,6 @@ export default {
     AppFooter,
     BtnIcon,
     BtnLoadMore,
-    CardLoading,
     AvatarAccount,
     InfiniteFeed,
     DcBtn,

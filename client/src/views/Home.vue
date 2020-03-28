@@ -12,6 +12,10 @@
   .btn-load-more(v-if="Object.values(posts).length > 0 && Object.values(posts).length >= postsVisibleCount")
     dc-btn(size="large" icon="refresh-cw" @click.native="postsVisibleCount += 10") Load more
   card-loading(v-if="fetchingInProgress")
+
+  //- infinite-feed(v-if="posts" :memos="posts" :queued="queuedPosts" :following="following")
+  //- card-message(v-else)
+
   app-footer
 </template>
 
@@ -21,7 +25,7 @@ import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
 import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
-import CardLoading from "@/components/CardLoading";
+import CardMessage from "@/components/CardMessage";
 import InfiniteFeed from "@/components/InfiniteFeed";
 import AppHeader from "@/components/AppHeader";
 import CardMemo from "@/components/CardMemo";
@@ -35,6 +39,7 @@ export default {
     BtnIcon,
     BtnLoadMore,
     CardLoading,
+    CardMessage,
     InfiniteFeed,
     CardMemo,
     DcBtn

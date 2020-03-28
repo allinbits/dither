@@ -30,14 +30,13 @@ export default {
     walletExists() {
       return (
         this.settings &&
-        this.settings.data &&
-        this.settings.data.wallet &&
-        this.settings.data.wallet.address &&
-        this.settings.data.uatom
+        this.settings.wallet &&
+        this.settings.wallet.address &&
+        this.settings.uatom
       );
     },
     fromAddress() {
-      return this.settings.data.wallet.address;
+      return this.settings.wallet.address;
     }
   },
   data: () => ({
