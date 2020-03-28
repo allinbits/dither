@@ -6,7 +6,7 @@
   template(v-if="Object.keys(accounts).length > 0")
     card-account(v-for="account in orderedAccounts" :key="account.id" :id="account.id" :account="account")
     btn-load-more
-  card-message(v-else)
+  card-message
   app-footer
 </template>
 

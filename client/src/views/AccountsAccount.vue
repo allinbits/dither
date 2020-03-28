@@ -138,7 +138,7 @@ export default {
     this.$store.dispatch("startStreamingPosts", this.$route.params.address);
   },
   destroyed() {
-    this.$store.dispatch("endStreamingPosts")
+    this.$store.dispatch("stopStreamingPosts")
   }
 };
 </script>

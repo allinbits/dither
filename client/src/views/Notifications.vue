@@ -42,18 +42,21 @@ export default {
         this.$router.push("/login");
       }
     });
-    if (this.settings) {
+    this.$store.dispatch("fetchSettings").then(settings => {
       this.$store.dispatch("notifications/openDBChannel", {
-        accountId: this.settings.wallet.address
+        accountId: settings.wallet.address
       });
-    }
+    })
   },
-  watch: {
-    settings() {
-      this.$store.dispatch("notifications/openDBChannel", {
-        accountId: this.settings.wallet.address
-      });
-    }
+  // watch: {
+  //   settings() {
+  //     this.$store.dispatch("notifications/openDBChannel", {
+  //       accountId: this.settings.wallet.address
+  //     });
+  //   }
+  // },
+  destroyed() {
+    this.$store.dispatch("notifications/closeDBChannel")
   }
 };
 </script>

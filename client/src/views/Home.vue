@@ -11,11 +11,7 @@
     card-memo(:memo="posts[i-1]")
   .btn-load-more(v-if="Object.values(posts).length > 0 && Object.values(posts).length >= postsVisibleCount")
     dc-btn(size="large" icon="refresh-cw" @click.native="postsVisibleCount += 10") Load more
-  card-loading(v-if="fetchingInProgress")
-
-  //- infinite-feed(v-if="posts" :memos="posts" :queued="queuedPosts" :following="following")
-  //- card-message(v-else)
-
+  card-message(v-if="fetchingInProgress")
   app-footer
 </template>
 
@@ -38,7 +34,6 @@ export default {
     AppFooter,
     BtnIcon,
     BtnLoadMore,
-    CardLoading,
     CardMessage,
     InfiniteFeed,
     CardMemo,
@@ -77,7 +72,7 @@ export default {
     });
   },
   destroyed() {
-    this.$store.dispatch("endStreamingPosts")
+    this.$store.dispatch("stopStreamingPosts")
   }
 };
 </script>

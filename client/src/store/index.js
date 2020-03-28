@@ -163,11 +163,11 @@ const storeData = {
               ["address", ...condition],
               ["type", "==", "post"]
             ]
-          }).then(() => resolve())
+          }).then(() => resolve(""))
         })
       })
     },
-    endStreamingPosts({ dispatch }) {
+    stopStreamingPosts({ dispatch }) {
       dispatch("memos/closeDBChannel")
     }
   },
