@@ -5,8 +5,6 @@
 </template>
 
 <script>
-// import defaultFollowing from "./store/defaultFollowing.json";
-// import { Firebase } from "./store/firebase.js";
 import { mapGetters } from "vuex";
 export default {
   name: "app",
@@ -50,88 +48,8 @@ export default {
       });
     }
 
-    this.$store.dispatch("authenticate")
-
-    // log in the user if they exist
-    // Firebase.auth().onAuthStateChanged(user => {
-    //   if (user) {
-    //     this.$store.commit("signInUser", user);
-    //     // this.$store.dispatch("settings/fetchAndAdd").then(settings => {
-    //     //   const address = settings.wallet.address;
-    //     //   Firebase.firestore().collection("accounts").doc(address).get().then(account => {
-    //     //     account.data().following.forEach(f => {
-    //     //       console.log(f)
-    //     //     })
-    //     //   })
-    //     // })
-    //     // this.$store.dispatch("settings/openDBChannel").catch(console.error);
-    //   } else {
-    //     // if user doesnt exist, create a default following
-    //     // this.$store.commit("setFollowing", defaultFollowing);
-    //     // load memos
-    //     // this.following.map(address => this.fetchMemosFromAddress(address));
-    //   }
-    // });
-
-    // continuouly update blockchain data
-    // await this.$store.dispatch("blockchains/openDBChannel");
-
-    // // calculate the oldest block
-    // let oldestBlock = Math.round(
-    //   this.blockchains["cosmoshub-3"].header.height - this.blockchain.blockRange
-    // );
-    // // console.log("oldest block", oldestBlock);
-
-    // // continuouly get the memos from the latest blocks
-    // this.$store.dispatch("memos/openDBChannel", {
-    //   orderBy: ["height", "desc"],
-    //   where: [["height", ">=", oldestBlock]]
-    // });
+    this.$store.dispatch("fetchSettings")
   },
-  // watch: {
-  //   async "settings.data"() {
-  //     if (!this.settings.data.wallet) {
-  //       // set user following
-  //       this.$store.commit("setFollowing", defaultFollowing);
-
-  //       // load memos from user's following
-  //       this.following.map(address => this.fetchMemosFromAddress(address));
-  //     }
-  //   },
-  //   async "settings.data.wallet"() {
-  //     let userAddress = this.settings.data.wallet.address;
-  //     let userFollowing = [];
-  //     let userAccountRef = Firebase.firestore()
-  //       .collection("accounts")
-  //       .doc(userAddress);
-
-  //     // load the user's following
-  //     await userAccountRef
-  //       .get()
-  //       .then(doc => {
-  //         // if user doesn't have default following
-  //         if (!doc.exists) {
-  //           console.log("no following exists, setting default");
-  //           userFollowing = defaultFollowing;
-  //         } else {
-  //           // console.log("user following exists, loading it")
-  //           userFollowing = doc.data().following;
-  //         }
-  //       })
-  //       .catch(err => {
-  //         console.log("Error getting document", err);
-  //       });
-
-  //     // add user's own address to following
-  //     userFollowing.push(userAddress);
-
-  //     // set user following
-  //     this.$store.commit("setFollowing", userFollowing);
-
-  //     // load memos from user's following
-  //     // this.following.map(address => this.fetchMemosFromAddress(address));
-  //   }
-  // }
 };
 </script>
 
