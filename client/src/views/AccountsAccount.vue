@@ -113,16 +113,22 @@ export default {
   methods: {
     back() {
       this.$router.go(-1);
+    },
+    async memosOpenDBChannel() {
+      try {
+        await this.$store.dispatch(`memos/openDBChannel`, {
+          orderBy: ["timestamp", "desc"],
+          where: [["address", "==", this.$route.params.address]]
+        });
+      } catch {
+        console.warn("Channel is already open.")
+      }
     }
   },
   mounted() {
-    this.$store.dispatch("memos/fetchAndAdd", {
-      limit: 10,
-      orderBy: ["timestamp", "desc"],
-      where: [["address", "==", this.$route.params.address]]
-    });
+    this.memosOpenDBChannel()
     this.$store.dispatch("accounts/fetchById", this.$route.params.address);
-  }
+  },
 };
 </script>
 
