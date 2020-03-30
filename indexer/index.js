@@ -122,9 +122,19 @@ function writeTx(tx) {
   }
 
   if (txData.type === "repost") {
-    db.collection("memos")
-      .doc(txData.parent)
+    // add repost to memo
+    db.collection("memos").doc(txData.parent)
+      .collection("reposts").doc(txId).set(txData)
+
+    // increment repost count
+    db.collection("memos").doc(txData.parent)
       .set({ reposts: increment }, { merge: true });
+
+    // add like to account
+    db.collection("accounts").doc(txData.address)
+      .collection("reposts").doc(txId).set(txData)
+
+    notifyAccount(txId, txData)
   }
 
   if (txData.type === "like") {
