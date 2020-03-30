@@ -7,7 +7,6 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
-
   infinite-feed(v-if="posts" :memos="posts" :queued="queuedPosts" :following="following")
   card-message(v-else)
 
@@ -23,6 +22,7 @@ import BtnLoadMore from "@/components/BtnLoadMore";
 import CardMessage from "@/components/CardMessage";
 import InfiniteFeed from "@/components/InfiniteFeed";
 import AppHeader from "@/components/AppHeader";
+import CardMemo from "@/components/CardMemo"
 export default {
   name: "page-index",
   components: {
@@ -31,7 +31,8 @@ export default {
     BtnIcon,
     BtnLoadMore,
     CardMessage,
-    InfiniteFeed
+    InfiniteFeed,
+    CardMemo
   },
   computed: {
     ...mapGetters(["memos", "userSignedIn", "queuedMemos", "following"]),
@@ -49,8 +50,25 @@ export default {
       }
       return value;
     }
-  }
+  },
+  methods: {
+    memosOpenDBChannel(following) {
+      following.forEach(async f => {
+        try {
+          await this.$store.dispatch(`memos/openDBChannel`, {
+            where: [
+              ["address", "==", f]
+            ]
+          })
+        } catch {
+          console.warn("Channel is already open.")
+        }
+      })
+    },
+  },
+  async created() {
+    const following = await this.$store.dispatch("fetchFollowingList")
+    this.memosOpenDBChannel(following)
+  },
 };
 </script>
-
-<style scoped lang="stylus"></style>
