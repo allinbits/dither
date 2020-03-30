@@ -154,13 +154,17 @@ function writeTx(tx) {
   }
 
   if (txData.type === "follow") {
-    console.log(txData.address, 'follows', txData.parent)
+    // add followed account to user account
     db.collection("accounts").doc(txData.address).update({
       following: admin.firestore.FieldValue.arrayUnion(txData.parent)
     })
+
+    // add user account to followed's account
     db.collection("accounts").doc(txData.parent).update({
       followers: admin.firestore.FieldValue.arrayUnion(txData.address)
     })
+
+    notifyAccountFollow(txId, txData)
   }
 
   if (txData.type === "unfollow") {
@@ -216,7 +220,7 @@ function setBlockchainHeader(header) {
     .set({ header: header }, { merge: true });
 }
 
-// notify memo account holder
+// notify account about memo interaction
 function notifyAccount(txId, txData) {
   let parentMemoRef = db.collection("memos").doc(txData.parent)
   parentMemoRef.get()
@@ -234,4 +238,12 @@ function notifyAccount(txId, txData) {
     .catch(err => {
       console.log('Error getting document', err);
     });
+}
+
+// notify account about follow
+function notifyAccountFollow(txId, txData) {
+  let txDataNotification = JSON.parse(JSON.stringify(txData))
+  txDataNotification.read = false
+  db.collection("accounts").doc(txData.parent)
+    .collection("notifications").doc(txId).set(txDataNotification)
 }
