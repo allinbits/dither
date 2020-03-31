@@ -56,7 +56,7 @@ async function getTxs(height) {
 }
 
 function processTxs(txs) {
-  txs.txs.map(tx => {
+  txs.txs.forEach(tx => {
     // console.log('tx')
     // console.log('tx.logs', tx.logs)
     let txLogMsgZero = tx.logs.find(l => l.msg_index == 0);

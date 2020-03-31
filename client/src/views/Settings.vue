@@ -11,7 +11,7 @@
   section-default
     div(slot="section-title") Notice
 
-    template(v-if="devMode")
+    div(v-if="devMode")
       p(v-for="provider in user.providerData")
         | {{ user.displayName}}, you're logged in via {{ provider.providerId }}
 

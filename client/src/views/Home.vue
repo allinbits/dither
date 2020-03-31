@@ -1,12 +1,12 @@
 <template lang="pug">
 .page-home
   app-header(page-title="Dither Alpha")
-    template(v-if="userSignedIn")
-      btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
-    template(v-if="userSignedIn")
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
-    template(v-else)
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
+    template(v-slot:btn-left v-if="userSignedIn")
+      btn-icon(type="link" :to="{ name: 'settings' }" icon="settings")
+    template(v-slot:btn-right v-if="userSignedIn")
+      btn-icon(type="link" :to="{ name: 'memos-new' }" icon="edit")
+    template(v-slot:btn-right v-else)
+      btn-icon(type="link" :to="{ name: 'login' }" icon="log-in")
   infinite-feed(v-if="posts" :memos="posts" :queued="queuedPosts" :following="following")
   card-message(v-else)
 
