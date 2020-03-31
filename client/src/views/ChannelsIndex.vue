@@ -1,10 +1,10 @@
 <template lang="pug">
 .page-channels
   app-header(page-title="Dither Channels")
-    template(v-if="userSignedIn")
-      btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
-    template(v-if="!userSignedIn")
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
+    template(v-slot:btn-left v-if="userSignedIn")
+      btn-icon(type="link" :to="{ name: 'settings' }" icon="settings")
+    template(v-slot:btn-right v-if="!userSignedIn")
+      btn-icon(type="link" :to="{ name: 'login' }" icon="log-in")
   card-channel(v-for="channel in channels" :key="channel.title" :channel="channel")
   app-footer
 </template>

@@ -2,22 +2,22 @@
 .page-memos-memo
   app-header(:page-title="this.pageTitle")
     btn-icon(slot="btn-left" type="link" :to="{ name: 'home' }" icon="arrow-left")
-    template(v-if="!userSignedIn")
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
-  template(v-if="memo")
+    template(v-slot:btn-right v-if="!userSignedIn")
+      btn-icon(type="link" :to="{ name: 'login' }" icon="log-in")
+  div(v-if="memo")
     card-memo(:memo="memo")
     section-default(flush="true" v-if="Object.keys(accountLikes).length > 0")
-      div(slot="section-title") Liked by
+      template(v-slot:section-title) Liked by
       .card-likes
         card-account(
           v-for="account in accountLikes"
           :key="account.id"
           :account="account")
     section-default(v-if="userSignedIn")
-      div(slot="section-title") Leave a comment
+      template(v-slot:section-title) Leave a comment
       form-send-memo(type="comment" :parent-address="memo.id" :channel="this.memo.channel")
     infinite-feed(:memos="comments" :queued="queuedComments" type="comment")
-  template(v-else)
+  div(v-else)
     card-message
   app-footer
 </template>

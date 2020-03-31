@@ -1,9 +1,9 @@
 <template lang="pug">
 .page-accounts-index
   app-header(page-title="Dither Community")
-    template(v-if="userSignedIn")
-      btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
-  template(v-if="Object.keys(accounts).length > 0")
+    template(v-slot:btn-left v-if="userSignedIn")
+      btn-icon(type="link" :to="{ name: 'settings' }" icon="settings")
+  div(v-if="Object.keys(accounts).length > 0")
     card-account(v-for="account in orderedAccounts" :key="account.id" :id="account.id" :account="account")
     btn-load-more
   card-message(v-else)

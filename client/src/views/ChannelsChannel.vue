@@ -1,9 +1,10 @@
 <template lang="pug">
 .page-channels-channel
   app-header(:page-title="`#${this.$route.params.channel}`")
-    btn-icon(slot="btn-left" icon="arrow-left" @click.native="back")
-    template(v-if="!userSignedIn")
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
+    template(v-slot:btn-left)
+      btn-icon(icon="arrow-left" @click.native="back")
+    template(v-slot:btn-right v-if="!userSignedIn")
+      btn-icon(type="link" :to="{ name: 'login' }" icon="log-in")
   .page-header
     .page-header__text
       .page-header__title \#{{ channel.title }}
