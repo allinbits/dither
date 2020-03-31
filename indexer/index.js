@@ -23,7 +23,7 @@ const ReconnectingWebSocket = require("reconnecting-websocket");
 let ws = new ReconnectingWebSocket(state.wss, [], { WebSocket: WebSocket });
 const axios = require("axios");
 
-ws.onopen = function() {
+ws.onopen = function () {
   ws.send(
     JSON.stringify({
       jsonrpc: "2.0",
@@ -34,7 +34,7 @@ ws.onopen = function() {
   );
 };
 
-ws.onmessage = function(msg) {
+ws.onmessage = function (msg) {
   let msgData = JSON.parse(msg.data);
   // console.log(msgData);
   // console.log(msgData.result.data);
@@ -56,7 +56,7 @@ async function getTxs(height) {
 }
 
 function processTxs(txs) {
-  txs.txs.map(tx => {
+  txs.txs.forEach(tx => {
     // console.log('tx')
     // console.log('tx.logs', tx.logs)
     let txLogMsgZero = tx.logs.find(l => l.msg_index == 0);

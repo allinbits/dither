@@ -60,7 +60,7 @@ export default {
         // if user doesnt exist, create a default following
         this.$store.commit("setFollowing", defaultFollowing);
         // load memos
-        this.following.map(address => this.fetchMemosFromAddress(address));
+        this.following.forEach(address => this.fetchMemosFromAddress(address));
       }
     });
 
@@ -86,7 +86,7 @@ export default {
         this.$store.commit("setFollowing", defaultFollowing);
 
         // load memos from user's following
-        this.following.map(address => this.fetchMemosFromAddress(address));
+        this.following.forEach(address => this.fetchMemosFromAddress(address));
       }
     },
     async "settings.wallet"() {
@@ -120,7 +120,7 @@ export default {
       this.$store.commit("setFollowing", userFollowing);
 
       // load memos from user's following
-      this.following.map(address => this.fetchMemosFromAddress(address));
+      this.following.forEach(address => this.fetchMemosFromAddress(address));
     }
   }
 };
