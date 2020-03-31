@@ -4,9 +4,9 @@
     router-link.sender(:to="{ name: 'account', params: {address: notification.address}}")
       span.displayname {{ displayName }}
       span.address @{{ shortAddress }}
-    span.type {{ notification.memo.type }}d:
+    span.msg {{ notificationMsg }}:
     span.timestamp {{ timeAgo }}
-  .card-memo-container(v-if="memo.id")
+  .card-memo-container(v-if="notTypeFollow && memo.id")
     card-memo(:memo="memo")
 </template>
 
@@ -21,6 +21,20 @@ export default {
   },
   computed: {
     ...mapGetters(["accounts", "memos"]),
+    notTypeFollow() {
+      return this.notification.memo.type !== "follow";
+    },
+    notificationMsg() {
+      let msg = "";
+      if (this.notification.type === "follow") {
+        msg = "started following you";
+      } else if (this.notification.type === "like") {
+        msg = "liked your dither";
+      } else if (this.notification.type === "repost") {
+        msg = "reposted your dither";
+      }
+      return msg;
+    },
     timeAgo() {
       return h.timeAgo(this.notification.timestamp);
     },
@@ -35,9 +49,11 @@ export default {
     memo: {}
   }),
   async mounted() {
-    this.$store.dispatch("accounts/fetchById", this.notification.address);
-    await this.$store.dispatch("memos/fetchById", this.notification.parent);
-    this.memo = this.memos[this.notification.parent];
+    if (this.notTypeFollow) {
+      this.$store.dispatch("accounts/fetchById", this.notification.address);
+      await this.$store.dispatch("memos/fetchById", this.notification.parent);
+      this.memo = this.memos[this.notification.parent];
+    }
   },
   props: ["notification"]
 };

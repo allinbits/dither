@@ -121,14 +121,14 @@ export default {
           where: [["address", "==", this.$route.params.address]]
         });
       } catch {
-        console.warn("Channel is already open.")
+        console.warn("Channel is already open.");
       }
     }
   },
   mounted() {
-    this.memosOpenDBChannel()
+    this.memosOpenDBChannel();
     this.$store.dispatch("accounts/fetchById", this.$route.params.address);
-  },
+  }
 };
 </script>
 
