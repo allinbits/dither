@@ -7,7 +7,6 @@
       btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
     template(v-else)
       btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
-
   section-default(v-if="settings && settings.wallet")
     div(slot="section-title") Your wallet
 
@@ -40,7 +39,6 @@
 <script>
 import * as bip39 from "bip39";
 import { createWalletFromMnemonic } from "@tendermint/sig";
-import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
@@ -121,25 +119,28 @@ export default {
       }
     }
   },
-  mounted() {
-    Firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log("user signed in");
-      } else {
-        this.$router.push("/login");
-      }
-    });
+  async created() {
+    this.$store.dispatch("fetchSettings").catch(() => {
+      this.$router.push("/login");
+    })
+    try {
+      await this.$store.dispatch("blockchains/openDBChannel")
+    } catch {
+      console.log("Blockchains channel had already been opened.")
+    }
   },
   watch: {
     blockchains: {
       handler: async function() {
-        let response = await fetch(
-          `${this.blockchain.lcd}/bank/balances/${this.settings.wallet.address}`
-        );
-        let balance = await response.json();
-        let amount = balance.result[0].amount;
-        // console.log("new balance:", amount, "uatom");
-        this.$store.dispatch("settings/set", { uatom: amount });
+        if (this.settings && this.settings.wallet) {
+          const response = await fetch(
+            `${this.blockchain.lcd}/bank/balances/${this.settings.wallet.address}`
+          );
+          const balance = await response.json();
+          const amount = balance.result[0].amount;
+          // console.log("new balance:", amount, "uatom");
+          this.$store.dispatch("settings/set", { uatom: amount });
+        }
       },
       deep: true
     }
