@@ -16,7 +16,7 @@ import { orderBy, pickBy, map, uniq } from "lodash";
 import BtnLoadMore from "./BtnLoadMore";
 import CardMessage from "./CardMessage";
 import CardMemo from "./CardMemo";
-import DcBtn from "@/components/DcBtn"
+import DcBtn from "@/components/DcBtn";
 export default {
   name: "infinite-feed",
   components: {
