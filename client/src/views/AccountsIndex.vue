@@ -47,6 +47,9 @@ export default {
       return h.truncAddress(address);
     }
   },
+  created() {
+    this.$store.dispatch("fetchFollowingList");
+  },
   mounted() {
     this.$store.dispatch("accounts/fetchAndAdd", {
       limit: 50
