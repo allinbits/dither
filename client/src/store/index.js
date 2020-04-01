@@ -152,8 +152,12 @@ const storeData = {
               .doc(address)
               .get()
               .then(account => {
-                commit("setFollowing", account.data().following);
-                resolve(account.data().following);
+                // add users own account to following
+                let following = account.data().following;
+                following.push(address);
+
+                commit("setFollowing", following);
+                resolve(following);
               });
           })
           .catch(() => {
