@@ -1,18 +1,19 @@
 <template lang="pug">
 .page-wallet
   app-header(page-title="Dither Wallet")
-    template(v-if="userSignedIn")
-      btn-icon(slot="btn-left" type="link" :to="{ name: 'settings' }" icon="settings")
-    template(v-if="userSignedIn")
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'memos-new' }" icon="edit")
-    template(v-else)
-      btn-icon(slot="btn-right" type="link" :to="{ name: 'login' }" icon="log-in")
+    template(v-slot:btn-left v-if="userSignedIn")
+      btn-icon(type="link" :to="{ name: 'settings' }" icon="settings")
+    template(v-slot:btn-right v-if="userSignedIn")
+      btn-icon(type="link" :to="{ name: 'memos-new' }" icon="edit")
+    template(v-slot:btn-right v-else)
+      btn-icon(type="link" :to="{ name: 'login' }" icon="log-in")
+
   section-default(v-if="settings && settings.wallet")
     div(slot="section-title") Your wallet
 
-    template(v-if="tokens")
+    div(v-if="tokens")
       p You currently have enough ATOM to interact with Dither.
-    template(v-else)
+    div(v-else)
       p You need ATOM tokens to interact with Dither. You can buy ATOM from #[a(href="https://www.coinbase.com/price/cosmos" rel="noopener noreferrer" target="_blank") Coinbase] or #[a(href="https://www.binance.com/en/trade/ATOM_BTC" rel="noopener noreferrer" target="_blank") Binance]. Once purchased, please send ATOM (0.1 is enough) to the address below. Alternatively, you can #[a(:href="tweetUrl" rel="noopener noreferrer" target="_blank") ask the Dither community] to send you some ATOM.
 
     p
@@ -122,11 +123,11 @@ export default {
   async created() {
     this.$store.dispatch("fetchSettings").catch(() => {
       this.$router.push("/login");
-    })
+    });
     try {
-      await this.$store.dispatch("blockchains/openDBChannel")
+      await this.$store.dispatch("blockchains/openDBChannel");
     } catch {
-      console.log("Blockchains channel had already been opened.")
+      console.log("Blockchains channel had already been opened.");
     }
   },
   watch: {

@@ -37,16 +37,11 @@ export default {
   mounted() {
     Firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        console.log("user signed in");
+        this.$store.dispatch("settings/openDBChannel").catch(console.error);
       } else {
         this.$router.push("/login");
       }
     });
-    if (this.settings) {
-      this.$store.dispatch("notifications/openDBChannel", {
-        accountId: this.settings.wallet.address
-      });
-    }
   },
   watch: {
     settings() {

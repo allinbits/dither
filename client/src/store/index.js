@@ -121,38 +121,50 @@ const storeData = {
       return new Promise((resolve, reject) => {
         Firebase.auth().onAuthStateChanged(user => {
           if (user) {
-            commit("signInUser", user)
-            resolve(user)
+            commit("signInUser", user);
+            resolve(user);
           } else {
-            reject()
+            reject();
           }
-        })
-      })
+        });
+      });
     },
     fetchSettings({ dispatch }) {
       return new Promise((resolve, reject) => {
-        dispatch("authenticate").then(() => {
-          dispatch("settings/fetchAndAdd").then(settings => {
-            resolve(settings)
+        dispatch("authenticate")
+          .then(() => {
+            dispatch("settings/fetchAndAdd").then(settings => {
+              resolve(settings);
+            });
           })
-        }).catch(() => {
-          reject()
-        })
-      })
+          .catch(() => {
+            reject();
+          });
+      });
     },
     fetchFollowingList({ dispatch, commit }) {
-      return new Promise((resolve) => {
-        dispatch("fetchSettings").then(settings => {
-          const address = settings.wallet.address;
-          Firebase.firestore().collection("accounts").doc(address).get().then(account => {
-            commit("setFollowing", account.data().following)
-            resolve(account.data().following)
+      return new Promise(resolve => {
+        dispatch("fetchSettings")
+          .then(settings => {
+            const address = settings.wallet.address;
+            Firebase.firestore()
+              .collection("accounts")
+              .doc(address)
+              .get()
+              .then(account => {
+                // add users own account to following
+                let following = account.data().following;
+                following.push(address);
+
+                commit("setFollowing", following);
+                resolve(following);
+              });
           })
-        }).catch(() => {
-          commit("setFollowing", defaultFollowing)
-          resolve(defaultFollowing)
-        })
-      })
+          .catch(() => {
+            commit("setFollowing", defaultFollowing);
+            resolve(defaultFollowing);
+          });
+      });
     }
   },
   mutations: {

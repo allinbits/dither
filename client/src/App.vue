@@ -30,8 +30,8 @@ export default {
     ])
   },
   async mounted() {
-    this.$store.dispatch("authenticate")
-  },
+    this.$store.dispatch("authenticate");
+  }
 };
 </script>
 
