@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import { Firebase } from "../store/firebase.js";
 import { mapGetters } from "vuex";
 import { orderBy } from "lodash";
 import AppFooter from "@/components/AppFooter";
@@ -34,26 +33,22 @@ export default {
       return value;
     }
   },
-  mounted() {
-    Firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log("user signed in");
-      } else {
-        this.$router.push("/login");
+  methods: {
+    async notificationsOpenDBChannel(settings) {
+      try {
+        await this.$store.dispatch("notifications/openDBChannel", {
+          accountId: settings.wallet.address
+        });
+      } catch {
+        console.warn("The notification channel is already opened.");
       }
-    });
-    if (this.settings) {
-      this.$store.dispatch("notifications/openDBChannel", {
-        accountId: this.settings.wallet.address
-      });
     }
   },
-  watch: {
-    settings() {
-      this.$store.dispatch("notifications/openDBChannel", {
-        accountId: this.settings.wallet.address
-      });
-    }
+  created() {
+    this.$store
+      .dispatch("fetchSettings")
+      .then(this.notificationsOpenDBChannel)
+      .catch(() => this.$router.push("/login"));
   }
 };
 </script>

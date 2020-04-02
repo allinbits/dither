@@ -20,7 +20,7 @@
       .break-address This is your wallet address:
       a.break-address(:href="`https://www.mintscan.io/account/${settings.wallet.address}`" rel="noopener noreferrer" target="_blank") {{ settings.wallet.address }}
 
-    p You have #[strong {{ tokens }} ATOM] on block \#{{ blockchains["cosmoshub-3"].header.height }}
+    p(v-if="blockchains['cosmoshub-3']") You have #[strong {{ tokens }} ATOM] on block \#{{ blockchains["cosmoshub-3"].header.height }}
 
     p(v-if="devMode")
       a.delete-wallet(@click="deleteWallet") Delete wallet
@@ -40,7 +40,6 @@
 <script>
 import * as bip39 from "bip39";
 import { createWalletFromMnemonic } from "@tendermint/sig";
-import { Firebase } from "../store/firebase.js";
 
 import { mapGetters } from "vuex";
 import AppFooter from "@/components/AppFooter";
@@ -121,25 +120,28 @@ export default {
       }
     }
   },
-  mounted() {
-    Firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log("user signed in");
-      } else {
-        this.$router.push("/login");
-      }
+  async created() {
+    this.$store.dispatch("fetchSettings").catch(() => {
+      this.$router.push("/login");
     });
+    try {
+      await this.$store.dispatch("blockchains/openDBChannel");
+    } catch {
+      console.log("Blockchains channel had already been opened.");
+    }
   },
   watch: {
     blockchains: {
       handler: async function() {
-        let response = await fetch(
-          `${this.blockchain.lcd}/bank/balances/${this.settings.wallet.address}`
-        );
-        let balance = await response.json();
-        let amount = balance.result[0].amount;
-        // console.log("new balance:", amount, "uatom");
-        this.$store.dispatch("settings/set", { uatom: amount });
+        if (this.settings && this.settings.wallet) {
+          const response = await fetch(
+            `${this.blockchain.lcd}/bank/balances/${this.settings.wallet.address}`
+          );
+          const balance = await response.json();
+          const amount = balance.result[0].amount;
+          // console.log("new balance:", amount, "uatom");
+          this.$store.dispatch("settings/set", { uatom: amount });
+        }
       },
       deep: true
     }

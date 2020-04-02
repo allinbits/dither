@@ -125,6 +125,9 @@ export default {
       }
     }
   },
+  created() {
+    this.$store.dispatch("fetchFollowingList");
+  },
   mounted() {
     this.memosOpenDBChannel();
     this.$store.dispatch("accounts/fetchById", this.$route.params.address);
