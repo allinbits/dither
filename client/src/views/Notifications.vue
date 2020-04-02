@@ -34,7 +34,7 @@ export default {
     }
   },
   methods: {
-    async notificationOpenDbChannel(settings) {
+    async notificationsOpenDBChannel(settings) {
       try {
         await this.$store.dispatch("notifications/openDBChannel", {
           accountId: settings.wallet.address
@@ -47,7 +47,7 @@ export default {
   created() {
     this.$store
       .dispatch("fetchSettings")
-      .then(this.notificationOpenDbChannel)
+      .then(this.notificationsOpenDBChannel)
       .catch(() => this.$router.push("/login"));
   }
 };
