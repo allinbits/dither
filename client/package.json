@@ -17,6 +17,7 @@
     "date-fns": "^2.10.0",
     "firebase": "^7.9.1",
     "firebaseui": "^4.4.0",
+    "get-urls": "^9.2.0",
     "identicon.js": "^2.3.3",
     "linkifyjs": "^2.1.9",
     "pug": "^2.0.4",
