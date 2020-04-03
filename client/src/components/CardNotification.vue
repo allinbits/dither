@@ -4,7 +4,7 @@
     router-link.sender(:to="{ name: 'account', params: {address: notification.address}}")
       span.displayname {{ displayName }}
       span.address @{{ shortAddress }}
-    span.msg {{ notificationMsg }}:
+    span.msg {{ notificationMsg }}
     span.timestamp {{ timeAgo }}
   .card-memo-container(v-if="notTypeFollow && memo.id")
     card-memo(:memo="memo")
@@ -29,9 +29,9 @@ export default {
       if (this.notification.type === "follow") {
         msg = "started following you";
       } else if (this.notification.type === "like") {
-        msg = "liked your dither";
+        msg = "liked your dither:";
       } else if (this.notification.type === "repost") {
-        msg = "reposted your dither";
+        msg = "reposted your dither:";
       }
       return msg;
     },
