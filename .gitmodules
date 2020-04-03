@@ -1,3 +1,0 @@
-[submodule "client/functions/micro-unfurl"]
-	path = client/functions/micro-unfurl
-	url = https://github.com/beeman/micro-unfurl
