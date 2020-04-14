@@ -37,7 +37,7 @@ import io from "socket.io-client";
 import axios from "axios";
 import DcBtn from "@/components/DcBtn";
 
-const domain = `http://138.197.229.7`;
+const domain = `http://138.197.229.7/`;
 
 export default {
   name: "page-index",
@@ -106,22 +106,28 @@ export default {
     async fetchMemos() {
       const last = this.timeline[this.timeline.length - 1];
       const after = last && `after=${last.created_at}`;
-      const from_address = `from_address=${this.address}`;
+      const from_address = this.address && `from_address=${this.address}`;
       const url = `${domain}/timeline?${from_address}&${after}`;
       return (await axios.get(url)).data;
     },
     async fetchFollowing() {
-      const url = `${domain}/following?from_address=${this.address}`;
+      const from_address = this.address && `from_address=${this.address}`;
+      const url = `${domain}/following?${from_address}`;
       return (await axios.get(url)).data;
     }
   },
   async created() {
-    const settings = await this.$store.dispatch("fetchSettings");
+    let settings;
+    try {
+      settings = await this.$store.dispatch("fetchSettings");
+    } catch {
+      console.log("Failed to fetch user settings.");
+    }
     this.socket = io(`${domain}`);
     this.socket.on("newtx", tx => {
       this.stream = [...this.stream, tx];
     });
-    this.address = settings.wallet.address;
+    this.address = settings && settings.wallet.address;
     this.following = await this.fetchFollowing();
     this.fetchAndAddMemos();
   },
