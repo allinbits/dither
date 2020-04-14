@@ -37,7 +37,7 @@ import io from "socket.io-client";
 import axios from "axios";
 import DcBtn from "@/components/DcBtn";
 
-const domain = `http://138.197.229.7/`;
+const API = `http://${process.env.VUE_APP_API}`;
 
 export default {
   name: "page-index",
@@ -107,12 +107,12 @@ export default {
       const last = this.timeline[this.timeline.length - 1];
       const after = last && `after=${last.created_at}`;
       const from_address = this.address && `from_address=${this.address}`;
-      const url = `${domain}/timeline?${from_address}&${after}`;
+      const url = `${API}/timeline?${from_address}&${after}`;
       return (await axios.get(url)).data;
     },
     async fetchFollowing() {
       const from_address = this.address && `from_address=${this.address}`;
-      const url = `${domain}/following?${from_address}`;
+      const url = `${API}/following?${from_address}`;
       return (await axios.get(url)).data;
     }
   },
@@ -123,7 +123,7 @@ export default {
     } catch {
       console.log("Failed to fetch user settings.");
     }
-    this.socket = io(`${domain}`);
+    this.socket = io(`${API}`);
     this.socket.on("newtx", tx => {
       this.stream = [...this.stream, tx];
     });
