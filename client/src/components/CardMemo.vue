@@ -1,6 +1,5 @@
 <template lang="pug">
 .card-memo-post
-  div {{memo}}
   .card-memo-post__timeline(
     v-if="memo.timeline && Object.keys(memo.timeline).length > 0")
     .icon: img(src="@/assets/feather/repeat.svg")

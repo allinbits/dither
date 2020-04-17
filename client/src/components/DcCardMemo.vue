@@ -1,57 +1,30 @@
 <template lang="pug">
-.card-memo-post
-  .card-memo-post__timeline(
-    v-if="memo.timeline && Object.keys(memo.timeline).length > 0")
-    .icon: img(src="@/assets/feather/repeat.svg")
-    //- .reposters
-    //-   router-link.reposter(
-    //-     v-for="repostMemo in memo.timeline"
-    //-     :to="{ name: 'account', params: { address: repostMemo.address }}"
-    //-     :key="repostMemo.id")
-    //-     | {{ reposterDisplayName(repostMemo.address) }}
-    .label reposted
-  .card-memo-post__main
-    corner-error(v-if="memo.height === 0 && memo.response.code")
-    corner-spinner(v-else-if="memo.height === 0")
-    .container-avatar(@click.self="navToMemo")
-      router-link.avatar(
-        :to="{ name: 'account', params: {address: memo.from_address}}")
-        avatar-account(:address="memo.from_address")
-    .container-text(@click.self="navToMemo")
-
-      .meta(@click.self="navToMemo")
-        router-link.sender(:to="{ name: 'account', params: {address: memo.from_address}}")
-          .displayname {{ memo.display_name }}
-          .address @{{ shortAddress(memo.from_address) }}
-        router-link.time(:to="{ name: 'memo', params: { memo: memo.txhash } }")
-          | · {{ timeAgo }}
-
-      //- memo-body(:memo="memo")
-      div {{memo.body}}
-
-      .actions(@click.self="navToMemo")
-        btn-icon(
-          slot="btn-left" size="small" icon="message-circle" :value="memo.comment_count"
-          @click.native.stop="navToMemo")
-
-        // repost button
-        btn-icon.btn-repost.btn-repost--active(
-          v-if="false"
-          slot="btn-left" size="small" icon="repeat" color="green" :value="memo.repost_count")
-        btn-icon.btn-repost(
-          v-else
-          :class="false"
-          slot="btn-left" size="small" icon="repeat" :value="memo.repost_count"
-          @click.native.stop="actionRepost")
-
-        // like button
-        btn-icon.btn-like.btn-like--active(
-          v-if="false"
-          slot="btn-left" size="small" icon="heart" color="red" :value="memo.like_count")
-        btn-icon.btn-like(
-          v-else
-          slot="btn-left" size="small" icon="heart" :value="memo.like_count"
-          @click.native.stop="actionLike")
+div
+  router-link(:to="{ name: 'memo', params: { memo: memo.txhash } }").card-memo-post
+    .card-memo-post__timeline(
+      v-if="memo.timeline && Object.keys(memo.timeline).length > 0")
+      .icon: img(src="@/assets/feather/repeat.svg")
+      .label reposted
+    .card-memo-post__main
+      corner-error(v-if="memo.height === 0 && memo.response.code")
+      corner-spinner(v-else-if="memo.height === 0")
+      .container-avatar
+        router-link.avatar(
+          :to="{ name: 'account', params: {address: memo.from_address}}")
+          avatar-account(:address="memo.from_address")
+      .container-text
+        .meta
+          router-link.sender(:to="{ name: 'account', params: {address: memo.from_address}}")
+            .displayname {{ memo.display_name }}
+            .address @{{ shortAddress(memo.from_address) }}
+          router-link.time(:to="{ name: 'memo', params: { memo: memo.txhash } }")
+            | · {{ timeAgo }}
+        div {{memo.body}}
+        .actions
+          btn-icon(
+            slot="btn-left" size="small" icon="message-circle" :value="memo.comment_count")
+          btn-icon.btn-repost.btn-repost(v-if="memo && memo.repost_count" slot="btn-left" size="small" icon="repeat" :value="memo.repost_count" @click.native.prevent="actionRepost")
+          btn-icon.btn-like.btn-like--active(v-if="memo && memo.like_count" slot="btn-left" size="small" icon="heart" :value="memo.like_count" @click.native.prevent="actionLike")
 </template>
 
 <script>
@@ -85,6 +58,12 @@ export default {
   methods: {
     shortAddress(address) {
       return h.truncAddress(address);
+    },
+    actionRepost() {
+      this.$emit("repost", this.memo)
+    },
+    actionLike() {
+      this.$emit("like", this.memo)
     }
   },
   props: ["memo"]
