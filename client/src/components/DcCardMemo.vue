@@ -23,8 +23,8 @@ div
         .actions
           btn-icon(
             slot="btn-left" size="small" icon="message-circle" :value="memo.comment_count")
-          btn-icon.btn-repost.btn-repost(v-if="memo && memo.repost_count" slot="btn-left" size="small" icon="repeat" :value="memo.repost_count" @click.native.prevent="actionRepost")
-          btn-icon.btn-like.btn-like--active(v-if="memo && memo.like_count" slot="btn-left" size="small" icon="heart" :value="memo.like_count" @click.native.prevent="actionLike")
+          btn-icon.btn-repost.btn-repost(v-if="memo && memo.repost_count" :color="memo.repost_self && 'green'" slot="btn-left" size="small" icon="repeat" :value="memo.repost_count" @click.native.prevent="actionRepost")
+          btn-icon.btn-like.btn-like--active(v-if="memo && memo.like_count" :color="memo.like_self && 'red'" slot="btn-left" size="small" icon="heart" :value="memo.like_count" @click.native.prevent="actionLike")
 </template>
 
 <script>
@@ -50,9 +50,6 @@ export default {
   computed: {
     timeAgo() {
       return h.timeAgo(this.memo.created_at);
-    },
-    displayName() {
-      return h.getDisplayName(this.accounts, this.memo.address);
     }
   },
   methods: {
@@ -60,10 +57,14 @@ export default {
       return h.truncAddress(address);
     },
     actionRepost() {
-      this.$emit("repost", this.memo)
+      if (!this.memo.repost_self || this.memo.status === "queued") {
+        this.$emit("repost", this.memo);
+      }
     },
     actionLike() {
-      this.$emit("like", this.memo)
+      if (!this.memo.like_self || this.memo.status === "queued") {
+        this.$emit("like", this.memo);
+      }
     }
   },
   props: ["memo"]

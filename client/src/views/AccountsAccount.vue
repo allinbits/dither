@@ -23,7 +23,9 @@
 
     // .account-stat {{ account.memos }} memos
 
-  infinite-feed(:memos="posts" :queued="queuedPosts" :account="this.$route.params.address")
+  dc-timeline(endpoint="feed" :following="[account.id]")
+
+  //- infinite-feed(:memos="posts" :queued="queuedPosts" :account="this.$route.params.address")
   app-footer
 </template>
 
@@ -40,6 +42,10 @@ import BtnIcon from "@/components/BtnIcon";
 import BtnLoadMore from "@/components/BtnLoadMore";
 import AvatarAccount from "@/components/AvatarAccount";
 import InfiniteFeed from "@/components/InfiniteFeed";
+import DcTimeline from "@/components/DcTimeline";
+
+const API = `http://${process.env.VUE_APP_API}`;
+
 export default {
   name: "page-accounts-account",
   components: {
@@ -49,7 +55,13 @@ export default {
     BtnIcon,
     BtnLoadMore,
     AvatarAccount,
-    InfiniteFeed
+    InfiniteFeed,
+    DcTimeline
+  },
+  data: function() {
+    return {
+      API
+    };
   },
   computed: {
     ...mapGetters(["memos", "queuedMemos", "accounts"]),
@@ -126,11 +138,11 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("fetchFollowingList");
+    // this.$store.dispatch("fetchFollowingList");
   },
   mounted() {
-    this.memosOpenDBChannel();
-    this.$store.dispatch("accounts/fetchById", this.$route.params.address);
+    // this.memosOpenDBChannel();
+    // this.$store.dispatch("accounts/fetchById", this.$route.params.address);
   }
 };
 </script>
@@ -153,8 +165,10 @@ export default {
     font-weight bold
     display block
     color var(--txt)
+
   .account-address
     color var(--dim)
+
     &:hover
       text-decoration underline
 
@@ -165,6 +179,7 @@ export default {
   .account-stat
     padding 0 1rem
     color var(--txt)
+
     &:hover
       text-decoration underline
 
