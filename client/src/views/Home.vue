@@ -7,7 +7,7 @@
       btn-icon(type="link" :to="{ name: 'memos-new' }" icon="edit")
     template(v-slot:btn-right v-else)
       btn-icon(type="link" :to="{ name: 'login' }" icon="log-in")
-  dc-timeline(endpoint="timeline" :following="following")
+  dc-timeline(endpoint="timeline" :following="following" :address="address" v-if="ready")
   app-footer
 </template>
 
@@ -47,7 +47,8 @@ export default {
       address: null,
       following: [],
       settings: null,
-      API
+      API,
+      ready: null
     };
   },
   methods: {
@@ -64,6 +65,7 @@ export default {
       console.log("Failed to fetch user settings.");
     }
     this.address = this.settings && this.settings.wallet.address;
+    this.ready = true;
     this.following = await this.fetchFollowing();
   }
 };

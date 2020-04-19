@@ -23,15 +23,13 @@
 
     // .account-stat {{ account.memos }} memos
 
-  dc-timeline(endpoint="feed" :following="[account.id]")
+  dc-timeline(endpoint="feed" :following="[account.id]" :address="address")
 
   //- infinite-feed(:memos="posts" :queued="queuedPosts" :account="this.$route.params.address")
   app-footer
 </template>
 
 <script>
-import { orderBy, pickBy } from "lodash";
-
 import { mapGetters } from "vuex";
 import h from "../scripts/helpers.js";
 
@@ -71,6 +69,9 @@ export default {
     shortAddress() {
       return h.truncAddress(this.$route.params.address);
     },
+    address() {
+      return this.$route.params.address;
+    },
     account() {
       if (this.accounts[this.$route.params.address]) {
         return this.accounts[this.$route.params.address];
@@ -92,57 +93,15 @@ export default {
         return this.account.followers.length;
       }
       return 0;
-    },
-    posts() {
-      if (this.memos) {
-        let value = pickBy(
-          this.memos,
-          m =>
-            m.type !== "like" &&
-            m.type !== "comment" &&
-            m.address === this.$route.params.address
-        );
-        value = orderBy(value, m => parseInt(m.height), "desc");
-        return value;
-      }
-      return [];
-    },
-    queuedPosts() {
-      if (this.queuedMemos) {
-        let value = pickBy(
-          this.queuedMemos,
-          m =>
-            m.type !== "like" &&
-            m.type !== "comment" &&
-            m.address === this.$route.params.address
-        );
-        value = orderBy(value, m => parseInt(m.height), "desc");
-        return value;
-      }
-      return [];
     }
+  },
+  async created() {
+    await this.$store.dispatch("accounts/fetchById", this.account.id);
   },
   methods: {
     back() {
       this.$router.go(-1);
-    },
-    async memosOpenDBChannel() {
-      try {
-        await this.$store.dispatch(`memos/openDBChannel`, {
-          orderBy: ["timestamp", "desc"],
-          where: [["address", "==", this.$route.params.address]]
-        });
-      } catch {
-        console.warn("Channel is already open.");
-      }
     }
-  },
-  created() {
-    // this.$store.dispatch("fetchFollowingList");
-  },
-  mounted() {
-    // this.memosOpenDBChannel();
-    // this.$store.dispatch("accounts/fetchById", this.$route.params.address);
   }
 };
 </script>

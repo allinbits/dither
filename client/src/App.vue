@@ -6,6 +6,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+
 export default {
   name: "app",
   metaInfo: {
@@ -35,6 +36,7 @@ export default {
     } catch {
       console.log("Failed to authenticate.");
     }
+    this.$store.dispatch("socketInit");
   }
 };
 </script>

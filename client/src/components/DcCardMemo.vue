@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  router-link(:to="{ name: 'memo', params: { memo: memo.txhash } }").card-memo-post
+  router-link(:to="{ name: 'memo', params: { memo: memo.txhash } }" v-if="memo").card-memo-post
     .card-memo-post__timeline(
       v-if="memo.timeline && Object.keys(memo.timeline).length > 0")
       .icon: img(src="@/assets/feather/repeat.svg")
@@ -67,7 +67,12 @@ export default {
       }
     }
   },
-  props: ["memo"]
+  props: {
+    memo: {
+      type: Object,
+      default: () => ({})
+    }
+  }
 };
 </script>
 

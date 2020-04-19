@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     dc-card-memo(v-for="memo in timelineStream" :memo="memo" @like="actionLike($event)" @repost="actionRepost($event)")
-    .btn-load-more(style="btnStyle")
+    .btn-load-more(style="btnStyle" v-if="!txhash")
       dc-btn(size="large" @click.native="fetchAndAddMemos" icon="refresh-cw") Show more
 </template>
 
@@ -17,9 +17,7 @@
 import DcCardMemo from "@/components/DcCardMemo";
 import DcBtn from "@/components/DcBtn";
 import { mapGetters } from "vuex";
-import io from "socket.io-client";
 import axios from "axios";
-import tx from "../scripts/tx";
 import { cloneDeep, sortBy, find } from "lodash";
 
 const API = `http://${process.env.VUE_APP_API}`;
@@ -35,20 +33,24 @@ export default {
     },
     following: {
       type: Array
+    },
+    address: {
+      type: String
+    },
+    txhash: {
+      type: String
     }
   },
   data: function() {
     return {
       timeline: [],
-      address: null,
       socket: null,
-      stream: [],
       settings: null
     };
   },
   computed: {
     ...mapGetters(["queuedMemos", "userSignedIn"]),
-    queue() {
+    outgoing() {
       const memos = Object.values(this.queuedMemos).map(tx => {
         return {
           txhash: tx.id,
@@ -67,9 +69,12 @@ export default {
       });
       return sortBy(memos, ["created_at"]);
     },
+    incoming() {
+      return this.$store.state.incoming;
+    },
     timelineStream() {
       let timeline = cloneDeep(this.timeline);
-      const events = [...this.queue, ...this.stream];
+      const events = [...this.outgoing, ...this.incoming];
       events.forEach(tx => {
         const parent = find(timeline, ["txhash", tx.parent]);
         const follows = this.following.includes(tx.from_address);
@@ -98,75 +103,34 @@ export default {
     }
   },
   methods: {
+    actionLike(memo) {
+      this.$store.dispatch("memoLike", memo);
+    },
+    actionRepost(memo) {
+      this.$store.dispatch("actionRepost", memo);
+    },
     async fetchAndAddMemos() {
       this.timeline = [...this.timeline, ...(await this.fetchMemos())];
     },
     async fetchMemos() {
       const last = this.timeline[this.timeline.length - 1];
-      const after = last && `after=${last.created_at}`;
-      const url = `${API}/${this.endpoint}?from_address=${this.address}&${after}`;
-      const memos = (await axios.get(url)).data;
+      const after = last ? `after=${last.created_at}` : "";
+      const from_address = this.address ? `from_address=${this.address}` : "";
+      console.log(this.address);
+
+      const url = `${API}/${this.endpoint}?${from_address}&${after}&txhash=${this.txhash}`;
+      let memos = (await axios.get(url)).data;
+      memos = Array.isArray(memos) ? memos : [memos];
       return memos.map(m => {
         return {
           ...m,
           received_at: new Date().getTime()
         };
       });
-    },
-    authCheck() {
-      if (!this.userSignedIn) {
-        this.$router.push({ name: "login" });
-        return;
-      }
-      if (!this.settings.uatom || this.settings.uatom === 0) {
-        this.$router.push({ name: "wallet" });
-        return;
-      }
-    },
-    async actionLike(memo) {
-      this.authCheck();
-      const queuedMemo = await tx.sendTx({
-        from: this.settings.wallet.address,
-        memo: JSON.stringify({
-          type: "like",
-          parent: memo.txhash
-        })
-      });
-      this.$store.dispatch("addToMemoQueue", queuedMemo);
-    },
-    async actionRepost(memo) {
-      this.authCheck();
-      const queuedMemo = await tx.sendTx({
-        from: this.settings.wallet.address,
-        memo: JSON.stringify({
-          type: "repost",
-          parent: memo.txhash
-        })
-      });
-      this.$store.dispatch("addToMemoQueue", queuedMemo);
     }
   },
   async created() {
-    try {
-      this.settings = await this.$store.dispatch("fetchSettings");
-    } catch {
-      console.log("Failed to fetch user settings.");
-    }
-    this.socket = io(`${API}`);
-    this.socket.on("newtx", tx => {
-      this.$store.dispatch("rmFromMemoQueue", tx.txhash);
-      const transaction = {
-        ...tx,
-        received_at: new Date().getTime()
-      };
-      console.log(transaction);
-      this.stream = [transaction, ...this.stream];
-    });
-    this.address = this.settings && this.settings.wallet.address;
     this.fetchAndAddMemos();
-  },
-  destroyed() {
-    this.socket.close();
   }
 };
 </script>
