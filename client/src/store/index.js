@@ -18,6 +18,7 @@ import notifications from "./modules/notifications.js";
 import settings from "./modules/settings.js";
 import defaultFollowing from "./defaultFollowing.json";
 import tx from "@/scripts/tx";
+import { sortBy } from "lodash";
 
 // connect vuex-firestore modules to firestore
 const easyFirestore = VuexEasyFirestore(
@@ -34,6 +35,28 @@ import channels from "../../../channels.json";
 const storeData = {
   plugins: [easyFirestore],
   getters: {
+    incoming: (state) => {
+      return state.incoming;
+    },
+    outgoing: (state) => {
+      const memos = Object.values(state.queuedMemos).map((tx) => {
+        return {
+          txhash: tx.id,
+          created_at: tx.timestamp,
+          type: tx.memo.type,
+          body: tx.memo.body,
+          parent: tx.memo.parent,
+          from_address: tx.address,
+          received_at: tx.received_at,
+          like_count: "0",
+          repost_count: "0",
+          like_self: null,
+          repost_self: null,
+          status: "queued",
+        };
+      });
+      return sortBy(memos, ["created_at"]);
+    },
     accounts: (state) => {
       return state.accounts.data;
     },
@@ -244,7 +267,8 @@ const storeData = {
       );
     },
     addQueuedMemo(state, memo) {
-      Vue.set(state.queuedMemos, memo.id, memo);
+      const m = { ...memo, received_at: new Date().getTime() };
+      Vue.set(state.queuedMemos, memo.id, m);
     },
     rmQueuedMemo(state, id) {
       Vue.delete(state.queuedMemos, id);

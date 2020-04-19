@@ -116,8 +116,6 @@ export default {
       const last = this.timeline[this.timeline.length - 1];
       const after = last ? `after=${last.created_at}` : "";
       const from_address = this.address ? `from_address=${this.address}` : "";
-      console.log(this.address);
-
       const url = `${API}/${this.endpoint}?${from_address}&${after}&txhash=${this.txhash}`;
       let memos = (await axios.get(url)).data;
       memos = Array.isArray(memos) ? memos : [memos];
