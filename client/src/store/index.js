@@ -119,17 +119,21 @@ const storeData = {
         return;
       }
     },
-    // actionLike(memo) {
-    //   this.authCheck();
-    //   const queuedMemo = await tx.sendTx({
-    //     from: this.settings.wallet.address,
-    //     memo: JSON.stringify({
-    //       type: "like",
-    //       parent: memo.txhash
-    //     })
-    //   });
-    //   this.$store.dispatch("addToMemoQueue", queuedMemo);
-    // },
+    actionLike({ dispatch, state }, memo) {
+      dispatch("authCheck");
+      return new Promise((resolve, reject) => {
+        tx.sendTx({
+          from: state.settings.data.wallet.address,
+          memo: JSON.stringify({
+            type: "like",
+            parent: memo.txhash,
+          }),
+        }).then((data) => {
+          dispatch("addToMemoQueue", data);
+          resolve(data);
+        });
+      });
+    },
     actionRepost({ dispatch, state }, memo) {
       dispatch("authCheck");
       return new Promise((resolve, reject) => {
@@ -148,7 +152,6 @@ const storeData = {
     socketInit({ dispatch, commit }) {
       this.socket = io(`${API}`);
       this.socket.on("newtx", (tx) => {
-        console.log(tx);
         dispatch("rmFromMemoQueue", tx.txhash);
         const transaction = {
           ...tx,

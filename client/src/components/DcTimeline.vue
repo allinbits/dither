@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     actionLike(memo) {
-      this.$store.dispatch("memoLike", memo);
+      this.$store.dispatch("actionLike", memo);
     },
     actionRepost(memo) {
       this.$store.dispatch("actionRepost", memo);
