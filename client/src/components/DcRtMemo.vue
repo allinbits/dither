@@ -23,8 +23,8 @@ div
         .actions
           btn-icon(
             slot="btn-left" size="small" icon="message-circle" :value="memo.comment_count")
-          btn-icon.btn-repost.btn-repost(v-if="memo && memo.repost_count" :disabled="disabledRepost" :color="memo.repost_self && 'green'" slot="btn-left" size="small" icon="repeat" :value="memo.repost_count" @click.native.prevent="actionRepost")
-          btn-icon.btn-like.btn-like--active(v-if="memo && memo.like_count" :disabled="disabledLike" :color="memo.like_self && 'red'" slot="btn-left" size="small" icon="heart" :value="memo.like_count" @click.native.prevent="actionLike")
+          btn-icon.btn-repost.btn-repost(v-if="memo && memo.repost_count" :disabled="disabledRepost" :color="disabledRepost && 'green'" slot="btn-left" size="small" icon="repeat" :value="memo.repost_count" @click.native.prevent="actionRepost")
+          btn-icon.btn-like.btn-like--active(v-if="memo && memo.like_count" :disabled="disabledLike" :color="disabledLike && 'red'" slot="btn-left" size="small" icon="heart" :value="memo.like_count" @click.native.prevent="actionLike")
 </template>
 
 <script>
@@ -64,10 +64,20 @@ export default {
       return h.timeAgo(this.memo.created_at);
     },
     disabledLike() {
-      return this.memo.like_self || this.value.status === "queued";
+      const hasQueued =
+        this.outgoing.filter(e => {
+          return e.parent === this.value.txhash && e.type === "like";
+        }).length > 0;
+      return this.memo.like_self || this.value.status === "queued" || hasQueued;
     },
     disabledRepost() {
-      return this.memo.repost_self || this.value.status === "queued";
+      const hasQueued =
+        this.outgoing.filter(e => {
+          return e.parent === this.value.txhash && e.type === "repost";
+        }).length > 0;
+      return (
+        this.memo.repost_self || this.value.status === "queued" || hasQueued
+      );
     },
     memo() {
       let memo = cloneDeep(this.value);
@@ -106,7 +116,7 @@ export default {
       }
     },
     actionLike() {
-      if (!this.disbledLike) {
+      if (!this.disabledLike) {
         this.$store.dispatch("actionLike", this.value);
       }
     }
