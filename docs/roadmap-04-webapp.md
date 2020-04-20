@@ -1,6 +1,6 @@
-# Dither Web Client (beta)
+# Dither Web Client (alpha)
 
-> This is milestone #3 of the [Dither Roadmap](./roadmap.md).
+> This is milestone #4 of the [Dither Roadmap](./roadmap.md).
 
 The Dither Web Client serves as a way for end-users to view messages, post messages, and interact with other users on the Dither social network. We plan on building mobile applications as well, but it makes the most sense to start with a web client.
 
