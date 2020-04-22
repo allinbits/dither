@@ -45,27 +45,18 @@ Dither is a social network powered by blockchain technology. Currently, this is 
 #### v. Dither Android Client
 
 ## III. User Interface
+### 1. Dither Web Client
+#### i. /memos/home
+#### i. /memos/all
+#### i. /memos/#hashtag
+#### i. /memos/new
+#### i. /users/name
+#### i. /sign-up
+#### i. /sign-in
+#### i. /forgot
+#### i. /search
+#### i. /wallet
+#### i. /settings
 
-## Components
-
-## Dither Blockchain
-
-Dither is a social network powered by blockchain technology. Currently, this is the Cosmos Hub blockchain. We expect that with future growth, we will strain the limits of the transaction throughput on the Cosmos Hub. Well, either that or the transactions will be too expensive to combat the greater usage. The long-term goal of Dither is to put it onto its own application-specific blockchain.
-
-## Dither Indexer
-
-TODO
-
-## Dither Web Client
-
-## Dither Web iOS Client
-
-TODO
-
-## Dither Android Client
-
-TODO
-
-## IV. Milestones and Prioritization
-
-See the [roadmap](./roadmap.md)
+### 1. Dither iOS Client
+### 1. Dither Android Client
