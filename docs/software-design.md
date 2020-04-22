@@ -28,11 +28,16 @@ Today's social networks are means for the majority of humanity to communicate wi
 
 There are multiple levels of success for Dither. Level 1 is usage - if have a healthy population who log into Dither on a daily basis, we can say we've suceeded on one level. Level 2 is developers - if we have a healthy ecosystem of developers who use Dither, we can say we've succeeded on higher level. Level 3 is sustainability - if Dither becomes a self-governed social network, we can say we've made it.
 
-### Scope
-
 ## II. Requirements/System Overview
 
 ### 1. User Requirements
+There will be different types of users who login to Dither. Here are some examples personas:
+
+#### i. Person 3
+#### ii. Person 2
+#### iii. Person 3
+#### iv. Person 4
+
 ### 2. Functional Requirements
 
 #### i. Dither Blockchain
@@ -45,18 +50,20 @@ Dither is a social network powered by blockchain technology. Currently, this is 
 #### v. Dither Android Client
 
 ## III. User Interface
-### 1. Dither Web Client
-#### i. /memos/home
-#### i. /memos/all
-#### i. /memos/#hashtag
-#### i. /memos/new
-#### i. /users/name
-#### i. /sign-up
-#### i. /sign-in
-#### i. /forgot
-#### i. /search
-#### i. /wallet
-#### i. /settings
 
-### 1. Dither iOS Client
-### 1. Dither Android Client
+### 1. Dither Web Client
+
+#### i. /memos/home
+#### ii. /memos/all
+#### iii. /memos/#hashtag
+#### iv. /memos/new
+#### v. /users/name
+#### vi. /sign-up
+#### vii. /sign-in
+#### viii. /forgot
+#### viv. /search
+#### ix. /wallet
+#### x. /settings
+
+### 2. Dither iOS Client
+### 3. Dither Android Client
