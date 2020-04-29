@@ -28,18 +28,18 @@ This is the current software development roadmap for Dither. We plan to start of
 
 [**Dither iOS Client (alpha)**](./roadmap-10-ios.md) - We will start designing and building an iOS application for Dither. Initially, it will support recent versions of iPhones and iPod touch devices. We will publish the source on GitHub and deploy via TestFlight. (L)
 
-[**Dither Android Client (alpha)**](./roadmap-11-android.md) - We will start designing and building an Android application for Dither. Initially, it will support recent versions of popular Android phones. We will publish the source on GitHub and deploy via Google Play Beta(L)
+[**Dither Android Client (alpha)**](./roadmap-11-android.md) - We will start designing and building an Android application for Dither. Initially, it will support recent versions of popular Android phones. We will publish the source on GitHub and deploy via Google Play Beta. (L)
 
 [**Dither Documentation (alpha)**](./roadmap-12-docs.md) - We will write documentation for the Dither protocol and indexer. We will also provide tutorials for application developers to implement Dither protocol support. We will publish these docs on GitHub. (S)
 
 ## Fourth six months
 
-[**Dither Blockchain (testnet)**](./roadmap-13-blockchain.md) - Dither will likely overload the Cosmos Hub with fluff transactions. Based on the research we conducted earlier, we will build Dither as a custom Cosmos SDK-based application. This deliverable is a promise that we will launch at least one testnet for the proposed Dither Blockchain. (M) 
+[**Dither Blockchain (testnet)**](./roadmap-13-blockchain.md) - Dither will likely overload the Cosmos Hub with fluff transactions. Based on the research we conducted earlier, we will build Dither as a custom Cosmos SDK-based application. We will publish the source on GitHub and will launch at least one testnet. (M) 
 
 [**Dither iOS Client (beta)**](./roadmap-14-ios.md) - We will continue maintaining and improving the iOS application for Dither. During this beta phase, we expect that that Dither iOS will support all the MVP features. We will publish the source on GitHub and deploy via TestFlight. (L)
 
-[**Dither Android Client (beta)**](./roadmap-15-android.md) - We will continue maintaining and improving the iOS application for Dither. During this beta phase, we expect that that Dither iOS will support all the MVP features. We will publish the source on GitHub and deploy via Google Play Beta(L)
+[**Dither Android Client (beta)**](./roadmap-15-android.md) - We will continue maintaining and improving the iOS application for Dither. During this beta phase, we expect that that Dither iOS will support all the MVP features. We will publish the source on GitHub and deploy via Google Play Beta. (L)
 
-[**Dither Website (beta)**](./roadmap-16-website.md) - We will continue maintaining the Dither website. We will continue to update site content based on user feedback & research, roadmap clarity, etc. (S)
+[**Dither Website (beta)**](./roadmap-16-website.md) - We will continue maintaining the Dither website. We will continue to update site content based on user feedback & research, roadmap clarity, etc. We will publish the source on GitHub. (S)
 
-[**Dither Documentation (beta)**](./roadmap-17-docs.md) - We will continue maintaining Dither documentation and updating content based on developer feedback, feature improvements, new tutorials, etc. (S)
+[**Dither Documentation (beta)**](./roadmap-17-docs.md) - We will continue maintaining Dither documentation and updating content based on developer feedback, feature improvements, new tutorials, etc. We will publish the source on GitHub. (S)
