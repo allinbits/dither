@@ -40,33 +40,38 @@ There will be different types of users who may use Dither. Here are some example
 
 ### 2.2 Functional Requirements
 
-Dither is made up of three primary components. The blockchain component, the indexer component, and a user interface component. In case this, we propose maintaining three interchangable user interface components, for the desktop and mobile web, iOS, and Android.
+Dither is made up of three primary components. The blockchain component, the indexer component, and a client component. In case this, we propose maintaining three interchangable client components, for the web, iOS, and Android.
 
 #### 2.2.1 Dither Blockchain
 
 Dither is a social network powered by blockchain technology. Currently, this is the Cosmos Hub blockchain. We expect that with future growth, we will strain the limits of the transaction throughput on the Cosmos Hub. Well, either that or the transactions will be too expensive to combat the greater usage. The long-term goal of Dither is to put it onto its own application-specific blockchain.
 
+##### 2.2.1.1 Dither on the Cosmos Hub
+
+For the first year of development
+
+##### 2.2.1.2 Dither on an application-specific blockchain
+
 #### 2.2.2. Dither Indexer
 
 The Dither Indexer is a database that interacts with a Cosmos Hub full node to query for and store information. It is the primary data store for Dither and is queried by various front-ends to allow users to sign up, login, view, send, and query for messages.
 
-#### 2.2.3 Dither Web Client
+#### 2.2.3 Dither Client
 
-The Dither Web Client is a full-featured graphical user interface for Dither.
+THe Dither client is a cod
 
-#### 2.2.4 Dither iOS Client
+##### 2.2.3.1 Dither Web
+The Dither Web Client is a graphical user interface built with modern web technologies. It is the first client that we will build for Dither, and it will serve as the reference implementation for the iOS and Android applications.
 
+#### 2.2.3.2 Dither iOS
 The iOS Client is a full-featured Dither application for recent iOS devices.
 
-#### 2.2.5 Dither Android Client
-
+#### 2.2.3.3 Dither Android
 The Android Client is a full-featured Dither application for recent Android devices.
 
-## 3. User Interface
+## 3. Dither Client Specification
 
-### 3.1 Dither Web Client
-
-#### 3.1.1 Routes
+### 3.1 Routes
 
 Note that `(auth)` means that the user needs to be logged in, and that `(no-ui)` means this route doesn't have a page associated with it, and it should redirect the user to another page.
 
@@ -107,7 +112,7 @@ Note that `(auth)` means that the user needs to be logged in, and that `(no-ui)`
   * /account/settings - (auth) Displays forms to allow users to change their username, avatar, and other application settings.
   * /account/forgot - Displays a form to allow signed-out users to reset their password
 
-#### 3.1.2 Components
+### 3.2 Components
 
 * cardMessage
 * cardAccount
@@ -115,5 +120,6 @@ Note that `(auth)` means that the user needs to be logged in, and that `(no-ui)`
 * appHeader
 * appMenu
 
-### 3.2 Dither iOS Client
-### 3.3 Dither Android Client
+## 4. Roadmap
+
+See the [roadmap](./roadmap.md).
