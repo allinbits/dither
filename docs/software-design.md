@@ -1,16 +1,8 @@
 # Dither Software Design Document
 
-## 1. Goals & Vision
+## 1. Vision
 
 Dither is a collection of open source components that works together to enable an uncensorable and decentralized social network for web and mobile devices. User interaction on Dither is powered by the Cosmos Hub blockchain. User data is stored in an SQL database that is written to by a transaction indexing tool that we create.
-
-Dither is made up of these components:
-
-* Dither Blockchain
-* Dither Indexer
-* Dither Web Client
-* Dither iOS Client
-* Dither Android Client
 
 ### 1.1 Business Goals
 
@@ -28,7 +20,7 @@ Today's social networks are means for the majority of humanity to communicate wi
 
 There are multiple levels of success for Dither. Level 1 is usage - if have a healthy population who log into Dither on a daily basis, we can say we've suceeded on one level. Level 2 is developers - if we have a healthy ecosystem of developers who use Dither, we can say we've succeeded on higher level. Level 3 is sustainability - if Dither becomes a self-governed social network, we can say we've made it.
 
-## 2. Requirements/System Overview
+## 2. System Overview
 
 ### 2.1 User Requirements
 There will be different types of users who may use Dither. Here are some examples personas:
@@ -71,7 +63,7 @@ The Android Client is a full-featured Dither application for recent Android devi
 
 ## 3. Dither Client Specification
 
-### 3.1 Routes
+### 3.1 Application Routes
 
 Note that `(auth)` means that the user needs to be logged in, and that `(no-ui)` means this route doesn't have a page associated with it, and it should redirect the user to another page.
 
@@ -112,7 +104,7 @@ Note that `(auth)` means that the user needs to be logged in, and that `(no-ui)`
   * /account/settings - (auth) Displays forms to allow users to change their username, avatar, and other application settings.
   * /account/forgot - Displays a form to allow signed-out users to reset their password
 
-### 3.2 Components
+### 3.2 App Components
 
 * cardMessage
 * cardAccount
