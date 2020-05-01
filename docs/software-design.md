@@ -1,5 +1,7 @@
 # Dither Software Design Document
 
+[[toc]]
+
 ## 1. Vision
 
 Today's social networks are means for the majority of humanity to communicate with their local and global communities. But these networks are owned by corporations that serve their shareholders, and not their billions of users. It is the mission of Dither to solve the issue of centralized power and censorship created by current social networks. We hope to offer to users of Dither their own sovereign channel of communication to the world without fearing for censorship or bans.
