@@ -15,14 +15,6 @@ Today's social networks are means for the majority of humanity to communicate wi
 ### 1.2 Business Needs
 
 #### 1.2.1 User Personas
-
-#### 1.2.2 Defining Success
-
-There are multiple levels of success for Dither. Level 1 is usage - if have a healthy population who log into Dither on a daily basis, we can say we've suceeded on one level. Level 2 is developers - if we have a healthy ecosystem of developers who use Dither, we can say we've succeeded on higher level. Level 3 is sustainability - if Dither becomes a self-governed social network, we can say we've made it.
-
-## 2. System Overview
-
-### 2.1 User Requirements
 There will be different types of users who may use Dither. Here are some examples personas:
 
 #### 2.1.1 Dither Developer
@@ -30,9 +22,25 @@ There will be different types of users who may use Dither. Here are some example
 #### 2.1.3 Blockchain Enthusiast
 #### 2.1.4 Mainstream Tech Enthusiast
 
-### 2.2 Functional Requirements
+#### 1.2.2 Defining Success
 
-Dither is made up of three primary components. The blockchain component, the indexer component, and a client component. In case this, we propose maintaining three interchangable client components, for the web, iOS, and Android.
+There are multiple levels of success for Dither. Level 1 is usage - if have a healthy population who log into Dither on a daily basis, we can say we've suceeded on one level. Level 2 is developers - if we have a healthy ecosystem of developers who use Dither, we can say we've succeeded on higher level. Level 3 is sustainability - if Dither becomes a self-governed social network, we can say we've made it.
+
+## 2. System Overview
+
+### 2.1 Functionality Requirements
+
+Dither needs to meet a set of functionaity requirements, listed below.
+
+#### 2.1.1 Follow
+#### 2.1.2 Post
+#### 2.1.3 Search
+#### 2.1.4 Notify
+#### 2.1.5 Send
+
+### 2.2 System Components
+
+Dither is made up of three core components: (1) the blockchain, (2) the indexer, and (3) the client. This section will detail out these three parts.
 
 #### 2.2.1 Dither Blockchain
 
@@ -40,9 +48,11 @@ Dither is a social network powered by blockchain technology. Currently, this is 
 
 ##### 2.2.1.1 Dither on the Cosmos Hub
 
-For the first year of development
+For at least first year of development, we expect that we will be piggy-backing off of the Cosmos Hub blockchain.
 
 ##### 2.2.1.2 Dither on an application-specific blockchain
+
+Going into the second year, we will have the resources to research, build and launch a custom blockchain for Dither.
 
 #### 2.2.2. Dither Indexer
 
@@ -50,7 +60,7 @@ The Dither Indexer is a database that interacts with a Cosmos Hub full node to q
 
 #### 2.2.3 Dither Client
 
-THe Dither client is a cod
+THe Dither client is an interchangeable component of Dither. We plan on building and maintaining three separate clients in order to be as accessible to as large of an audience as possible.
 
 ##### 2.2.3.1 Dither Web
 The Dither Web Client is a graphical user interface built with modern web technologies. It is the first client that we will build for Dither, and it will serve as the reference implementation for the iOS and Android applications.
