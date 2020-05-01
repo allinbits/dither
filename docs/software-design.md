@@ -2,31 +2,34 @@
 
 ## 1. Vision
 
-Dither is a collection of open source components that works together to enable an uncensorable and decentralized social network for web and mobile devices. User interaction on Dither is powered by the Cosmos Hub blockchain. User data is stored in an SQL database that is written to by a transaction indexing tool that we create.
-
-### 1.1 Business Goals
+Today's social networks are means for the majority of humanity to communicate with their local and global communities. But these networks are owned by corporations that serve their shareholders, and not their billions of users. It is the mission of Dither to solve the issue of centralized power and censorship created by current social networks. We hope to offer to users of Dither their own sovereign channel of communication to the world without fearing for censorship or bans.
 
 The long term vision of Dither is a self-sustaining community of engaged users and volunteer developers who together run an uncensorable and decentralized social network.
 
-The vision of Virgo is to provide the world with the best open collaboration technology. Without Dither, the Virgo community would be bereft of a resilient means of communicating across the world without censorship.
-
-Today's social networks are means for the majority of humanity to communicate with their local and global communities. But these networks are owned by corporations that serve their shareholders, and not their billions of users. It is the mission of Dither to solve the issue of centralized power and censorship created by current social networks. We hope to offer to users of Dither their own sovereign channel of communication to the world without fearing for censorship or bans.
+### 1.1 Business Goals
 
 ### 1.2 Business Needs
 
-#### 1.2.1 User Personas
-There will be different types of users who may use Dither. Here are some examples personas:
+#### 1.3 User Personas
+
+There will be different types of users who may be interested in using Dither. Here are some examples:
 
 #### 2.1.1 Dither Developer
 #### 2.1.2 ATOM Holder
 #### 2.1.3 Blockchain Enthusiast
 #### 2.1.4 Mainstream Tech Enthusiast
 
-#### 1.2.2 Defining Success
+### 1.4 Defining Success
 
-There are multiple levels of success for Dither. Level 1 is usage - if have a healthy population who log into Dither on a daily basis, we can say we've suceeded on one level. Level 2 is developers - if we have a healthy ecosystem of developers who use Dither, we can say we've succeeded on higher level. Level 3 is sustainability - if Dither becomes a self-governed social network, we can say we've made it.
+The first level of success is gauging usage. How many people are using Dither on a day-to-day basis? How much time do they spend using the application? Is the number of users growing over time?
+
+The second level of success is courting developers. If we manage to bring together a healthy ecosystem of developers who use and develop on Dither or on top of Dither, we can say we've succeeded on higher level.
+
+What would make Dither truly successful? We think that Dither will be successful when it becomes self-sustaining. We're hoping for a community of engaged users and volunteer developers to emerge from the initial set of users. We hope will self-govern and organize themselves to continue running Dither into perpetuity.
 
 ## 2. System Overview
+
+Dither is a collection of open source components that works together to enable an uncensorable and decentralized social network for web and mobile devices. User interaction on Dither is powered by the Cosmos Hub blockchain. User data is stored in an SQL database that is written to by a transaction indexing tool that we create.
 
 ### 2.1 Functionality Requirements
 
@@ -80,7 +83,7 @@ Note that `(auth)` means that the user needs to be logged in, and that `(no-ui)`
 * /explore - The homepage for signed out users. Encourages users to sign up for a new account.
 * /welcome - (no-ui) This is the signup flow for new users
   * /welcome/signup - First step of signup, accepts a username and password.
-      * Field -Username
+      * Field - Username
       * Field - Password
       * Button - Continue
   * /welcome/wallet - Second step signup that creates a wallet for the user
