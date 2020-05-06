@@ -4,8 +4,7 @@
 
 Today's social networks are means for the majority of humanity to communicate with their local and global communities. But these networks are owned by corporations that serve their shareholders, and not their billions of users. It is the mission of Dither to solve the issue of centralized power and censorship created by current social networks. We hope to offer to users of Dither their own sovereign channel of communication to the world without fearing for censorship or bans.
 
-
-#### 1.1 Audiences
+### 1.1 Audiences
 
 There will be different types of users who may be interested in using Dither. Here are some of the audience categories.
 
@@ -45,21 +44,23 @@ What would make Dither truly successful? We think that Dither will be successful
 
 Dither is a collection of open source components that works together to enable an uncensorable and decentralized social network for web and mobile devices. User interaction on Dither is powered by the Cosmos Hub blockchain. User data is stored in an SQL database that is written to by a transaction indexing tool that we create.
 
-### 2.1 Functionality Requirements
+### 2.1 Features
 
 Dither needs to meet a set of functionaity requirements, listed below.
 
 #### 2.1.1 Follow
 
-Users need to be able to follow another user's account. 
+Users need to be able to follow another user's account. When they follow a user's account, that user should get a notification that they gained this new follower. The user should also be able to unfollow another user at any time. This transaction should be on-chain.
+
+A user's homepage feed consists primarily of the latest posts from the people they follow.
 
 #### 2.1.2 Post
 
-Users need to be able to post new dithers.
+Users need to be able to post new dithers. Due to the limitations of the Cosmos Hub memo field, Dithers are chunks of content that contain at most 512 bytes of data. The data is formatted in JSON and can include just about anything. When the user hits post, the dither content is validated and then is broadcasted via a Cosmos Hub transaction. Once the transaction is validated by the Cosmos Hub, the dither content is appended to database via the Dither Index. The new dither is pushed to all of the users followers, appearing on their respective homepages.
 
 #### 2.1.3 Search
 
-Users need to be able to search through the dither database.
+Users need to be able to search through the dither database created by the Dither Indexer. This is an off-chain query.
 
 #### 2.1.4 Notify
 
