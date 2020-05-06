@@ -97,10 +97,10 @@ THe Dither client is an interchangeable component of Dither. We plan on building
 ##### 2.2.3.1 Dither Web
 The Dither Web Client is a graphical user interface built with modern web technologies. It is the first client that we will build for Dither, and it will serve as the reference implementation for the iOS and Android applications.
 
-#### 2.2.3.2 Dither iOS
+##### 2.2.3.2 Dither iOS
 The iOS Client is a full-featured Dither application for recent iOS devices.
 
-#### 2.2.3.3 Dither Android
+##### 2.2.3.3 Dither Android
 The Android Client is a full-featured Dither application for recent Android devices.
 
 ## 3. Dither Client Specification
