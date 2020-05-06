@@ -4,41 +4,36 @@
 
 Today's social networks are means for the majority of humanity to communicate with their local and global communities. But these networks are owned by corporations that serve their shareholders, and not their billions of users. It is the mission of Dither to solve the issue of centralized power and censorship created by current social networks. We hope to offer to users of Dither their own sovereign channel of communication to the world without fearing for censorship or bans.
 
-The long term vision of Dither is a self-sustaining community of engaged users and volunteer developers who together run an uncensorable and decentralized social network.
 
-### 1.1 Business Goals
-
-### 1.2 Business Needs
-
-#### 1.3 Audiences
+#### 1.1 Audiences
 
 There will be different types of users who may be interested in using Dither. Here are some of the audience categories.
 
-#### 2.1.1 ATOM Holder
+#### 1.1.1 ATOM Holder
 
 The initial audience that we hope will flock to Dither are ATOM holders. There are disputes around ownership of discussion channels in the Cosmos community. The primary issue is that a decentralized network does not map well to a communication channels with single sources of authority. Whoever owns the communication channel wields too much power in a decentralized network.
 
 Dither hopes to fix that problem. It's built on the Cosmos Hub where admin level permissions don't exist. People are free to communicate on any topic they want without fear of being banned by a moderator, and other people can follow their preferred source of news and block the others.
 
-#### 2.1.2 Dither Developer
+#### 1.1.2 Dither Developer
 
 An interesting audience segment for Dither is the application developer. Since Dither is an open protocol, it enables third-party Cosmos SDK developers to embed Dither within their own product. The possiblities are endless, but we have to make sure our APIs are well-documented and code is well-structured to allow developers to easily dig in.
 
 We need an incentive structure to enourage developers to upstream their code. One tantalizing option is developing a plugin system that encourages the community to publish their own open-source Dither modules for everyone else.
 
-#### 2.1.3 Blockchain Enthusiast
+#### 1.1.3 Blockchain Enthusiast
 
 Similar to ATOM token holders, blockchain enthusiasts understand the resilience of decentralized governance. We're hoping blockchain enthusiasts will come onboard Dither and bring along their own communities.
 
 We can encourage blockchain enthusiasts and investors to join by building and promoting a Dither blockchain with some sort of Dither token.
 
-#### 2.1.4 Mainstream Early Adopter
+#### 1.1.4 Mainstream Early Adopter
 
 Over time, assuming we build a great product, the majority of the people using Dither will be mainstream early adopters. It's been clear over the years that social media corporations do not have our best interests at heart. They have a terrifying power to ban anything they disagre with. As is their right as private corporations. But we believe that communication should not be censored -- thus Dither.
 
 We can court the mainstream early adopter by building a strong brand and a very usable product. They should not have to know anything about blockchain or ~7 second transaction times to use Dither.
 
-### 1.4 Defining Success
+### 1.2 Defining Success
 
 The first level of success is gauging usage. How many people are using Dither on a day-to-day basis? How much time do they spend using the application? Is the number of users growing over time?
 
@@ -55,10 +50,24 @@ Dither is a collection of open source components that works together to enable a
 Dither needs to meet a set of functionaity requirements, listed below.
 
 #### 2.1.1 Follow
+
+Users need to be able to follow another user's account. 
+
 #### 2.1.2 Post
+
+Users need to be able to post new dithers.
+
 #### 2.1.3 Search
+
+Users need to be able to search through the dither database.
+
 #### 2.1.4 Notify
+
+Users should be notified if someone: (1) replies to them, (2) likes their dither, (3) reposts their dither, or (4) starts following them.
+
 #### 2.1.5 Send
+
+Users should able to send ATOM to other users and to other cosmos1 addresses.
 
 ### 2.2 System Components
 
