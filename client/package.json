@@ -20,7 +20,7 @@
     "get-urls": "^9.2.0",
     "identicon.js": "^2.3.3",
     "linkifyjs": "^2.1.9",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.11",
